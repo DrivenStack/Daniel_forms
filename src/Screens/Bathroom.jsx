@@ -918,7 +918,6 @@ function Bathroom() {
 
   const goToStep = (step) => {
     if (step >= 4 && step <= 7 && !style) {
-      // Show message that style needs to be selected
       return;
     }
     setCurrentStep(step);
@@ -948,7 +947,6 @@ function Bathroom() {
     });
     setIsSubmitted(false);
     setCurrentStep(1);
-    // Reset all form inputs
     const inputs = document.querySelectorAll('input, select, textarea');
     inputs.forEach(input => {
       if (input.type === 'text' || input.type === 'email' || input.type === 'tel' || input.type === 'number') {
@@ -1164,14 +1162,57 @@ function Bathroom() {
         );
 
       case 3:
+        // ── ONLY CHANGE: styleOptions now includes real image URLs ──
         const styleOptions = [
-          { key: 'scandi', name: 'Scandi', desc: 'Calm and minimal. Warm oak, matte black and soft stone.', colors: ['#9EA89E', '#C8C5BC', '#2A2A2A', '#E8E6E0'] },
-          { key: 'hamptons', name: 'Hamptons', desc: 'Timeless and refined. Carrara tile, brushed brass, shaker profile.', colors: ['#F4F0E8', '#E0D5C0', '#B8936A', '#FFF'] },
-          { key: 'classic-coastal', name: 'Classic Coastal', desc: 'Relaxed and organic. Oak Ravine, brushed brass, greige tile.', colors: ['#C8D4C0', '#E8EDE6', '#B8936A', '#D6CFBF'] },
-          { key: 'contemporary-coastal', name: 'Contemporary Coastal', desc: 'Modern and fresh. Chevron tile, brushed nickel, white profile.', colors: ['#7AAAB8', '#B8CFD8', '#E6EDF0', '#FFF'] },
-          { key: 'coral-house', name: 'Coral House', desc: 'Warm and earthy. Matte white, timber V-groove, terracotta accent.', colors: ['#C09080', '#D8C0B0', '#F0EAE4', '#FFF'] },
-          { key: 'fifty-shades', name: 'Fifty Shades', desc: 'Sophisticated and moody. Ivory tile, gun metal, warm oak.', colors: ['#2A2520', '#6A6058', '#C8B89A', '#F0EDE6'] },
-          { key: 'resort', name: 'Resort', desc: 'Refined and luxurious. Limestone, champagne tapware, grey stone.', colors: ['#A89890', '#C8C0B4', '#E4E0DC', '#B8936A'] },
+          {
+            key: 'scandi',
+            name: 'Scandi',
+            desc: 'Calm and minimal. Warm oak, matte black and soft stone.',
+            colors: ['#9EA89E', '#C8C5BC', '#2A2A2A', '#E8E6E0'],
+            img: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&q=80',
+          },
+          {
+            key: 'hamptons',
+            name: 'Hamptons',
+            desc: 'Timeless and refined. Carrara tile, brushed brass, shaker profile.',
+            colors: ['#F4F0E8', '#E0D5C0', '#B8936A', '#FFF'],
+            img: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=600&q=80',
+          },
+          {
+            key: 'classic-coastal',
+            name: 'Classic Coastal',
+            desc: 'Relaxed and organic. Oak Ravine, brushed brass, greige tile.',
+            colors: ['#C8D4C0', '#E8EDE6', '#B8936A', '#D6CFBF'],
+            img: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=400&q=80',
+          },
+          {
+            key: 'contemporary-coastal',
+            name: 'Contemporary Coastal',
+            desc: 'Modern and fresh. Chevron tile, brushed nickel, white profile.',
+            colors: ['#7AAAB8', '#B8CFD8', '#E6EDF0', '#FFF'],
+            img: 'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=600&q=80',
+          },
+          {
+            key: 'coral-house',
+            name: 'Coral House',
+            desc: 'Warm and earthy. Matte white, timber V-groove, terracotta accent.',
+            colors: ['#C09080', '#D8C0B0', '#F0EAE4', '#FFF'],
+            img: 'https://images.unsplash.com/photo-1584622781564-1d987f7333c1?w=600&q=80',
+          },
+          {
+            key: 'fifty-shades',
+            name: 'Fifty Shades',
+            desc: 'Sophisticated and moody. Ivory tile, gun metal, warm oak.',
+            colors: ['#2A2520', '#6A6058', '#C8B89A', '#F0EDE6'],
+            img: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=600&q=80',
+          },
+          {
+            key: 'resort',
+            name: 'Resort',
+            desc: 'Refined and luxurious. Limestone, champagne tapware, grey stone.',
+            colors: ['#A89890', '#C8C0B4', '#E4E0DC', '#B8936A'],
+            img: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600&q=80',
+          },
         ];
         return (
           <div className="step active">
@@ -1183,9 +1224,11 @@ function Bathroom() {
               {styleOptions.map(opt => (
                 <div key={opt.key} className={`style-card ${style === opt.key ? 'selected' : ''}`} onClick={() => selectStyle(opt.key)}>
                   <div className="style-swatch">
-                    <div className="style-swatch-placeholder" style={{ background: opt.colors[0] }}>
-                      <span>{opt.name}</span>
-                    </div>
+                    <img
+                      src={opt.img}
+                      alt={`${opt.name} bathroom style`}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    />
                   </div>
                   <div className="style-card-body">
                     <div className="style-card-name">{opt.name}</div>
