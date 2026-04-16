@@ -1,6 +1,138 @@
 import { useState, useEffect } from 'react';
 import './Bathroom.css';
 
+// ── Image imports ─────────────────────────────────────────────────────────────
+// Scandi
+import scandiCabinetry1 from '../assets/bathroom images/Scandi/Step 4 - Vanity/Polytec Angora Oak Woodmatt.jpg';
+import scandiCabinetry2 from '../assets/bathroom images/Scandi/Step 4 - Vanity/polytec white melamine.jpg';
+import scandiBenchtop1 from '../assets/bathroom images/Scandi/Step 4 - Vanity/WK Quantum Quartz Alpine Matte.jpg';
+import scandiBenchtop2 from '../assets/bathroom images/Scandi/Step 4 - Vanity/WK Quantum Quartz Alpine White.jpg';
+import scandiMirror1 from '../assets/bathroom images/Scandi/Step 4 - Vanity/Millenium Glass Pill Mirror 700×1100.jpeg';
+import scandiMirror2 from '../assets/bathroom images/Scandi/Step 4 - Vanity/Custom Oval Mirror.jpeg';
+import scandiMirror3 from '../assets/bathroom images/Scandi/Step 4 - Vanity/LED Install Backlit custom.jpeg';
+import scandiTile1 from '../assets/bathroom images/Scandi/Step 5 - Tiling/Three Balls Red X-Rock Natural White.jpg';
+import scandiTile2 from '../assets/bathroom images/Scandi/Step 5 - Tiling/Three Balls Red X-Rock Light Grey.jpeg';
+import scandiTapware1 from '../assets/bathroom images/Scandi/Step 6 - Tapware & basin/ABI Interiors Milani Progressive Wall Mixer.jpeg';
+import scandiTapware2 from '../assets/bathroom images/Scandi/Step 6 - Tapware & basin/ABI Interiors Nixi Wall Mixer & Spout.jpeg';
+import scandiBasin1 from '../assets/bathroom images/Scandi/Step 6 - Tapware & basin/ABI Interiors Celine Round 420mm.jpg';
+import scandiBasin2 from '../assets/bathroom images/Scandi/Step 6 - Tapware & basin/ABI Interiors Kiva Semi-Insert 420mm.jpg';
+import scandiMirrorCabinet from '../assets/bathroom images/Scandi/Step 6 - Tapware & basin/ADP Australia Mirrored Shaving Cabinet.jpeg';
+import scandiMirrorRound from '../assets/bathroom images/Scandi/Step 6 - Tapware & basin/ADP Australia Round Polished Edge 1200mm.jpeg';
+import scandiMirrorBacklit from '../assets/bathroom images/Scandi/Step 6 - Tapware & basin/LED Install Backlit Custom.jpeg';
+import scandiShower1 from '../assets/bathroom images/Scandi/Step 7 - Shower/Eden Nero  Highgrove Rail Shower.png';
+import scandiShower2 from '../assets/bathroom images/Scandi/Step 7 - Shower/ABI Interiors Overhead + Hand.png';
+
+// Hamptons
+import hamptonsBenchtop1 from '../assets/bathroom images/Hamptons/Step 4 - Vanity/Stone Ambassador Enchanted White 50mm Mitred.png';
+import hamptonsBenchtop2 from '../assets/bathroom images/Hamptons/Step 4 - Vanity/Stone Ambassador Enchanted White 20mm.png';
+import hamptonsTile1 from '../assets/bathroom images/Hamptons/Step 5 - Tiling/Tile & Stone Gallery Carrara Bianco Matt.png';
+import hamptonsTile2 from '../assets/bathroom images/Hamptons/Step 5 - Tiling/Tile & Stone Gallery Carrara Bianco Gloss.jpg';
+import hamptonsFeature1 from '../assets/bathroom images/Hamptons/Step 5 - Tiling/Easycraft VJ150 Easycraft Panelling.jpg';
+import hamptonsTapware1 from '../assets/bathroom images/Hamptons/Step 6 - Tapware & Basin/Gareth Ashton  Abey Poco Knurled Wall Mixer.png';
+import hamptonsTapware2 from '../assets/bathroom images/Hamptons/Step 6 - Tapware & Basin/ABI Interiors Elysian Gooseneck Mixer.jpeg';
+import hamptonsBasin1 from '../assets/bathroom images/Hamptons/Step 6 - Tapware & Basin/ADP Australia Glory Undermount Matt White.png';
+import hamptonsBasin2 from '../assets/bathroom images/Hamptons/Step 6 - Tapware & Basin/ABI Interiors Poco Semi-Inset.jpg';
+import hamptonsShower1 from '../assets/bathroom images/Hamptons/Step 7 - Shower/Gareth Ashton  Abey Curve Rail & Hand Shower.png';
+import hamptonsShower2 from '../assets/bathroom images/Hamptons/Step 7 - Shower/Gareth Ashton  Abey Overhead Vertical + Hand.png';
+import hamptonsShower3 from '../assets/bathroom images/Hamptons/Step 7 - Shower/Gareth Ashton  Abey Overhead Only.png';
+
+// Classic Coastal
+import ccCabinetry1 from '../assets/bathroom images/Classic coastal/Step 4 - Vanity/Polytec Natural Oak Ravine.jpg';
+import ccCabinetry2 from '../assets/bathroom images/Classic coastal/Step 4 - Vanity/Polytec White Melamine.jpg';
+import ccBenchtop1 from '../assets/bathroom images/Classic coastal/Step 4 - Vanity/WK Quantum Quartz Alpine White 60mm Round Edge.jpg';
+import ccBenchtop2 from '../assets/bathroom images/Classic coastal/Step 4 - Vanity/WK Quantum Quartz Alpine White 20mm.jpg';
+import ccMirror1 from '../assets/bathroom images/Classic coastal/Step 4 - Vanity/ADP Australia Round Polished Edge 1200mm.jpeg';
+import ccMirror2 from '../assets/bathroom images/Classic coastal/Step 4 - Vanity/LED Install Custom Backlit Mirror.jpeg';
+import ccMirror3 from '../assets/bathroom images/Classic coastal/Step 4 - Vanity/ADP Australia Mirrored Cabinet.jpeg';
+import ccTile1 from '../assets/bathroom images/Classic coastal/Step 5 - Tiling/Ace Stone + Tiles Cliffstone White Dover Lappato.jpg';
+import ccTile2 from '../assets/bathroom images/Classic coastal/Step 5 - Tiling/Ace Stone + Tiles Cliffstone Greige.jpg';
+import ccFeature1 from '../assets/bathroom images/Classic coastal/Step 5 - Tiling/Easycraft VJ150 Easycraft Panelling.jpg';
+import ccFeature2 from '../assets/bathroom images/Classic coastal/Step 5 - Tiling/Easycraft Easygroove 150.jpeg';
+import ccTapware1 from '../assets/bathroom images/Classic coastal/Step 6 - Tapware & Basin/Gareth Ashton  Abey Poco Knurled Wall Mixer.png';
+import ccTapware2 from '../assets/bathroom images/Classic coastal/Step 6 - Tapware & Basin/ABI Interiors Elysian Wall Mixer + Spout.jpeg';
+import ccBasin1 from '../assets/bathroom images/Classic coastal/Step 6 - Tapware & Basin/ABI Interiors Celine Solid Surface 420mm.jpg';
+import ccBasin2 from '../assets/bathroom images/Classic coastal/Step 6 - Tapware & Basin/ADP Australia Undermount Basin.jpeg';
+import ccShower1 from '../assets/bathroom images/Classic coastal/Step 7 - Shower/Gareth Ashton  Abey Overhead Vertical + Hand.png';
+import ccShower2 from '../assets/bathroom images/Classic coastal/Step 7 - Shower/Gareth Ashton  Abey Shower on Rail.png';
+import ccShower3 from '../assets/bathroom images/Classic coastal/Step 7 - Shower/Gareth Ashton  Abey Overhead Only.png';
+
+// Contemporary Coastal
+import contemCabinetry1 from '../assets/bathroom images/Contemporary Coastal/Step 4 - Vanity/Polytec Cove 25 Classic White Matt.jpg';
+import contemCabinetry2 from '../assets/bathroom images/Contemporary Coastal/Step 4 - Vanity/polytec smooth white melamine.jpg';
+import contemBenchtop1 from '../assets/bathroom images/Contemporary Coastal/Step 4 - Vanity/Laminam Bianco Assoluto Matt.png';
+import contemBenchtop2 from '../assets/bathroom images/Contemporary Coastal/Step 4 - Vanity/WK Quantum Quartz Alpine White.jpg';
+import contemMirror1 from "../assets/bathroom images/Contemporary Coastal/Step 4 - Vanity/LED Install Custom Backlit 1430×1725 mirror.jpeg";
+import contemMirror2 from '../assets/bathroom images/Contemporary Coastal/Step 4 - Vanity/Custom Standard Polished Edge.jpeg';
+import contemMirror3 from '../assets/bathroom images/Contemporary Coastal/Step 4 - Vanity/Custom Oval Pill Shape.jpeg';
+import contemTile1 from '../assets/bathroom images/Contemporary Coastal/Step 5 - Tiling/Ace Stone + Tiles Pietre 41 Scrambled Griege.jpg';
+import contemTile2 from '../assets/bathroom images/Contemporary Coastal/Step 5 - Tiling/Ace Stone + Tiles Pietre 41 Light Grey.jpg';
+import contemFeature1 from '../assets/bathroom images/Contemporary Coastal/Step 5 - Tiling/Ace Stone + Tiles Pietre 41 Chevron Griege.png';
+import contemTapware1 from '../assets/bathroom images/Contemporary Coastal/Step 6 - Tapware & Basin/Gareth Ashton  Abey 1TAP Progressive Wall Mixer.png';
+import contemTapware2 from '../assets/bathroom images/Contemporary Coastal/Step 6 - Tapware & Basin/ABI Interiors Nixi Wall Mixer & Spout.jpeg';
+import contemBasin1 from "../assets/bathroom images/Contemporary Coastal/Step 6 - Tapware & Basin/ADP Australia Pride Semi-Inset 545×365.png";
+import contemBasin2 from '../assets/bathroom images/Contemporary Coastal/Step 6 - Tapware & Basin/ABI Interiors Celine Round 420mm.jpeg';
+import contemShower1 from '../assets/bathroom images/Contemporary Coastal/Step 7 - Shower/Gareth Ashton  Abey Horizontal Overhead 1SHRO.png';
+import contemShower2 from '../assets/bathroom images/Contemporary Coastal/Step 7 - Shower/Gareth Ashton  Abey Overhead Vertical + Hand.png';
+import contemShower3 from '../assets/bathroom images/Contemporary Coastal/Step 7 - Shower/Gareth Ashton  Abey Overhead Only.png';
+
+// Coral House
+import coralCabinetry1 from '../assets/bathroom images/Coral house/Step 4 - Vanity/ADP Australia Clifton Prime Oak Woodmatt.jpeg';
+import coralCabinetry2 from '../assets/bathroom images/Coral house/Step 4 - Vanity/Perrem Design Custom Timber V-Groove.jpeg';
+import coralBenchtop1 from '../assets/bathroom images/Coral house/Step 4 - Vanity/ADP Australia Cherry Pie Bright White.jpeg';
+import coralBenchtop2 from '../assets/bathroom images/Coral house/Step 4 - Vanity/Custom Engineered Stone.jpeg';
+import coralMirror1 from "../assets/bathroom images/Coral house/Step 4 - Vanity/ADP Australia ADP Arch Mirror 900×1050.jpeg";
+import coralMirror2 from '../assets/bathroom images/Coral house/Step 4 - Vanity/LED Install Round Backlit Mirror.jpeg';
+import coralTile1 from '../assets/bathroom images/Coral house/Step 5 - Tiling/Ace Stone + Tiles Beren Light Grey 600×600.png';
+import coralTile2 from '../assets/bathroom images/Coral house/Step 5 - Tiling/Ace Stone + Tiles Beren Warm Greige.png';
+import coralFeature1 from '../assets/bathroom images/Coral house/Step 5 - Tiling/Ace Stone + Tiles Beren Saw 300×900.jpg';
+import coralFeature2 from '../assets/bathroom images/Coral house/Step 5 - Tiling/Easycraft VJ100 Easycraft Panelling.jpg';
+import coralTapware1 from '../assets/bathroom images/Coral house/Step 6 - Tapware & Basin/ABI Interiors Elysian Minimal Wall Mixer.jpeg';
+import coralTapware2 from '../assets/bathroom images/Coral house/Step 6 - Tapware & Basin/ABI Interiors Milli Minimal Wall Mixer.jpeg';
+import coralBasin1 from '../assets/bathroom images/Coral house/Step 6 - Tapware & Basin/ADP Australia Dignity Semi-Inset 420mm.jpeg';
+import coralBasin2 from '../assets/bathroom images/Coral house/Step 6 - Tapware & Basin/ABI Interiors Celine Round 420mm.jpeg';
+import coralShower1 from '../assets/bathroom images/Coral house/Step 7 - Shower/ABI Interiors Dana Round 250mm.jpeg';
+import coralShower2 from '../assets/bathroom images/Coral house/Step 7 - Shower/ABI Interiors Phili Arm + Dana Head.png';
+import coralShower3 from '../assets/bathroom images/Coral house/Step 7 - Shower/ABI Interiors Rail + Hand Shower.jpeg';
+
+// Fifty Shades
+import fiftyCabinetry1 from '../assets/bathroom images/Fifty shades/Step 4 - Vanity/Polytec Maison Oak Ravine.png';
+import fiftyCabinetry2 from '../assets/bathroom images/Fifty shades/Step 4 - Vanity/Polytec Dark Timber Veneer.jpg';
+import fiftyBenchtop1 from '../assets/bathroom images/Fifty shades/Step 4 - Vanity/Smartstone Pelle Grigio 20mm.jpeg';
+import fiftyBenchtop2 from '../assets/bathroom images/Fifty shades/Step 4 - Vanity/Smartstone Dark Grey Stone 20mm.jpg';
+import fiftyMirror1 from '../assets/bathroom images/Fifty shades/Step 4 - Vanity/Custom Polished Edge 900×1100.jpeg';
+import fiftyMirror2 from '../assets/bathroom images/Fifty shades/Step 4 - Vanity/LED Custom Backlit Mirror.jpeg';
+import fiftyMirror3 from '../assets/bathroom images/Fifty shades/Step 4 - Vanity/Custom Oval Pill Shape.jpeg';
+import fiftyTile1 from '../assets/bathroom images/Fifty shades/Step 5 - Tiling/Ace Stone + Tiles Ivory Flow Natural 450×900.jpg';
+import fiftyTile2 from '../assets/bathroom images/Fifty shades/Step 5 - Tiling/Ace Stone + Tiles Ivory Flow Honed.jpg';
+import fiftyTapware1 from '../assets/bathroom images/Fifty shades/Step 6 - Tapware & Basin/Gareth Ashton  Abey Poco Knurled Wall Mixer.png';
+import fiftyTapware2 from '../assets/bathroom images/Fifty shades/Step 6 - Tapware & Basin/ABI Interiors Nixi Wall Mixer & Spout.jpeg';
+import fiftyBasin1 from '../assets/bathroom images/Fifty shades/Step 6 - Tapware & Basin/ABI Interiors Kiva Semi-Inset Matt White.jpg';
+import fiftyBasin2 from '../assets/bathroom images/Fifty shades/Step 6 - Tapware & Basin/ABI Interiors Celine Round 420mm.jpeg';
+import fiftyShower1 from '../assets/bathroom images/Fifty shades/Step 7 - Shower/Gareth Ashton  Abey Horizontal Overhead 1SHRO.png';
+import fiftyShower2 from '../assets/bathroom images/Fifty shades/Step 7 - Shower/Gareth Ashton  Abey Overhead + Hand.png';
+import fiftyShower3 from '../assets/bathroom images/Fifty shades/Step 7 - Shower/Gareth Ashton  Abey Overhead Only.png';
+
+// Resort
+import resortCabinetry1 from '../assets/bathroom images/Resort/Step 4 -Vanity/Polytec Stone Grey Matt.jpg';
+import resortCabinetry2 from '../assets/bathroom images/Resort/Step 4 -Vanity/Polytec Warm Greige Matt.jpg';
+import resortBenchtop1 from '../assets/bathroom images/Resort/Step 4 -Vanity/Ace Stone + Tiles Portland Grey Brushed Limestone.png';
+import resortBenchtop2 from '../assets/bathroom images/Resort/Step 4 -Vanity/Smartstone Pelle Grigio Engineered Stone.jpg';
+import resortMirror1 from '../assets/bathroom images/Resort/Step 4 -Vanity/Custom Polished Edge 750×1100.jpeg';
+import resortMirror2 from '../assets/bathroom images/Resort/Step 4 -Vanity/LED Custom Backlit Mirror.jpeg';
+import resortMirror3 from '../assets/bathroom images/Resort/Step 4 -Vanity/Custom Oval Pill Shape.jpeg';
+import resortTile1 from '../assets/bathroom images/Resort/Step 5 - Tiling/Ace Stone + Tiles Nextone Gray Natural 600×1200.jpg';
+import resortTile2 from '../assets/bathroom images/Resort/Step 5 - Tiling/Ace Stone + Tiles Nextone Warm Grey.jpg';
+import resortFeature1 from '../assets/bathroom images/Resort/Step 5 - Tiling/Ace Stone Contrast Stone Tile.jpeg';
+import resortTapware1 from '../assets/bathroom images/Resort/Step 6 - Tapware & Basin/Meir Australia Round Curved Spout & Wall Mixer.png';
+import resortTapware2 from '../assets/bathroom images/Resort/Step 6 - Tapware & Basin/Gareth Ashton  Abey Poco Knurled Wall Mixer.png';
+import resortBasin1 from '../assets/bathroom images/Resort/Step 6 - Tapware & Basin/ADP Australia Glory Matte White 545×355mm.jpeg';
+import resortBasin2 from '../assets/bathroom images/Resort/Step 6 - Tapware & Basin/ADP Australia Dignity Semi-Inset 420mm.jpeg';
+import resortShower1 from '../assets/bathroom images/Resort/Step 7 - Shower/Meir Australia Round Wall Shower 200mm.png';
+import resortShower2 from '../assets/bathroom images/Resort/Step 7 - Shower/Meir Australia Overhead + Diverter + Hand.png';
+import resortShower3 from '../assets/bathroom images/Resort/Step 7 - Shower/Meir Australia Overhead Only.png';
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 function Bathroom() {
   const [currentStep, setCurrentStep] = useState(1);
   const [style, setStyle] = useState(null);
@@ -77,25 +209,25 @@ function Bathroom() {
           {
             title: 'Cabinetry',
             opts: [
-              { name: 'Angora Oak Woodmatt', brand: 'Polytec', detail: '1mm ABS edge · 16mm shadowline · warm blonde oak', swatch: '#C8B89A' },
-              { name: 'White Melamine', brand: 'Polytec', detail: 'Smooth white carcass and panels · 1mm ABS edge', swatch: '#F4F2EE' },
+              { name: 'Angora Oak Woodmatt', brand: 'Polytec', detail: '1mm ABS edge · 16mm shadowline · warm blonde oak', swatch: '#C8B89A', img: scandiCabinetry1 },
+              { name: 'White Melamine', brand: 'Polytec', detail: 'Smooth white carcass and panels · 1mm ABS edge', swatch: '#F4F2EE', img: scandiCabinetry2 },
               { name: 'Fully Custom', brand: 'Perrem Design', detail: 'Custom species, profile and finish — discuss with the team', swatch: '#E0DDD4' },
             ],
           },
           {
             title: 'Benchtop',
             opts: [
-              { name: 'Alpine Matte', brand: 'WK Quantum Quartz', detail: '20mm arrised edge profile · soft white matte finish', swatch: '#E8E6E0' },
-              { name: 'Alpine White', brand: 'WK Quantum Quartz', detail: '20mm arrised edge · slight gloss finish variant', swatch: '#F0EEE8' },
+              { name: 'Alpine Matte', brand: 'WK Quantum Quartz', detail: '20mm arrised edge profile · soft white matte finish', swatch: '#E8E6E0', img: scandiBenchtop1 },
+              { name: 'Alpine White', brand: 'WK Quantum Quartz', detail: '20mm arrised edge · slight gloss finish variant', swatch: '#F0EEE8', img: scandiBenchtop2 },
               { name: 'Other / Explore', brand: 'Perrem Design', detail: 'Natural stone, other engineered stone — let\'s explore', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Mirror',
             opts: [
-              { name: 'Pill Mirror 700×1100', brand: 'Millenium Glass', detail: 'Custom shaped pill mirror · polished edge', swatch: '#D0CCBC' },
-              { name: 'Oval Mirror', brand: 'Custom', detail: 'Softer oval form · matches curved vanity perfectly', swatch: '#C8C4B4' },
-              { name: 'Backlit Custom', brand: 'LED Install', detail: 'Any shape with LED tape surround · discuss size', swatch: '#C0BCAC' },
+              { name: 'Pill Mirror 700×1100', brand: 'Millenium Glass', detail: 'Custom shaped pill mirror · polished edge', swatch: '#D0CCBC', img: scandiMirror1 },
+              { name: 'Oval Mirror', brand: 'Custom', detail: 'Softer oval form · matches curved vanity perfectly', swatch: '#C8C4B4', img: scandiMirror2 },
+              { name: 'Backlit Custom', brand: 'LED Install', detail: 'Any shape with LED tape surround · discuss size', swatch: '#C0BCAC', img: scandiMirror3 },
             ],
           },
         ],
@@ -105,8 +237,8 @@ function Bathroom() {
           {
             title: 'Floor & Wall Tile',
             opts: [
-              { name: 'X-Rock Natural White', brand: 'Three Balls Red', detail: '600×1200mm · chiselled texture · 1/3 stretcher bond', swatch: '#E8E6E0' },
-              { name: 'X-Rock Light Grey', brand: 'Three Balls Red', detail: '600×1200mm · cool tone variant · same format', swatch: '#D0CCBE' },
+              { name: 'X-Rock Natural White', brand: 'Three Balls Red', detail: '600×1200mm · chiselled texture · 1/3 stretcher bond', swatch: '#E8E6E0', img: scandiTile1 },
+              { name: 'X-Rock Light Grey', brand: 'Three Balls Red', detail: '600×1200mm · cool tone variant · same format', swatch: '#D0CCBE', img: scandiTile2 },
               { name: 'Other / Explore', brand: 'Perrem Design', detail: 'I\'d like to explore further tile options with the team', swatch: '#D8D4CC' },
             ],
           },
@@ -125,17 +257,25 @@ function Bathroom() {
           {
             title: 'Tapware',
             opts: [
-              { name: 'Milani Progressive Wall Mixer', brand: 'ABI Interiors', detail: 'Matte Black · wall-mounted · progressive cartridge', swatch: '#2A2A2A' },
-              { name: 'Nixi Wall Mixer & Spout', brand: 'ABI Interiors', detail: 'Matte Black · wall basin mixer + curved spout', swatch: '#323232' },
+              { name: 'Milani Progressive Wall Mixer', brand: 'ABI Interiors', detail: 'Matte Black · wall-mounted · progressive cartridge', swatch: '#2A2A2A', img: scandiTapware1 },
+              { name: 'Nixi Wall Mixer & Spout', brand: 'ABI Interiors', detail: 'Matte Black · wall basin mixer + curved spout', swatch: '#323232', img: scandiTapware2 },
               { name: 'Other / Explore', brand: 'Discuss', detail: 'Alternative tapware — specify finish and brand preference', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Basin',
             opts: [
-              { name: 'Celine Round 420mm', brand: 'ABI Interiors', detail: 'Solid surface above counter · 420mm dia · 135mm H · Matte White', swatch: '#F0EEE8' },
-              { name: 'Kiva Semi-Insert 420mm', brand: 'ABI Interiors', detail: 'Solid surface semi-inset · 420mm dia · lower profile · Matte White', swatch: '#ECEAE4' },
+              { name: 'Celine Round 420mm', brand: 'ABI Interiors', detail: 'Solid surface above counter · 420mm dia · 135mm H · Matte White', swatch: '#F0EEE8', img: scandiBasin1 },
+              { name: 'Kiva Semi-Insert 420mm', brand: 'ABI Interiors', detail: 'Solid surface semi-inset · 420mm dia · lower profile · Matte White', swatch: '#ECEAE4', img: scandiBasin2 },
               { name: 'Other / Custom', brand: 'Discuss', detail: 'Custom basin or alternative brand — let\'s explore', swatch: '#D8D4CC' },
+            ],
+          },
+          {
+            title: 'Mirror',
+            opts: [
+              { name: 'Mirrored Shaving Cabinet', brand: 'ADP Australia', detail: '1970×1410mm · concealed powerpoints inside doors', swatch: '#D8D4CC', img: scandiMirrorCabinet },
+              { name: 'Round Polished Edge 1200mm', brand: 'ADP Australia', detail: 'Standard or backlit option · polished edge', swatch: '#D0CCBC', img: scandiMirrorRound },
+              { name: 'Backlit Custom', brand: 'LED Install', detail: 'Any size · LED tape surround · discuss dimensions', swatch: '#C8C4B4', img: scandiMirrorBacklit },
             ],
           },
         ],
@@ -145,8 +285,8 @@ function Bathroom() {
           {
             title: 'Shower Head',
             opts: [
-              { name: 'Rail Shower', brand: 'Eden Nero / Highgrove', detail: 'Sliding rail · adjustable height · Matte Black', swatch: '#2A2A2A' },
-              { name: 'Overhead + Hand', brand: 'ABI Interiors', detail: 'Fixed overhead 200mm + hand shower set on bracket', swatch: '#3A3A3A' },
+              { name: 'Rail Shower', brand: 'Eden Nero / Highgrove', detail: 'Sliding rail · adjustable height · Matte Black', swatch: '#2A2A2A', img: scandiShower1 },
+              { name: 'Overhead + Hand', brand: 'ABI Interiors', detail: 'Fixed overhead 200mm + hand shower set on bracket', swatch: '#3A3A3A', img: scandiShower2 },
               { name: 'Overhead Only', brand: 'ABI Interiors', detail: 'Fixed overhead shower head · ceiling or wall arm', swatch: '#484848' },
             ],
           },
@@ -172,8 +312,8 @@ function Bathroom() {
           {
             title: 'Benchtop',
             opts: [
-              { name: 'Enchanted White 50mm Mitred', brand: 'Stone Ambassador', detail: 'Engineered stone · mitred 50mm apron · pencil round', swatch: '#F4F2EC' },
-              { name: 'Enchanted White 20mm', brand: 'Stone Ambassador', detail: 'Standard 20mm profile · budget-friendly option', swatch: '#F0EEE8' },
+              { name: 'Enchanted White 50mm Mitred', brand: 'Stone Ambassador', detail: 'Engineered stone · mitred 50mm apron · pencil round', swatch: '#F4F2EC', img: hamptonsBenchtop1 },
+              { name: 'Enchanted White 20mm', brand: 'Stone Ambassador', detail: 'Standard 20mm profile · budget-friendly option', swatch: '#F0EEE8', img: hamptonsBenchtop2 },
               { name: 'Other / Explore', brand: 'Perrem Design', detail: 'Natural marble, alternative stone — let\'s explore', swatch: '#D8D4CC' },
             ],
           },
@@ -192,8 +332,8 @@ function Bathroom() {
           {
             title: 'Floor & Wall Tile',
             opts: [
-              { name: 'Carrara Bianco Matt', brand: 'Tile & Stone Gallery', detail: '600×600mm porcelain · 1/3 offset bond', swatch: '#F0EEE6' },
-              { name: 'Carrara Bianco Gloss', brand: 'Tile & Stone Gallery', detail: 'Same format · gloss surface finish', swatch: '#F6F4EC' },
+              { name: 'Carrara Bianco Matt', brand: 'Tile & Stone Gallery', detail: '600×600mm porcelain · 1/3 offset bond', swatch: '#F0EEE6', img: hamptonsTile1 },
+              { name: 'Carrara Bianco Gloss', brand: 'Tile & Stone Gallery', detail: 'Same format · gloss surface finish', swatch: '#F6F4EC', img: hamptonsTile2 },
               { name: 'Other / Explore', brand: 'Perrem Design', detail: 'I\'d like to explore further tile options', swatch: '#D8D4CC' },
             ],
           },
@@ -201,7 +341,7 @@ function Bathroom() {
             title: 'Feature Wall',
             opts: [
               { name: 'No Feature', brand: '—', detail: 'Consistent tile throughout', swatch: '#F0EEE6' },
-              { name: 'VJ150 Easycraft Panelling', brand: 'Easycraft', detail: 'Wet area panelling · painted Cotton Touch', swatch: '#E8E4DC' },
+              { name: 'VJ150 Easycraft Panelling', brand: 'Easycraft', detail: 'Wet area panelling · painted Cotton Touch', swatch: '#E8E4DC', img: hamptonsFeature1 },
               { name: 'Other / Custom', brand: 'Perrem Design', detail: 'Custom finish or alternate feature — let\'s discuss', swatch: '#D8D4CC' },
             ],
           },
@@ -212,16 +352,16 @@ function Bathroom() {
           {
             title: 'Tapware',
             opts: [
-              { name: 'Poco Knurled Wall Mixer', brand: 'Gareth Ashton / Abey', detail: 'Brushed Brass · wall basin mixer · knurled handle', swatch: '#C8A870' },
-              { name: 'Elysian Gooseneck Mixer', brand: 'ABI Interiors', detail: 'Brushed Brass · tall gooseneck spout + wall mixer', swatch: '#C0A068' },
+              { name: 'Poco Knurled Wall Mixer', brand: 'Gareth Ashton / Abey', detail: 'Brushed Brass · wall basin mixer · knurled handle', swatch: '#C8A870', img: hamptonsTapware1 },
+              { name: 'Elysian Gooseneck Mixer', brand: 'ABI Interiors', detail: 'Brushed Brass · tall gooseneck spout + wall mixer', swatch: '#C0A068', img: hamptonsTapware2 },
               { name: 'Other / Explore', brand: 'Discuss', detail: 'Alternative tapware — specify finish and brand preference', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Basin',
             opts: [
-              { name: 'Glory Undermount Matt White', brand: 'ADP Australia', detail: '545×355mm undermount · under-bench installation · Matte White', swatch: '#F4F2EC' },
-              { name: 'Poco Semi-Inset', brand: 'ABI Interiors', detail: 'Solid surface semi-inset · clean low profile · Matte White', swatch: '#ECEAE4' },
+              { name: 'Glory Undermount Matt White', brand: 'ADP Australia', detail: '545×355mm undermount · under-bench installation · Matte White', swatch: '#F4F2EC', img: hamptonsBasin1 },
+              { name: 'Poco Semi-Inset', brand: 'ABI Interiors', detail: 'Solid surface semi-inset · clean low profile · Matte White', swatch: '#ECEAE4', img: hamptonsBasin2 },
               { name: 'Other / Custom', brand: 'Discuss', detail: 'Custom basin or alternative — let\'s explore', swatch: '#D8D4CC' },
             ],
           },
@@ -232,9 +372,9 @@ function Bathroom() {
           {
             title: 'Shower Head',
             opts: [
-              { name: 'Curve Rail & Hand Shower', brand: 'Gareth Ashton / Abey', detail: 'Rail shower ensemble · Brushed Brass', swatch: '#C8A870' },
-              { name: 'Overhead Vertical + Hand', brand: 'Gareth Ashton / Abey', detail: '200mm vertical head + hand shower · Brass', swatch: '#B89860' },
-              { name: 'Overhead Only', brand: 'Gareth Ashton / Abey', detail: 'Fixed overhead shower head · Brushed Brass', swatch: '#A88850' },
+              { name: 'Curve Rail & Hand Shower', brand: 'Gareth Ashton / Abey', detail: 'Rail shower ensemble · Brushed Brass', swatch: '#C8A870', img: hamptonsShower1 },
+              { name: 'Overhead Vertical + Hand', brand: 'Gareth Ashton / Abey', detail: '200mm vertical head + hand shower · Brass', swatch: '#B89860', img: hamptonsShower2 },
+              { name: 'Overhead Only', brand: 'Gareth Ashton / Abey', detail: 'Fixed overhead shower head · Brushed Brass', swatch: '#A88850', img: hamptonsShower3 },
             ],
           },
         ],
@@ -251,25 +391,25 @@ function Bathroom() {
           {
             title: 'Cabinetry',
             opts: [
-              { name: 'Natural Oak Ravine', brand: 'Polytec', detail: '1mm ABS edge · warm oak look · 12mm shadowline', swatch: '#C0A880' },
-              { name: 'White Melamine', brand: 'Polytec', detail: 'Clean white carcass and panels · 1mm ABS edge', swatch: '#F4F2EE' },
+              { name: 'Natural Oak Ravine', brand: 'Polytec', detail: '1mm ABS edge · warm oak look · 12mm shadowline', swatch: '#C0A880', img: ccCabinetry1 },
+              { name: 'White Melamine', brand: 'Polytec', detail: 'Clean white carcass and panels · 1mm ABS edge', swatch: '#F4F2EE', img: ccCabinetry2 },
               { name: 'Fully Custom', brand: 'Perrem Design', detail: 'Custom species, profile and finish — discuss', swatch: '#E0DDD4' },
             ],
           },
           {
             title: 'Benchtop',
             opts: [
-              { name: 'Alpine White 60mm Round Edge', brand: 'WK Quantum Quartz', detail: '60mm profile · smooth round edge · premium option', swatch: '#F0EEE8' },
-              { name: 'Alpine White 20mm', brand: 'WK Quantum Quartz', detail: 'Standard 20mm · budget-friendly option', swatch: '#ECEAE4' },
+              { name: 'Alpine White 60mm Round Edge', brand: 'WK Quantum Quartz', detail: '60mm profile · smooth round edge · premium option', swatch: '#F0EEE8', img: ccBenchtop1 },
+              { name: 'Alpine White 20mm', brand: 'WK Quantum Quartz', detail: 'Standard 20mm · budget-friendly option', swatch: '#ECEAE4', img: ccBenchtop2 },
               { name: 'Other / Explore', brand: 'Perrem Design', detail: 'Natural stone or alternative — let\'s explore', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Mirror',
             opts: [
-              { name: 'Round Polished Edge 1200mm', brand: 'ADP Australia', detail: 'Standard or backlit option · polished edge', swatch: '#D0CCBC' },
-              { name: 'Custom Backlit Mirror', brand: 'LED Install', detail: 'LED surround · any shape · discuss dimensions', swatch: '#C8C4B4' },
-              { name: 'Mirrored Cabinet', brand: 'ADP Australia', detail: 'Storage cabinet with mirror front', swatch: '#D8D4CC' },
+              { name: 'Round Polished Edge 1200mm', brand: 'ADP Australia', detail: 'Standard or backlit option · polished edge', swatch: '#D0CCBC', img: ccMirror1 },
+              { name: 'Custom Backlit Mirror', brand: 'LED Install', detail: 'LED surround · any shape · discuss dimensions', swatch: '#C8C4B4', img: ccMirror2 },
+              { name: 'Mirrored Cabinet', brand: 'ADP Australia', detail: 'Storage cabinet with mirror front', swatch: '#D8D4CC', img: ccMirror3 },
             ],
           },
         ],
@@ -279,16 +419,16 @@ function Bathroom() {
           {
             title: 'Floor & Wall Tile',
             opts: [
-              { name: 'Cliffstone White Dover Lappata', brand: 'Ace Stone + Tiles', detail: '600×1200mm · semi-polished · 1/3 stretcher bond', swatch: '#E8E4DA' },
-              { name: 'Cliffstone Greige', brand: 'Ace Stone + Tiles', detail: '600×1200mm · warmer tone · same format', swatch: '#DDD8CC' },
+              { name: 'Cliffstone White Dover Lappata', brand: 'Ace Stone + Tiles', detail: '600×1200mm · semi-polished · 1/3 stretcher bond', swatch: '#E8E4DA', img: ccTile1 },
+              { name: 'Cliffstone Greige', brand: 'Ace Stone + Tiles', detail: '600×1200mm · warmer tone · same format', swatch: '#DDD8CC', img: ccTile2 },
               { name: 'Other / Explore', brand: 'Perrem Design', detail: 'I\'d like to explore further tile options', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Feature Wall',
             opts: [
-              { name: 'VJ150 Easycraft Panelling', brand: 'Easycraft', detail: 'Wet area · painted Solitude (low sheen)', swatch: '#E0DDD4' },
-              { name: 'Easy Groove 150', brand: 'Easycraft', detail: 'Wet area · painted Cotton Touch', swatch: '#E8E4DC' },
+              { name: 'VJ150 Easycraft Panelling', brand: 'Easycraft', detail: 'Wet area · painted Solitude (low sheen)', swatch: '#E0DDD4', img: ccFeature1 },
+              { name: 'Easy Groove 150', brand: 'Easycraft', detail: 'Wet area · painted Cotton Touch', swatch: '#E8E4DC', img: ccFeature2 },
               { name: 'No Feature', brand: '—', detail: 'Consistent tile throughout — no feature wall', swatch: '#E8E4DA' },
             ],
           },
@@ -299,16 +439,16 @@ function Bathroom() {
           {
             title: 'Tapware',
             opts: [
-              { name: 'Poco Knurled Wall Mixer', brand: 'Gareth Ashton / Abey', detail: 'Brushed Brass · wall basin mixer · knurled handle', swatch: '#C8A870' },
-              { name: 'Elysian Wall Mixer + Spout', brand: 'ABI Interiors', detail: 'Brushed Brass · wall mixer + straight spout', swatch: '#C0A068' },
+              { name: 'Poco Knurled Wall Mixer', brand: 'Gareth Ashton / Abey', detail: 'Brushed Brass · wall basin mixer · knurled handle', swatch: '#C8A870', img: ccTapware1 },
+              { name: 'Elysian Wall Mixer + Spout', brand: 'ABI Interiors', detail: 'Brushed Brass · wall mixer + straight spout', swatch: '#C0A068', img: ccTapware2 },
               { name: 'Other / Explore', brand: 'Discuss', detail: 'Alternative tapware — specify finish and brand preference', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Basin',
             opts: [
-              { name: 'Celine Solid Surface 420mm', brand: 'ABI Interiors', detail: 'Solid surface above counter · 420mm dia · Brass waste · Matte White', swatch: '#F0EEE8' },
-              { name: 'Undermount Basin', brand: 'ADP Australia', detail: 'Under-bench undermount · clean minimal aesthetic · Matte White', swatch: '#E8E4DC' },
+              { name: 'Celine Solid Surface 420mm', brand: 'ABI Interiors', detail: 'Solid surface above counter · 420mm dia · Brass waste · Matte White', swatch: '#F0EEE8', img: ccBasin1 },
+              { name: 'Undermount Basin', brand: 'ADP Australia', detail: 'Under-bench undermount · clean minimal aesthetic · Matte White', swatch: '#E8E4DC', img: ccBasin2 },
               { name: 'Other / Custom', brand: 'Discuss', detail: 'Custom basin or alternative brand — let\'s explore', swatch: '#D8D4CC' },
             ],
           },
@@ -319,9 +459,9 @@ function Bathroom() {
           {
             title: 'Shower Head',
             opts: [
-              { name: 'Overhead Vertical + Hand', brand: 'Gareth Ashton / Abey', detail: '200mm vertical shower + hand set · Brushed Brass', swatch: '#C8A870' },
-              { name: 'Shower on Rail', brand: 'Gareth Ashton / Abey', detail: 'Rail shower with hand shower · Brushed Brass', swatch: '#B89860' },
-              { name: 'Overhead Only', brand: 'Gareth Ashton / Abey', detail: 'Fixed overhead shower head · Brushed Brass', swatch: '#A88850' },
+              { name: 'Overhead Vertical + Hand', brand: 'Gareth Ashton / Abey', detail: '200mm vertical shower + hand set · Brushed Brass', swatch: '#C8A870', img: ccShower1 },
+              { name: 'Shower on Rail', brand: 'Gareth Ashton / Abey', detail: 'Rail shower with hand shower · Brushed Brass', swatch: '#B89860', img: ccShower2 },
+              { name: 'Overhead Only', brand: 'Gareth Ashton / Abey', detail: 'Fixed overhead shower head · Brushed Brass', swatch: '#A88850', img: ccShower3 },
             ],
           },
         ],
@@ -335,25 +475,25 @@ function Bathroom() {
           {
             title: 'Cabinetry',
             opts: [
-              { name: 'Cove 25 Classic White Matt', brand: 'Polytec', detail: 'Thermolaminated profile door · contemporary line', swatch: '#F0EEE8' },
-              { name: 'Smooth White Melamine', brand: 'Polytec', detail: 'Flat panel · finger pull from beneath', swatch: '#F8F6F2' },
+              { name: 'Cove 25 Classic White Matt', brand: 'Polytec', detail: 'Thermolaminated profile door · contemporary line', swatch: '#F0EEE8', img: contemCabinetry1 },
+              { name: 'Smooth White Melamine', brand: 'Polytec', detail: 'Flat panel · finger pull from beneath', swatch: '#F8F6F2', img: contemCabinetry2 },
               { name: 'Fully Custom', brand: 'Perrem Design', detail: 'Custom profile and finish — discuss with team', swatch: '#E0DDD4' },
             ],
           },
           {
             title: 'Benchtop',
             opts: [
-              { name: 'Bianco Assoluto Matt', brand: 'Laminam', detail: '12mm ultra-compact surface · smooth round edge', swatch: '#F4F2EC' },
-              { name: 'Alpine White Quartz', brand: 'WK Quantum', detail: '20mm engineered quartz · budget-friendly', swatch: '#F0EEE8' },
+              { name: 'Bianco Assoluto Matt', brand: 'Laminam', detail: '12mm ultra-compact surface · smooth round edge', swatch: '#F4F2EC', img: contemBenchtop1 },
+              { name: 'Alpine White Quartz', brand: 'WK Quantum', detail: '20mm engineered quartz · budget-friendly', swatch: '#F0EEE8', img: contemBenchtop2 },
               { name: 'Other / Explore', brand: 'Perrem Design', detail: 'Natural stone or alternative — let\'s explore', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Mirror',
             opts: [
-              { name: 'Custom Backlit 1430×1725', brand: 'LED Install', detail: 'Large format · full height LED tape surround', swatch: '#D0CCBC' },
-              { name: 'Standard Polished Edge', brand: 'Custom', detail: 'Smaller format · no backlight', swatch: '#C8C4B4' },
-              { name: 'Oval / Pill Shape', brand: 'Custom', detail: 'Softened shape for visual interest', swatch: '#C0BCAC' },
+              { name: 'Custom Backlit 1430×1725', brand: 'LED Install', detail: 'Large format · full height LED tape surround', swatch: '#D0CCBC', img: contemMirror1 },
+              { name: 'Standard Polished Edge', brand: 'Custom', detail: 'Smaller format · no backlight', swatch: '#C8C4B4', img: contemMirror2 },
+              { name: 'Oval / Pill Shape', brand: 'Custom', detail: 'Softened shape for visual interest', swatch: '#C0BCAC', img: contemMirror3 },
             ],
           },
         ],
@@ -363,15 +503,15 @@ function Bathroom() {
           {
             title: 'Floor & Wall Tile',
             opts: [
-              { name: 'Pietre 41 Scrambled Griege', brand: 'Ace Stone + Tiles', detail: '400×800mm · natural finish · 1/3 stretcher bond', swatch: '#C8C4B8' },
-              { name: 'Pietre 41 Light Grey', brand: 'Ace Stone + Tiles', detail: '400×800mm · cooler tone · same format', swatch: '#D0CCBE' },
+              { name: 'Pietre 41 Scrambled Griege', brand: 'Ace Stone + Tiles', detail: '400×800mm · natural finish · 1/3 stretcher bond', swatch: '#C8C4B8', img: contemTile1 },
+              { name: 'Pietre 41 Light Grey', brand: 'Ace Stone + Tiles', detail: '400×800mm · cooler tone · same format', swatch: '#D0CCBE', img: contemTile2 },
               { name: 'Other / Explore', brand: 'Perrem Design', detail: 'I\'d like to explore further tile options', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Feature Wall',
             opts: [
-              { name: 'Pietre 41 Chevron Griege', brand: 'Ace Stone + Tiles', detail: '200×800mm · stack bond chevron pattern', swatch: '#C0BCA8' },
+              { name: 'Pietre 41 Chevron Griege', brand: 'Ace Stone + Tiles', detail: '200×800mm · stack bond chevron pattern', swatch: '#C0BCA8', img: contemFeature1 },
               { name: 'Match Body Tile', brand: '—', detail: 'Consistent tile throughout — no feature', swatch: '#C8C4B8' },
               { name: 'Other / Custom', brand: 'Perrem Design', detail: 'Custom feature wall — let\'s discuss', swatch: '#D8D4CC' },
             ],
@@ -383,16 +523,16 @@ function Bathroom() {
           {
             title: 'Tapware',
             opts: [
-              { name: '1TAP Progressive Wall Mixer', brand: 'Gareth Ashton / Abey', detail: 'Brushed Nickel · wall-mount progressive mixer', swatch: '#A8A8A0' },
-              { name: 'Nixi Wall Mixer & Spout', brand: 'ABI Interiors', detail: 'Brushed Nickel · wall basin mixer + curved spout', swatch: '#B0B0A8' },
+              { name: '1TAP Progressive Wall Mixer', brand: 'Gareth Ashton / Abey', detail: 'Brushed Nickel · wall-mount progressive mixer', swatch: '#A8A8A0', img: contemTapware1 },
+              { name: 'Nixi Wall Mixer & Spout', brand: 'ABI Interiors', detail: 'Brushed Nickel · wall basin mixer + curved spout', swatch: '#B0B0A8', img: contemTapware2 },
               { name: 'Other / Explore', brand: 'Discuss', detail: 'Alternative tapware — specify finish and brand preference', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Basin',
             opts: [
-              { name: 'Pride Semi-Inset 545×365', brand: 'ADP Australia', detail: 'Solid surface semi-inset · contemporary profile · Matte White', swatch: '#F4F2EC' },
-              { name: 'Celine Round 420mm', brand: 'ABI Interiors', detail: 'Solid surface above counter · 420mm dia · Matte White', swatch: '#F0EEE8' },
+              { name: 'Pride Semi-Inset 545×365', brand: 'ADP Australia', detail: 'Solid surface semi-inset · contemporary profile · Matte White', swatch: '#F4F2EC', img: contemBasin1 },
+              { name: 'Celine Round 420mm', brand: 'ABI Interiors', detail: 'Solid surface above counter · 420mm dia · Matte White', swatch: '#F0EEE8', img: contemBasin2 },
               { name: 'Other / Custom', brand: 'Discuss', detail: 'Alternative basin — let\'s explore', swatch: '#D8D4CC' },
             ],
           },
@@ -403,9 +543,9 @@ function Bathroom() {
           {
             title: 'Shower Head',
             opts: [
-              { name: 'Horizontal Overhead 1SHRO', brand: 'Gareth Ashton / Abey', detail: 'Horizontal wall shower · Brushed Nickel', swatch: '#A8A8A0' },
-              { name: 'Overhead + Hand Shower', brand: 'Gareth Ashton / Abey', detail: 'Fixed head + hand shower set · Brushed Nickel', swatch: '#B0B0A8' },
-              { name: 'Overhead Only', brand: 'Gareth Ashton / Abey', detail: 'Fixed overhead shower head · Brushed Nickel', swatch: '#B8B8B0' },
+              { name: 'Horizontal Overhead 1SHRO', brand: 'Gareth Ashton / Abey', detail: 'Horizontal wall shower · Brushed Nickel', swatch: '#A8A8A0', img: contemShower1 },
+              { name: 'Overhead + Hand Shower', brand: 'Gareth Ashton / Abey', detail: 'Fixed head + hand shower set · Brushed Nickel', swatch: '#B0B0A8', img: contemShower2 },
+              { name: 'Overhead Only', brand: 'Gareth Ashton / Abey', detail: 'Fixed overhead shower head · Brushed Nickel', swatch: '#B8B8B0', img: contemShower3 },
             ],
           },
         ],
@@ -419,24 +559,24 @@ function Bathroom() {
           {
             title: 'Cabinetry',
             opts: [
-              { name: 'Clifton Prime Oak Woodmatt', brand: 'ADP Australia', detail: '1200mm · V-groove doors · white internals · wall hung', swatch: '#C8A880' },
-              { name: 'Custom Timber V-Groove', brand: 'Perrem Design', detail: 'Bespoke V-groove profile — discuss species and size', swatch: '#B89870' },
+              { name: 'Clifton Prime Oak Woodmatt', brand: 'ADP Australia', detail: '1200mm · V-groove doors · white internals · wall hung', swatch: '#C8A880', img: coralCabinetry1 },
+              { name: 'Custom Timber V-Groove', brand: 'Perrem Design', detail: 'Bespoke V-groove profile — discuss species and size', swatch: '#B89870', img: coralCabinetry2 },
               { name: 'Fully Custom', brand: 'Perrem Design', detail: 'Any profile, finish or configuration — let\'s discuss', swatch: '#E0DDD4' },
             ],
           },
           {
             title: 'Benchtop',
             opts: [
-              { name: 'Cherry Pie Bright White', brand: 'ADP Australia', detail: 'Solid surface · standard with Clifton vanity', swatch: '#F8F6F2' },
-              { name: 'Custom Engineered Stone', brand: 'Discuss', detail: 'Upgrade to engineered stone — discuss options with team', swatch: '#E8E4DC' },
+              { name: 'Cherry Pie Bright White', brand: 'ADP Australia', detail: 'Solid surface · standard with Clifton vanity', swatch: '#F8F6F2', img: coralBenchtop1 },
+              { name: 'Custom Engineered Stone', brand: 'Discuss', detail: 'Upgrade to engineered stone — discuss options with team', swatch: '#E8E4DC', img: coralBenchtop2 },
               { name: 'Other / Explore', brand: 'Perrem Design', detail: 'Natural stone or alternative — let\'s explore', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Mirror',
             opts: [
-              { name: 'ADP Arch Mirror 900×1050', brand: 'ADP Australia', detail: 'Arched top profile · polished edge', swatch: '#D0CCBC' },
-              { name: 'Round Backlit Mirror', brand: 'LED Install', detail: 'Round format · LED surround · discuss diameter', swatch: '#C8C4B4' },
+              { name: 'ADP Arch Mirror 900×1050', brand: 'ADP Australia', detail: 'Arched top profile · polished edge', swatch: '#D0CCBC', img: coralMirror1 },
+              { name: 'Round Backlit Mirror', brand: 'LED Install', detail: 'Round format · LED surround · discuss diameter', swatch: '#C8C4B4', img: coralMirror2 },
               { name: 'Custom Shape', brand: 'Custom', detail: 'Any shape — oval, arch, rectangle', swatch: '#C0BCAC' },
             ],
           },
@@ -447,16 +587,16 @@ function Bathroom() {
           {
             title: 'Floor & Wall Tile',
             opts: [
-              { name: 'Beren Light Grey 600×600', brand: 'Ace Stone + Tiles', detail: 'Porcelain · 1/3 stretcher bond', swatch: '#C8C8C0' },
-              { name: 'Beren Warm Greige', brand: 'Ace Stone + Tiles', detail: '600×600mm · warmer tone variant', swatch: '#D0C8B8' },
+              { name: 'Beren Light Grey 600×600', brand: 'Ace Stone + Tiles', detail: 'Porcelain · 1/3 stretcher bond', swatch: '#C8C8C0', img: coralTile1 },
+              { name: 'Beren Warm Greige', brand: 'Ace Stone + Tiles', detail: '600×600mm · warmer tone variant', swatch: '#D0C8B8', img: coralTile2 },
               { name: 'Other / Explore', brand: 'Perrem Design', detail: 'I\'d like to explore further tile options', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Feature Wall',
             opts: [
-              { name: 'Beren Saw 300×900', brand: 'Ace Stone + Tiles', detail: 'Saw-edge texture · matching Light Grey', swatch: '#C0C0B8' },
-              { name: 'VJ100 Easycraft Panelling', brand: 'Easycraft', detail: 'Wet area panelling · painted custom Coral colour', swatch: '#E8C8B8' },
+              { name: 'Beren Saw 300×900', brand: 'Ace Stone + Tiles', detail: 'Saw-edge texture · matching Light Grey', swatch: '#C0C0B8', img: coralFeature1 },
+              { name: 'VJ100 Easycraft Panelling', brand: 'Easycraft', detail: 'Wet area panelling · painted custom Coral colour', swatch: '#E8C8B8', img: coralFeature2 },
               { name: 'No Feature', brand: '—', detail: 'Consistent tile throughout — no feature', swatch: '#C8C8C0' },
             ],
           },
@@ -467,16 +607,16 @@ function Bathroom() {
           {
             title: 'Tapware',
             opts: [
-              { name: 'Elysian Minimal Wall Mixer', brand: 'ABI Interiors', detail: 'Matte White · wall basin mixer · minimal profile', swatch: '#F0EEE8' },
-              { name: 'Milli Minimal Wall Mixer', brand: 'ABI Interiors', detail: 'Matte White · ultra-slim wall mixer', swatch: '#E8E6E0' },
+              { name: 'Elysian Minimal Wall Mixer', brand: 'ABI Interiors', detail: 'Matte White · wall basin mixer · minimal profile', swatch: '#F0EEE8', img: coralTapware1 },
+              { name: 'Milli Minimal Wall Mixer', brand: 'ABI Interiors', detail: 'Matte White · ultra-slim wall mixer', swatch: '#E8E6E0', img: coralTapware2 },
               { name: 'Other / Explore', brand: 'Discuss', detail: 'Alternative tapware — specify finish and brand preference', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Basin',
             opts: [
-              { name: 'Dignity Semi-Inset 420mm', brand: 'ADP Australia', detail: 'Matte White · semi-inset · 420mm dia · Matte White waste', swatch: '#F4F2EC' },
-              { name: 'Celine Round 420mm', brand: 'ABI Interiors', detail: 'Solid surface above counter · Matte White waste · 420mm dia', swatch: '#F0EEE8' },
+              { name: 'Dignity Semi-Inset 420mm', brand: 'ADP Australia', detail: 'Matte White · semi-inset · 420mm dia · Matte White waste', swatch: '#F4F2EC', img: coralBasin1 },
+              { name: 'Celine Round 420mm', brand: 'ABI Interiors', detail: 'Solid surface above counter · Matte White waste · 420mm dia', swatch: '#F0EEE8', img: coralBasin2 },
               { name: 'Other / Custom', brand: 'Discuss', detail: 'Alternative basin — let\'s explore', swatch: '#D8D4CC' },
             ],
           },
@@ -487,9 +627,9 @@ function Bathroom() {
           {
             title: 'Shower Head',
             opts: [
-              { name: 'Dana Round 250mm + Hand', brand: 'ABI Interiors', detail: 'Round 250mm head + Vino hand shower · Matte White', swatch: '#F0EEE8' },
-              { name: 'Phili Arm + Dana Head', brand: 'ABI Interiors', detail: '400mm reach arm + 250mm round head · Matte White', swatch: '#E8E6E0' },
-              { name: 'Rail + Hand Shower', brand: 'ABI Interiors', detail: 'Sliding rail system · Matte White finish', swatch: '#E0DEDC' },
+              { name: 'Dana Round 250mm + Hand', brand: 'ABI Interiors', detail: 'Round 250mm head + Vino hand shower · Matte White', swatch: '#F0EEE8', img: coralShower1 },
+              { name: 'Phili Arm + Dana Head', brand: 'ABI Interiors', detail: '400mm reach arm + 250mm round head · Matte White', swatch: '#E8E6E0', img: coralShower2 },
+              { name: 'Rail + Hand Shower', brand: 'ABI Interiors', detail: 'Sliding rail system · Matte White finish', swatch: '#E0DEDC', img: coralShower3 },
             ],
           },
         ],
@@ -503,25 +643,25 @@ function Bathroom() {
           {
             title: 'Cabinetry',
             opts: [
-              { name: 'Maison Oak Ravine', brand: 'Polytec', detail: 'Square edge finger pull · warm oak tone · 1mm ABS', swatch: '#C0A878' },
-              { name: 'Dark Timber Veneer', brand: 'Polytec', detail: 'Deeper tone for a more dramatic aesthetic', swatch: '#8A7858' },
+              { name: 'Maison Oak Ravine', brand: 'Polytec', detail: 'Square edge finger pull · warm oak tone · 1mm ABS', swatch: '#C0A878', img: fiftyCabinetry1 },
+              { name: 'Dark Timber Veneer', brand: 'Polytec', detail: 'Deeper tone for a more dramatic aesthetic', swatch: '#8A7858', img: fiftyCabinetry2 },
               { name: 'Fully Custom', brand: 'Perrem Design', detail: 'Any profile, finish or species — let\'s discuss', swatch: '#E0DDD4' },
             ],
           },
           {
             title: 'Benchtop',
             opts: [
-              { name: 'Pelle Grigio 20mm', brand: 'Smartstone', detail: 'Pencil round edge · warm grey engineered stone', swatch: '#C8C0B0' },
-              { name: 'Dark Grey Stone 20mm', brand: 'Smartstone', detail: 'Deeper tone — same format and profile', swatch: '#B0A898' },
+              { name: 'Pelle Grigio 20mm', brand: 'Smartstone', detail: 'Pencil round edge · warm grey engineered stone', swatch: '#C8C0B0', img: fiftyBenchtop1 },
+              { name: 'Dark Grey Stone 20mm', brand: 'Smartstone', detail: 'Deeper tone — same format and profile', swatch: '#B0A898', img: fiftyBenchtop2 },
               { name: 'Other / Explore', brand: 'Perrem Design', detail: 'Natural stone or alternative — let\'s explore', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Mirror',
             opts: [
-              { name: 'Custom Polished Edge 900×1100', brand: 'Custom', detail: '150mm corner radius · pencil polished edge', swatch: '#D0CCBC' },
-              { name: 'Backlit Custom Mirror', brand: 'LED Install', detail: 'LED surround · same dimensions as above', swatch: '#C8C4B4' },
-              { name: 'Oval or Arch Shape', brand: 'Custom', detail: 'Alternative shape — let\'s discuss', swatch: '#C0BCAC' },
+              { name: 'Custom Polished Edge 900×1100', brand: 'Custom', detail: '150mm corner radius · pencil polished edge', swatch: '#D0CCBC', img: fiftyMirror1 },
+              { name: 'Backlit Custom Mirror', brand: 'LED Install', detail: 'LED surround · same dimensions as above', swatch: '#C8C4B4', img: fiftyMirror2 },
+              { name: 'Oval or Arch Shape', brand: 'Custom', detail: 'Alternative shape — let\'s discuss', swatch: '#C0BCAC', img: fiftyMirror3 },
             ],
           },
         ],
@@ -531,8 +671,8 @@ function Bathroom() {
           {
             title: 'Floor & Wall Tile',
             opts: [
-              { name: 'Ivory Flow Natural 450×900', brand: 'Ace Stone + Tiles', detail: 'Porcelain · natural finish · 1/3 offset pattern', swatch: '#E0D8C8' },
-              { name: 'Ivory Flow Honed', brand: 'Ace Stone + Tiles', detail: 'Same tile · honed smoother finish', swatch: '#E8E0D0' },
+              { name: 'Ivory Flow Natural 450×900', brand: 'Ace Stone + Tiles', detail: 'Porcelain · natural finish · 1/3 offset pattern', swatch: '#E0D8C8', img: fiftyTile1 },
+              { name: 'Ivory Flow Honed', brand: 'Ace Stone + Tiles', detail: 'Same tile · honed smoother finish', swatch: '#E8E0D0', img: fiftyTile2 },
               { name: 'Other / Explore', brand: 'Perrem Design', detail: 'I\'d like to explore further tile options', swatch: '#D8D4CC' },
             ],
           },
@@ -551,16 +691,16 @@ function Bathroom() {
           {
             title: 'Tapware',
             opts: [
-              { name: 'Poco Knurled Wall Mixer', brand: 'Gareth Ashton / Abey', detail: 'Gun Metal · wall basin mixer · knurled handle', swatch: '#606060' },
-              { name: 'Nixi Wall Mixer & Spout', brand: 'ABI Interiors', detail: 'Gun Metal · wall basin mixer + curved spout', swatch: '#686868' },
+              { name: 'Poco Knurled Wall Mixer', brand: 'Gareth Ashton / Abey', detail: 'Gun Metal · wall basin mixer · knurled handle', swatch: '#606060', img: fiftyTapware1 },
+              { name: 'Nixi Wall Mixer & Spout', brand: 'ABI Interiors', detail: 'Gun Metal · wall basin mixer + curved spout', swatch: '#686868', img: fiftyTapware2 },
               { name: 'Other / Explore', brand: 'Discuss', detail: 'Alternative tapware — specify finish and brand preference', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Basin',
             opts: [
-              { name: 'Kiva Semi-Insert Matt White', brand: 'ABI Interiors', detail: 'Solid surface semi-insert · Matt White finish · 420mm dia', swatch: '#F4F2EC' },
-              { name: 'Celine Round 420mm', brand: 'ABI Interiors', detail: 'Solid surface above counter · 420mm dia · Matte White', swatch: '#F0EEE8' },
+              { name: 'Kiva Semi-Insert Matt White', brand: 'ABI Interiors', detail: 'Solid surface semi-insert · Matt White finish · 420mm dia', swatch: '#F4F2EC', img: fiftyBasin1 },
+              { name: 'Celine Round 420mm', brand: 'ABI Interiors', detail: 'Solid surface above counter · 420mm dia · Matte White', swatch: '#F0EEE8', img: fiftyBasin2 },
               { name: 'Other / Custom', brand: 'Discuss', detail: 'Alternative basin — let\'s explore', swatch: '#D8D4CC' },
             ],
           },
@@ -571,9 +711,9 @@ function Bathroom() {
           {
             title: 'Shower Head',
             opts: [
-              { name: 'Horizontal Overhead 1SHRO', brand: 'Gareth Ashton / Abey', detail: 'Horizontal wall shower · Gun Metal', swatch: '#606060' },
-              { name: 'Overhead + Hand Shower', brand: 'Gareth Ashton / Abey', detail: 'Fixed head + hand shower · Gun Metal', swatch: '#686868' },
-              { name: 'Overhead Only', brand: 'Gareth Ashton / Abey', detail: 'Fixed overhead shower head · Gun Metal', swatch: '#707070' },
+              { name: 'Horizontal Overhead 1SHRO', brand: 'Gareth Ashton / Abey', detail: 'Horizontal wall shower · Gun Metal', swatch: '#606060', img: fiftyShower1 },
+              { name: 'Overhead + Hand Shower', brand: 'Gareth Ashton / Abey', detail: 'Fixed head + hand shower · Gun Metal', swatch: '#686868', img: fiftyShower2 },
+              { name: 'Overhead Only', brand: 'Gareth Ashton / Abey', detail: 'Fixed overhead shower head · Gun Metal', swatch: '#707070', img: fiftyShower3 },
             ],
           },
         ],
@@ -587,25 +727,25 @@ function Bathroom() {
           {
             title: 'Cabinetry',
             opts: [
-              { name: 'Stone Grey Matt', brand: 'Polytec', detail: 'Thermolaminated · 25mm square edge finger pull', swatch: '#909090' },
-              { name: 'Warm Greige Matt', brand: 'Polytec', detail: 'Softer warm tone · same format and profile', swatch: '#A89880' },
+              { name: 'Stone Grey Matt', brand: 'Polytec', detail: 'Thermolaminated · 25mm square edge finger pull', swatch: '#909090', img: resortCabinetry1 },
+              { name: 'Warm Greige Matt', brand: 'Polytec', detail: 'Softer warm tone · same format and profile', swatch: '#A89880', img: resortCabinetry2 },
               { name: 'Fully Custom', brand: 'Perrem Design', detail: 'Custom finish, profile or species — let\'s discuss', swatch: '#E0DDD4' },
             ],
           },
           {
             title: 'Benchtop',
             opts: [
-              { name: 'Portland Grey Brushed Limestone', brand: 'Ace Stone + Tiles', detail: '100mm mitred join · natural stone · premium', swatch: '#B0A898' },
-              { name: 'Pelle Grigio Engineered Stone', brand: 'Smartstone', detail: 'Similar aesthetic · engineered · easier to maintain', swatch: '#C0B8A8' },
+              { name: 'Portland Grey Brushed Limestone', brand: 'Ace Stone + Tiles', detail: '100mm mitred join · natural stone · premium', swatch: '#B0A898', img: resortBenchtop1 },
+              { name: 'Pelle Grigio Engineered Stone', brand: 'Smartstone', detail: 'Similar aesthetic · engineered · easier to maintain', swatch: '#C0B8A8', img: resortBenchtop2 },
               { name: 'Other / Explore', brand: 'Perrem Design', detail: 'Natural or engineered stone — let\'s explore', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Mirror',
             opts: [
-              { name: 'Custom Polished Edge 750×1100', brand: 'Custom', detail: '150mm corner radius · polished edge', swatch: '#D0CCBC' },
-              { name: 'Backlit Custom Mirror', brand: 'LED Install', detail: 'LED surround · same dimensions', swatch: '#C8C4B4' },
-              { name: 'Oval or Pill Shape', brand: 'Custom', detail: 'Alternative shape — let\'s discuss', swatch: '#C0BCAC' },
+              { name: 'Custom Polished Edge 750×1100', brand: 'Custom', detail: '150mm corner radius · polished edge', swatch: '#D0CCBC', img: resortMirror1 },
+              { name: 'Backlit Custom Mirror', brand: 'LED Install', detail: 'LED surround · same dimensions', swatch: '#C8C4B4', img: resortMirror2 },
+              { name: 'Oval or Pill Shape', brand: 'Custom', detail: 'Alternative shape — let\'s discuss', swatch: '#C0BCAC', img: resortMirror3 },
             ],
           },
         ],
@@ -615,8 +755,8 @@ function Bathroom() {
           {
             title: 'Floor & Wall Tile',
             opts: [
-              { name: 'Nextone Gray Natural 600×1200', brand: 'Ace Stone + Tiles', detail: 'Natural finish · 1/3 stretcher bond', swatch: '#B8B0A4' },
-              { name: 'Nextone Warm Grey', brand: 'Ace Stone + Tiles', detail: 'Warmer tone variant · same format', swatch: '#C0B8AC' },
+              { name: 'Nextone Gray Natural 600×1200', brand: 'Ace Stone + Tiles', detail: 'Natural finish · 1/3 stretcher bond', swatch: '#B8B0A4', img: resortTile1 },
+              { name: 'Nextone Warm Grey', brand: 'Ace Stone + Tiles', detail: 'Warmer tone variant · same format', swatch: '#C0B8AC', img: resortTile2 },
               { name: 'Other / Explore', brand: 'Perrem Design', detail: 'I\'d like to explore further tile options', swatch: '#D8D4CC' },
             ],
           },
@@ -624,7 +764,7 @@ function Bathroom() {
             title: 'Feature Wall',
             opts: [
               { name: 'No Feature', brand: '—', detail: 'Consistent tile throughout', swatch: '#B8B0A4' },
-              { name: 'Contrast Stone Tile', brand: 'Ace Stone', detail: 'Natural stone feature wall — discuss options', swatch: '#A8A098' },
+              { name: 'Contrast Stone Tile', brand: 'Ace Stone', detail: 'Natural stone feature wall — discuss options', swatch: '#A8A098', img: resortFeature1 },
               { name: 'Other / Custom', brand: 'Perrem Design', detail: 'Custom feature wall finish', swatch: '#D8D4CC' },
             ],
           },
@@ -635,16 +775,16 @@ function Bathroom() {
           {
             title: 'Tapware',
             opts: [
-              { name: 'Round Curved Spout & Wall Mixer', brand: 'Meir Australia', detail: 'Champagne · wall basin mixer + curved spout', swatch: '#D4B880' },
-              { name: 'Poco Knurled Wall Mixer', brand: 'Gareth Ashton / Abey', detail: 'Champagne · wall basin mixer · knurled handle', swatch: '#C8A870' },
+              { name: 'Round Curved Spout & Wall Mixer', brand: 'Meir Australia', detail: 'Champagne · wall basin mixer + curved spout', swatch: '#D4B880', img: resortTapware1 },
+              { name: 'Poco Knurled Wall Mixer', brand: 'Gareth Ashton / Abey', detail: 'Champagne · wall basin mixer · knurled handle', swatch: '#C8A870', img: resortTapware2 },
               { name: 'Other / Explore', brand: 'Discuss', detail: 'Alternative tapware — specify finish and brand preference', swatch: '#D8D4CC' },
             ],
           },
           {
             title: 'Basin',
             opts: [
-              { name: 'Glory Matte White 545×355mm', brand: 'ADP Australia', detail: 'Solid surface above counter · 545×355mm · Champagne waste', swatch: '#F4F2EC' },
-              { name: 'Dignity Semi-Inset 420mm', brand: 'ADP Australia', detail: 'Matte White semi-inset · lower profile · 420mm dia', swatch: '#ECEAE4' },
+              { name: 'Glory Matte White 545×355mm', brand: 'ADP Australia', detail: 'Solid surface above counter · 545×355mm · Champagne waste', swatch: '#F4F2EC', img: resortBasin1 },
+              { name: 'Dignity Semi-Inset 420mm', brand: 'ADP Australia', detail: 'Matte White semi-inset · lower profile · 420mm dia', swatch: '#ECEAE4', img: resortBasin2 },
               { name: 'Other / Custom', brand: 'Discuss', detail: 'Alternative basin — let\'s explore', swatch: '#D8D4CC' },
             ],
           },
@@ -655,9 +795,9 @@ function Bathroom() {
           {
             title: 'Shower Head',
             opts: [
-              { name: 'Round Wall Shower 200mm', brand: 'Meir Australia', detail: '200mm rose · 400mm curved arm · Champagne', swatch: '#D4B880' },
-              { name: 'Overhead + Diverter + Hand', brand: 'Meir Australia', detail: 'Full system · diverter mixer + hand shower · Champagne', swatch: '#C8A860' },
-              { name: 'Overhead Only', brand: 'Meir Australia', detail: 'Fixed overhead head · Champagne finish', swatch: '#C0A058' },
+              { name: 'Round Wall Shower 200mm', brand: 'Meir Australia', detail: '200mm rose · 400mm curved arm · Champagne', swatch: '#D4B880', img: resortShower1 },
+              { name: 'Overhead + Diverter + Hand', brand: 'Meir Australia', detail: 'Full system · diverter mixer + hand shower · Champagne', swatch: '#C8A860', img: resortShower2 },
+              { name: 'Overhead Only', brand: 'Meir Australia', detail: 'Fixed overhead head · Champagne finish', swatch: '#C0A058', img: resortShower3 },
             ],
           },
         ],
@@ -779,7 +919,17 @@ function Bathroom() {
                     className={`mat-card ${isSelected ? 'selected' : ''}`}
                     onClick={() => selectMat(storeKey, sec.title, opt.name)}
                   >
-                    <div className="mat-swatch" style={{ background: opt.swatch }}></div>
+                    {opt.img ? (
+                      <div className="mat-swatch mat-swatch--img">
+                        <img
+                          src={opt.img}
+                          alt={opt.name}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', borderRadius: 'inherit' }}
+                        />
+                      </div>
+                    ) : (
+                      <div className="mat-swatch" style={{ background: opt.swatch }}></div>
+                    )}
                     <div className="mat-brand">{opt.brand}</div>
                     <div className="mat-name">{opt.name}</div>
                     <div className="mat-detail">{opt.detail}</div>
@@ -1162,7 +1312,6 @@ function Bathroom() {
         );
 
       case 3:
-        // ── ONLY CHANGE: styleOptions now includes real image URLs ──
         const styleOptions = [
           {
             key: 'scandi',
