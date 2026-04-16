@@ -3,7 +3,7 @@ import './Bathroom.css';
 
 // ── Image imports ─────────────────────────────────────────────────────────────
 // Scandi
-import scandiCabinetry1 from '../assets/bathroom images/Scandi/Step 4 - Vanity/Polytec Angora Oak Woodmatt.jpg';
+import scandiCabinetry1 from '../assets/bathroom images/Scandi/Step 4 - Vanity/polytec angora oak woodmatt.jpg';
 import scandiCabinetry2 from '../assets/bathroom images/Scandi/Step 4 - Vanity/polytec white melamine.jpg';
 import scandiBenchtop1 from '../assets/bathroom images/Scandi/Step 4 - Vanity/WK Quantum Quartz Alpine Matte.jpg';
 import scandiBenchtop2 from '../assets/bathroom images/Scandi/Step 4 - Vanity/WK Quantum Quartz Alpine White.jpg';
