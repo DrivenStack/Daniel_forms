@@ -131,6 +131,15 @@ import resortShower1 from '../assets/bathroom images/Resort/Step 7 - Shower/Meir
 import resortShower2 from '../assets/bathroom images/Resort/Step 7 - Shower/Meir Australia Overhead + Diverter + Hand.png';
 import resortShower3 from '../assets/bathroom images/Resort/Step 7 - Shower/Meir Australia Overhead Only.png';
 
+// ─── Style hero images ────────────────────────────────────────────────────────
+import styleImgScandi from '../assets/bathroom images/Scandi/Step 4 - Vanity/polytec angora oak woodmatt.jpg';
+import styleImgHamptons from '../assets/bathroom images/Hamptons/Step 5 - Tiling/Tile & Stone Gallery Carrara Bianco Matt.png';
+import styleImgClassicCoastal from '../assets/bathroom images/Classic coastal/Step 4 - Vanity/Polytec Natural Oak Ravine.jpg';
+import styleImgContemCoastal from '../assets/bathroom images/Contemporary Coastal/Step 5 - Tiling/Ace Stone + Tiles Pietre 41 Scrambled Griege.jpg';
+import styleImgCoralHouse from '../assets/bathroom images/Coral house/Step 4 - Vanity/ADP Australia Clifton Prime Oak Woodmatt.jpeg';
+import styleImgFiftyShades from '../assets/bathroom images/Fifty shades/Step 4 - Vanity/Polytec Maison Oak Ravine.png';
+import styleImgResort from '../assets/bathroom images/Resort/Step 4 -Vanity/Polytec Stone Grey Matt.jpg';
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 function Bathroom() {
@@ -805,6 +814,59 @@ function Bathroom() {
     },
   };
 
+  // ── Style card definitions (Step 3) — now uses local hero images ──────────
+  const styleOptions = [
+    {
+      key: 'scandi',
+      name: 'Scandi',
+      desc: 'Calm and minimal. Warm oak, matte black and soft stone.',
+      colors: ['#9EA89E', '#C8C5BC', '#2A2A2A', '#E8E6E0'],
+      img: styleImgScandi,
+    },
+    {
+      key: 'hamptons',
+      name: 'Hamptons',
+      desc: 'Timeless and refined. Carrara tile, brushed brass, shaker profile.',
+      colors: ['#F4F0E8', '#E0D5C0', '#B8936A', '#FFF'],
+      img: styleImgHamptons,
+    },
+    {
+      key: 'classic-coastal',
+      name: 'Classic Coastal',
+      desc: 'Relaxed and organic. Oak Ravine, brushed brass, greige tile.',
+      colors: ['#C8D4C0', '#E8EDE6', '#B8936A', '#D6CFBF'],
+      img: styleImgClassicCoastal,
+    },
+    {
+      key: 'contemporary-coastal',
+      name: 'Contemporary Coastal',
+      desc: 'Modern and fresh. Chevron tile, brushed nickel, white profile.',
+      colors: ['#7AAAB8', '#B8CFD8', '#E6EDF0', '#FFF'],
+      img: styleImgContemCoastal,
+    },
+    {
+      key: 'coral-house',
+      name: 'Coral House',
+      desc: 'Warm and earthy. Matte white, timber V-groove, terracotta accent.',
+      colors: ['#C09080', '#D8C0B0', '#F0EAE4', '#FFF'],
+      img: styleImgCoralHouse,
+    },
+    {
+      key: 'fifty-shades',
+      name: 'Fifty Shades',
+      desc: 'Sophisticated and moody. Ivory tile, gun metal, warm oak.',
+      colors: ['#2A2520', '#6A6058', '#C8B89A', '#F0EDE6'],
+      img: styleImgFiftyShades,
+    },
+    {
+      key: 'resort',
+      name: 'Resort',
+      desc: 'Refined and luxurious. Limestone, champagne tapware, grey stone.',
+      colors: ['#A89890', '#C8C0B4', '#E4E0DC', '#B8936A'],
+      img: styleImgResort,
+    },
+  ];
+
   const steps = [
     { label: 'You', num: 1 },
     { label: 'Space', num: 2 },
@@ -897,10 +959,7 @@ function Bathroom() {
     updateSectionSelection(section, title, value);
   };
 
-  const isCustomOpt = (name) => {
-    return /other|custom|explore/i.test(name);
-  };
-
+  // ── Fixed renderOptionGrid — uses contain for full image display ───────────
   const renderOptionGrid = (section, storeKey) => {
     if (!style || !STYLES[style] || !STYLES[style][section]) return null;
     const data = STYLES[style][section];
@@ -912,38 +971,34 @@ function Bathroom() {
             <div className="mat-opts">
               {sec.opts.map((opt, optIdx) => {
                 const isSelected = selections[storeKey]?.[sec.title] === opt.name;
-                const isCustom = isCustomOpt(opt.name);
                 return (
                   <div
                     key={optIdx}
                     className={`mat-card ${isSelected ? 'selected' : ''}`}
                     onClick={() => selectMat(storeKey, sec.title, opt.name)}
                   >
-                    {opt.img ? (
-                      <div className="mat-swatch mat-swatch--img">
+                    {/* Image area — fixed height, object-fit: contain so all images show fully */}
+                    <div className="mat-img-wrap">
+                      {opt.img ? (
                         <img
                           src={opt.img}
                           alt={opt.name}
-                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', borderRadius: 'inherit' }}
+                          className="mat-img"
+                          loading="lazy"
                         />
-                      </div>
-                    ) : (
-                      <div className="mat-swatch" style={{ background: opt.swatch }}></div>
-                    )}
-                    <div className="mat-brand">{opt.brand}</div>
-                    <div className="mat-name">{opt.name}</div>
-                    <div className="mat-detail">{opt.detail}</div>
-                    {opt.link && (
-                      <a
-                        className="mat-link"
-                        href={opt.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        View Product →
-                      </a>
-                    )}
+                      ) : (
+                        <div
+                          className="mat-swatch-fallback"
+                          style={{ background: opt.swatch }}
+                        />
+                      )}
+                    </div>
+                    <div className="mat-card-body">
+                      <div className="mat-brand">{opt.brand}</div>
+                      <div className="mat-name">{opt.name}</div>
+                      <div className="mat-detail">{opt.detail}</div>
+                    </div>
+                    {isSelected && <div className="mat-check">✓</div>}
                   </div>
                 );
               })}
@@ -1067,14 +1122,10 @@ function Bathroom() {
   };
 
   const goToStep = (step) => {
-    if (step >= 4 && step <= 7 && !style) {
-      return;
-    }
+    if (step >= 4 && step <= 7 && !style) return;
     setCurrentStep(step);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (step === 9) {
-      buildSummary();
-    }
+    if (step === 9) buildSummary();
   };
 
   const submitForm = () => {
@@ -1086,31 +1137,50 @@ function Bathroom() {
   const startOver = () => {
     setStyle(null);
     setVariant(null);
-    setSelections({
-      s4sel: {},
-      s5sel: {},
-      s6sel: {},
-      s7sel: {},
-      groutColour: null,
-      tapFinish: null,
-      hwFinish: null,
-    });
+    setSelections({ s4sel: {}, s5sel: {}, s6sel: {}, s7sel: {}, groutColour: null, tapFinish: null, hwFinish: null });
     setIsSubmitted(false);
     setCurrentStep(1);
     const inputs = document.querySelectorAll('input, select, textarea');
     inputs.forEach(input => {
-      if (input.type === 'text' || input.type === 'email' || input.type === 'tel' || input.type === 'number') {
-        input.value = '';
-      } else if (input.tagName === 'SELECT') {
-        input.value = '0';
-      } else if (input.tagName === 'TEXTAREA') {
-        input.value = '';
-      }
+      if (['text','email','tel','number'].includes(input.type)) input.value = '';
+      else if (input.tagName === 'SELECT') input.value = '0';
+      else if (input.tagName === 'TEXTAREA') input.value = '';
     });
-    const pills = document.querySelectorAll('.pill.selected, .yn.selected, .style-card.selected, .mat-card.selected, .swatch-card.selected');
-    pills.forEach(pill => pill.classList.remove('selected'));
+    document.querySelectorAll('.pill.selected, .yn.selected').forEach(el => el.classList.remove('selected'));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const SummaryGrid = ({ data }) => (
+    <div className="sum-grid">
+      <div className="sum-block"><div className="sb-lbl">Client</div><div className="sb-val">{data.fname} {data.lname}</div></div>
+      <div className="sum-block"><div className="sb-lbl">Contact</div><div className="sb-val">{data.email || '—'}<br />{data.phone || '—'}</div></div>
+      <div className="sum-block"><div className="sb-lbl">Project Type</div><div className="sb-val">{data.projectType || '—'}</div></div>
+      <div className="sum-block"><div className="sb-lbl">Budget</div><div className="sb-val">{data.budget || '—'}</div></div>
+      <div className="sum-block full"><div className="sb-lbl">Selected Style</div><div className="sb-val big">{data.styleName}</div></div>
+      <div className="sum-block"><div className="sb-lbl">Rooms</div><div className="sb-val">{data.rooms}</div></div>
+      <div className="sum-block"><div className="sb-lbl">Dimensions</div><div className="sb-val">{data.dims}</div></div>
+      <div className="sum-block"><div className="sb-lbl">Floor Plans</div><div className="sb-val">{data.plans}</div></div>
+      <div className="sum-block"><div className="sb-lbl">Vanity Mount</div><div className="sb-val">{data.vanityMount}</div></div>
+      <div className="sum-block"><div className="sb-lbl">Shower Screen</div><div className="sb-val">{data.glass}</div></div>
+      <div className="sum-block"><div className="sb-lbl">Tapware Finish</div><div className="sb-val">{data.tapFinish}</div></div>
+      <div className="sum-block"><div className="sb-lbl">Grout Colour</div><div className="sb-val">{data.grout}</div></div>
+      <div className="sum-block"><div className="sb-lbl">Hardware Finish</div><div className="sb-val">{data.hwFinish}</div></div>
+      <div className="sum-block full"><div className="sb-lbl">Features</div><div className="sb-val" style={{ fontSize: '12px' }}>
+        Bath: {data.bath} · Bath Mixer: {data.bathMixer}<br />
+        Toilet: {data.toilet} · Skylight: {data.skylight}<br />
+        HTR: {data.htr} · UFH: {data.ufh} · Powerpoints: {data.pp}
+      </div></div>
+      <div className="sum-block full"><div className="sb-lbl">Shower</div><div className="sb-val" style={{ fontSize: '12px' }}>
+        Niche: {data.niche} · Nib Wall: {data.nib}<br />
+        Seat: {data.seat} · Glass: {data.glass}
+      </div></div>
+      <div className="sum-block full"><div className="sb-lbl">Lighting</div><div className="sb-val" style={{ fontSize: '12px' }}>
+        Wall: {data.wallLights} · Backlit: {data.backlitMirror}<br />
+        LED Niche: {data.ledNiche} · LED Vanity: {data.ledVan}
+      </div></div>
+      {data.notes && <div className="sum-block full"><div className="sb-lbl">Notes</div><div className="sb-val" style={{ fontSize: '13px' }}>{data.notes}</div></div>}
+    </div>
+  );
 
   const renderStepContent = () => {
     if (isSubmitted && currentStep === 9) {
@@ -1119,49 +1189,13 @@ function Bathroom() {
           <div className="sum-hdr">
             <div>
               <div className="sum-eyebrow">Brief Complete</div>
-              <div className="sum-title" id="sum-title">
-                {summaryData?.fname ? `${summaryData.fname}'s design brief is ready.` : 'Your design brief is ready.'}
-              </div>
+              <div className="sum-title">{summaryData?.fname ? `${summaryData.fname}'s design brief is ready.` : 'Your design brief is ready.'}</div>
               <div className="sum-sub">The Perrem team will review and be in touch shortly.</div>
             </div>
             <div className="sum-tick">✓</div>
           </div>
-          {summaryData && (
-            <div className="sum-grid">
-              <div className="sum-block"><div className="sb-lbl">Client</div><div className="sb-val">{summaryData.fname} {summaryData.lname}</div></div>
-              <div className="sum-block"><div className="sb-lbl">Contact</div><div className="sb-val">{summaryData.email || '—'}<br />{summaryData.phone || '—'}</div></div>
-              <div className="sum-block"><div className="sb-lbl">Project Type</div><div className="sb-val">{summaryData.projectType || '—'}</div></div>
-              <div className="sum-block"><div className="sb-lbl">Budget</div><div className="sb-val">{summaryData.budget || '—'}</div></div>
-              <div className="sum-block full"><div className="sb-lbl">Selected Style</div><div className="sb-val big">{summaryData.styleName}</div></div>
-              <div className="sum-block"><div className="sb-lbl">Rooms</div><div className="sb-val">{summaryData.rooms}</div></div>
-              <div className="sum-block"><div className="sb-lbl">Dimensions</div><div className="sb-val">{summaryData.dims}</div></div>
-              <div className="sum-block"><div className="sb-lbl">Floor Plans</div><div className="sb-val">{summaryData.plans}</div></div>
-              <div className="sum-block"><div className="sb-lbl">Vanity Mount</div><div className="sb-val">{summaryData.vanityMount}</div></div>
-              <div className="sum-block"><div className="sb-lbl">Shower Screen</div><div className="sb-val">{summaryData.glass}</div></div>
-              <div className="sum-block"><div className="sb-lbl">Tapware Finish</div><div className="sb-val">{summaryData.tapFinish}</div></div>
-              <div className="sum-block"><div className="sb-lbl">Grout Colour</div><div className="sb-val">{summaryData.grout}</div></div>
-              <div className="sum-block"><div className="sb-lbl">Hardware Finish</div><div className="sb-val">{summaryData.hwFinish}</div></div>
-              <div className="sum-block full"><div className="sb-lbl">Features</div><div className="sb-val" style={{ fontSize: '12px' }}>
-                Bath: {summaryData.bath} · Bath Mixer: {summaryData.bathMixer}<br />
-                Toilet: {summaryData.toilet} · Skylight: {summaryData.skylight}<br />
-                HTR: {summaryData.htr} · UFH: {summaryData.ufh} · Powerpoints: {summaryData.pp}
-              </div></div>
-              <div className="sum-block full"><div className="sb-lbl">Shower</div><div className="sb-val" style={{ fontSize: '12px' }}>
-                Niche: {summaryData.niche} · Nib Wall: {summaryData.nib}<br />
-                Seat: {summaryData.seat} · Glass: {summaryData.glass}
-              </div></div>
-              <div className="sum-block full"><div className="sb-lbl">Lighting</div><div className="sb-val" style={{ fontSize: '12px' }}>
-                Wall: {summaryData.wallLights} · Backlit: {summaryData.backlitMirror}<br />
-                LED Niche: {summaryData.ledNiche} · LED Vanity: {summaryData.ledVan}
-              </div></div>
-              {summaryData.notes && (
-                <div className="sum-block full"><div className="sb-lbl">Notes</div><div className="sb-val" style={{ fontSize: '13px' }}>{summaryData.notes}</div></div>
-              )}
-            </div>
-          )}
-          <div className="email-note">
-            A copy of this brief has been sent to the email address you provided.
-          </div>
+          {summaryData && <SummaryGrid data={summaryData} />}
+          <div className="email-note">A copy of this brief has been sent to the email address you provided.</div>
           <div className="nav-bar" style={{ border: 'none', marginTop: '18px' }}>
             <button className="btn btn-secondary" onClick={startOver}>← Start New Brief</button>
             <button className="btn btn-cyan" onClick={() => window.print()}>Print / Save PDF</button>
@@ -1222,7 +1256,7 @@ function Bathroom() {
             <div className="step-eyebrow">Step 02 — The Space</div>
             <div className="step-title">About the bathroom</div>
             <div className="cyan-bar"></div>
-            <p className="step-sub">Help us understand the space we're designing. Tell us how many of each room type your project includes.</p>
+            <p className="step-sub">Help us understand the space we're designing.</p>
             <div className="sc">
               <div className="sc-label">Rooms in This Project</div>
               <table className="room-table">
@@ -1236,7 +1270,6 @@ function Bathroom() {
             </div>
             <div className="sc">
               <div className="sc-label">Dimensions</div>
-              <p className="field-note" style={{ marginBottom: '14px' }}>If we already have floor plans for this project, exact dimensions aren't required here — we'll pull these from the architectural drawings. Enter approximate figures if available.</p>
               <div className="fg three">
                 <div className="field"><label>Width (mm)</label><input type="number" id="bath-w" placeholder="e.g. 2400" /></div>
                 <div className="field"><label>Length (mm)</label><input type="number" id="bath-l" placeholder="e.g. 3200" /></div>
@@ -1263,7 +1296,6 @@ function Bathroom() {
                     <div className="pill" onClick={() => selectPill('Wall Mounted', 'bath-mixer-grp')}>Wall Mounted</div>
                     <div className="pill" onClick={() => selectPill('N/A — No Bath', 'bath-mixer-grp')}>N/A — No Bath</div>
                   </div>
-                  <div className="field-note">Floor mounted suits freestanding baths set away from walls. Wall mounted suits baths positioned against a wall.</div>
                 </div>
                 <div className="field"><label>Separate Toilet?</label>
                   <div className="yn-group yn-toilet"><div className="yn" onClick={() => selectYN('Yes', 'yn-toilet')}>Yes</div><div className="yn" onClick={() => selectYN('No', 'yn-toilet')}>No</div></div>
@@ -1312,71 +1344,26 @@ function Bathroom() {
         );
 
       case 3:
-        const styleOptions = [
-          {
-            key: 'scandi',
-            name: 'Scandi',
-            desc: 'Calm and minimal. Warm oak, matte black and soft stone.',
-            colors: ['#9EA89E', '#C8C5BC', '#2A2A2A', '#E8E6E0'],
-            img: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&q=80',
-          },
-          {
-            key: 'hamptons',
-            name: 'Hamptons',
-            desc: 'Timeless and refined. Carrara tile, brushed brass, shaker profile.',
-            colors: ['#F4F0E8', '#E0D5C0', '#B8936A', '#FFF'],
-            img: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=600&q=80',
-          },
-          {
-            key: 'classic-coastal',
-            name: 'Classic Coastal',
-            desc: 'Relaxed and organic. Oak Ravine, brushed brass, greige tile.',
-            colors: ['#C8D4C0', '#E8EDE6', '#B8936A', '#D6CFBF'],
-            img: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=400&q=80',
-          },
-          {
-            key: 'contemporary-coastal',
-            name: 'Contemporary Coastal',
-            desc: 'Modern and fresh. Chevron tile, brushed nickel, white profile.',
-            colors: ['#7AAAB8', '#B8CFD8', '#E6EDF0', '#FFF'],
-            img: 'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=600&q=80',
-          },
-          {
-            key: 'coral-house',
-            name: 'Coral House',
-            desc: 'Warm and earthy. Matte white, timber V-groove, terracotta accent.',
-            colors: ['#C09080', '#D8C0B0', '#F0EAE4', '#FFF'],
-            img: 'https://images.unsplash.com/photo-1584622781564-1d987f7333c1?w=600&q=80',
-          },
-          {
-            key: 'fifty-shades',
-            name: 'Fifty Shades',
-            desc: 'Sophisticated and moody. Ivory tile, gun metal, warm oak.',
-            colors: ['#2A2520', '#6A6058', '#C8B89A', '#F0EDE6'],
-            img: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=600&q=80',
-          },
-          {
-            key: 'resort',
-            name: 'Resort',
-            desc: 'Refined and luxurious. Limestone, champagne tapware, grey stone.',
-            colors: ['#A89890', '#C8C0B4', '#E4E0DC', '#B8936A'],
-            img: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600&q=80',
-          },
-        ];
         return (
           <div className="step active">
             <div className="step-eyebrow">Step 03 — Design Direction</div>
             <div className="step-title">Choose your style</div>
             <div className="cyan-bar"></div>
-            <p className="step-sub">Select the aesthetic that best reflects how you want your bathroom to feel. Your choice shapes every selection that follows.</p>
+            <p className="step-sub">Select the aesthetic that best reflects how you want your bathroom to feel.</p>
             <div className="style-grid">
               {styleOptions.map(opt => (
-                <div key={opt.key} className={`style-card ${style === opt.key ? 'selected' : ''}`} onClick={() => selectStyle(opt.key)}>
-                  <div className="style-swatch">
+                <div
+                  key={opt.key}
+                  className={`style-card ${style === opt.key ? 'selected' : ''}`}
+                  onClick={() => selectStyle(opt.key)}
+                >
+                  {/* ── Style card image: fixed aspect ratio, object-fit contain ── */}
+                  <div className="style-img-wrap">
                     <img
                       src={opt.img}
-                      alt={`${opt.name} bathroom style`}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                      alt={opt.name}
+                      className="style-img"
+                      loading="lazy"
                     />
                   </div>
                   <div className="style-card-body">
@@ -1386,6 +1373,7 @@ function Bathroom() {
                       {opt.colors.map((c, i) => <div key={i} className="cs" style={{ background: c }}></div>)}
                     </div>
                   </div>
+                  {style === opt.key && <div className="style-check">✓</div>}
                 </div>
               ))}
             </div>
@@ -1411,25 +1399,18 @@ function Bathroom() {
         );
 
       case 4:
-        if (!style) {
-          return (
-            <div className="step active">
-              <div className="no-style-msg">
-                <span>⬅</span> Please go back to Step 3 and choose a design style first — your selections here will be tailored to that choice.
-              </div>
-              <div className="nav-bar">
-                <button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button>
-              </div>
-            </div>
-          );
-        }
-        const styleName = STYLES[style].name;
+        if (!style) return (
+          <div className="step active">
+            <div className="no-style-msg"><span>⬅</span> Please go back to Step 3 and choose a design style first.</div>
+            <div className="nav-bar"><button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button></div>
+          </div>
+        );
         return (
           <div className="step active">
             <div className="step-eyebrow">Step 04 — Vanity</div>
             <div className="step-title">Vanity, benchtop &amp; mirror</div>
             <div className="cyan-bar"></div>
-            <p className="step-sub" id="s4-sub">{styleName} — exact products and suppliers shown for each option.</p>
+            <p className="step-sub">{STYLES[style].name} — exact products and suppliers shown for each option.</p>
             <div className="sc" style={{ marginBottom: '14px' }}>
               <div className="sc-label">Vanity Configuration</div>
               <div className="fg">
@@ -1460,28 +1441,22 @@ function Bathroom() {
         );
 
       case 5:
-        if (!style) {
-          return (
-            <div className="step active">
-              <div className="no-style-msg">
-                <span>⬅</span> Please go back to Step 3 and choose a design style first.
-              </div>
-              <div className="nav-bar">
-                <button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button>
-              </div>
-            </div>
-          );
-        }
+        if (!style) return (
+          <div className="step active">
+            <div className="no-style-msg"><span>⬅</span> Please go back to Step 3 and choose a design style first.</div>
+            <div className="nav-bar"><button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button></div>
+          </div>
+        );
         return (
           <div className="step active">
             <div className="step-eyebrow">Step 05 — Tiling</div>
             <div className="step-title">Tiles &amp; surfaces</div>
             <div className="cyan-bar"></div>
-            <p className="step-sub" id="s5-sub">{STYLES[style].name} — select your tile and grout direction.</p>
+            <p className="step-sub">{STYLES[style].name} — select your tile and grout direction.</p>
             {renderOptionGrid('s5', 's5sel')}
             <div className="sc">
               <div className="sc-label">Grout Colour — Ardex Range</div>
-              <p className="field-note" style={{ marginBottom: '12px' }}>Select from the full Ardex FG8 grout range. Our recommendation for your selected style is highlighted.</p>
+              <p className="field-note" style={{ marginBottom: '12px' }}>Our recommendation for your selected style is highlighted.</p>
               {renderGroutSwatches()}
             </div>
             <div className="nav-bar">
@@ -1493,27 +1468,21 @@ function Bathroom() {
         );
 
       case 6:
-        if (!style) {
-          return (
-            <div className="step active">
-              <div className="no-style-msg">
-                <span>⬅</span> Please go back to Step 3 and choose a design style first.
-              </div>
-              <div className="nav-bar">
-                <button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button>
-              </div>
-            </div>
-          );
-        }
+        if (!style) return (
+          <div className="step active">
+            <div className="no-style-msg"><span>⬅</span> Please go back to Step 3 and choose a design style first.</div>
+            <div className="nav-bar"><button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button></div>
+          </div>
+        );
         return (
           <div className="step active">
             <div className="step-eyebrow">Step 06 — Tapware &amp; Basin</div>
             <div className="step-title">Tapware &amp; basin</div>
             <div className="cyan-bar"></div>
-            <p className="step-sub" id="s6-sub">{STYLES[style].name} — select your tapware and basin.</p>
+            <p className="step-sub">{STYLES[style].name} — select your tapware and basin.</p>
             <div className="sc" style={{ marginBottom: '14px' }}>
               <div className="sc-label">Tapware Finish</div>
-              <p className="field-note" style={{ marginBottom: '12px' }}>Our recommendation for your style is highlighted. You're free to choose any finish.</p>
+              <p className="field-note" style={{ marginBottom: '12px' }}>Our recommendation for your style is highlighted.</p>
               {renderTapSwatches()}
             </div>
             {renderOptionGrid('s6', 's6sel')}
@@ -1526,24 +1495,18 @@ function Bathroom() {
         );
 
       case 7:
-        if (!style) {
-          return (
-            <div className="step active">
-              <div className="no-style-msg">
-                <span>⬅</span> Please go back to Step 3 and choose a design style first.
-              </div>
-              <div className="nav-bar">
-                <button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button>
-              </div>
-            </div>
-          );
-        }
+        if (!style) return (
+          <div className="step active">
+            <div className="no-style-msg"><span>⬅</span> Please go back to Step 3 and choose a design style first.</div>
+            <div className="nav-bar"><button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button></div>
+          </div>
+        );
         return (
           <div className="step active">
             <div className="step-eyebrow">Step 07 — Shower</div>
             <div className="step-title">Shower setup</div>
             <div className="cyan-bar"></div>
-            <p className="step-sub" id="s7-sub">{STYLES[style].name} — select your shower head configuration.</p>
+            <p className="step-sub">{STYLES[style].name} — select your shower head configuration.</p>
             {renderOptionGrid('s7', 's7sel')}
             <div className="nav-bar">
               <button className="btn btn-secondary" onClick={() => goToStep(6)}>← Back</button>
@@ -1608,42 +1571,8 @@ function Bathroom() {
               </div>
               <div className="sum-tick">✓</div>
             </div>
-            {summaryData && (
-              <div className="sum-grid">
-                <div className="sum-block"><div className="sb-lbl">Client</div><div className="sb-val">{summaryData.fname} {summaryData.lname}</div></div>
-                <div className="sum-block"><div className="sb-lbl">Contact</div><div className="sb-val">{summaryData.email || '—'}<br />{summaryData.phone || '—'}</div></div>
-                <div className="sum-block"><div className="sb-lbl">Project Type</div><div className="sb-val">{summaryData.projectType || '—'}</div></div>
-                <div className="sum-block"><div className="sb-lbl">Budget</div><div className="sb-val">{summaryData.budget || '—'}</div></div>
-                <div className="sum-block full"><div className="sb-lbl">Selected Style</div><div className="sb-val big">{summaryData.styleName}</div></div>
-                <div className="sum-block"><div className="sb-lbl">Rooms</div><div className="sb-val">{summaryData.rooms}</div></div>
-                <div className="sum-block"><div className="sb-lbl">Dimensions</div><div className="sb-val">{summaryData.dims}</div></div>
-                <div className="sum-block"><div className="sb-lbl">Floor Plans</div><div className="sb-val">{summaryData.plans}</div></div>
-                <div className="sum-block"><div className="sb-lbl">Vanity Mount</div><div className="sb-val">{summaryData.vanityMount}</div></div>
-                <div className="sum-block"><div className="sb-lbl">Shower Screen</div><div className="sb-val">{summaryData.glass}</div></div>
-                <div className="sum-block"><div className="sb-lbl">Tapware Finish</div><div className="sb-val">{summaryData.tapFinish}</div></div>
-                <div className="sum-block"><div className="sb-lbl">Grout Colour</div><div className="sb-val">{summaryData.grout}</div></div>
-                <div className="sum-block"><div className="sb-lbl">Hardware Finish</div><div className="sb-val">{summaryData.hwFinish}</div></div>
-                <div className="sum-block full"><div className="sb-lbl">Features</div><div className="sb-val" style={{ fontSize: '12px' }}>
-                  Bath: {summaryData.bath} · Bath Mixer: {summaryData.bathMixer}<br />
-                  Toilet: {summaryData.toilet} · Skylight: {summaryData.skylight}<br />
-                  HTR: {summaryData.htr} · UFH: {summaryData.ufh} · Powerpoints: {summaryData.pp}
-                </div></div>
-                <div className="sum-block full"><div className="sb-lbl">Shower</div><div className="sb-val" style={{ fontSize: '12px' }}>
-                  Niche: {summaryData.niche} · Nib Wall: {summaryData.nib}<br />
-                  Seat: {summaryData.seat} · Glass: {summaryData.glass}
-                </div></div>
-                <div className="sum-block full"><div className="sb-lbl">Lighting</div><div className="sb-val" style={{ fontSize: '12px' }}>
-                  Wall: {summaryData.wallLights} · Backlit: {summaryData.backlitMirror}<br />
-                  LED Niche: {summaryData.ledNiche} · LED Vanity: {summaryData.ledVan}
-                </div></div>
-                {summaryData.notes && (
-                  <div className="sum-block full"><div className="sb-lbl">Notes</div><div className="sb-val" style={{ fontSize: '13px' }}>{summaryData.notes}</div></div>
-                )}
-              </div>
-            )}
-            <div className="email-note">
-              A copy of this brief has been sent to the email address you provided.
-            </div>
+            {summaryData && <SummaryGrid data={summaryData} />}
+            <div className="email-note">A copy of this brief has been sent to the email address you provided.</div>
             <div className="nav-bar" style={{ border: 'none', marginTop: '18px' }}>
               <button className="btn btn-secondary" onClick={startOver}>← Start New Brief</button>
               <button className="btn btn-cyan" onClick={() => window.print()}>Print / Save PDF</button>

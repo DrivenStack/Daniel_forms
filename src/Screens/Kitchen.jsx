@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import './Kitchen.css';
 
+
 // Warm Japandi — Step 4
 import wjDoorFlat from '../assets/kitchen images/Warm Japandi/Step 4 - Cabinetry & Benchtops/Flat  Slab Door.jpeg';
 import wjDoorRattan from '../assets/kitchen images/Warm Japandi/Step 4 - Cabinetry & Benchtops/Rattan Insert Panel.jpeg';
@@ -195,13 +196,30 @@ import cnWallSnow from '../assets/kitchen images/Coastal Natural/Step 7 - Hardwa
 import cnWallChalk from '../assets/kitchen images/Coastal Natural/Step 7 - Hardware & light/Chalk Limewash — Bauwerk Colour.png';
 import cnPanelEasyVJ from '../assets/kitchen images/Coastal Natural/Step 7 - Hardware & light/EasyVJ100 — EasyCraft.jpg';
 
+// ─── Style Preview Images (Step 3) ───────────────────────────────────────────
+// Use one strong hero image per style from their Step 4 assets
+// Warm Japandi hero
+import styleImgWarmJapandi from '../assets/kitchen images/Warm Japandi/Warm Japandi.png';
+// Timeless Ease hero
+import styleImgTimelessEase from '../assets/kitchen images/Timeless Ease/Timeless Ease.png';
+// Light & Airy hero
+import styleImgLightAiry from '../assets/kitchen images/Light & Airy/Light & Airy.png';
+// Calm Retreat hero — reuse a soft, muted image (Haze Ivory works perfectly)
+import styleImgCalmRetreat from '../assets/kitchen images/Calm Retreat/Calm Retreat.png';
+// Coastal Natural hero
+import styleImgCoastalNatural from '../assets/kitchen images/Coastal Natural/Coastal Natural.png';
+// Farmhouse hero — reuse Sussex Shaker (closest match)
+import styleImgFarmhouse from '../assets/kitchen images/Farmhouse/Farmhouse.png';
+
 // ─────────────────────────────────────────────────────────────────────────────
+
 function Kitchen() {
   const [currentStep, setCurrentStep] = useState(1);
   const [selections, setSelections] = useState({});
   const [customSelections, setCustomSelections] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [styleContent, setStyleContent] = useState(null);
+
   const steps = [
     { label: 'Client Info' },
     { label: 'Layout' },
@@ -212,6 +230,52 @@ function Kitchen() {
     { label: 'Hardware & Light' },
     { label: 'Appliances' },
     { label: 'Review' }
+  ];
+
+  // ── Style card definitions (Step 3) ──────────────────────────────────────
+  const STYLE_OPTIONS = [
+    {
+      val: 'Light & Airy',
+      tagline: 'Bright · Serene · Timeless White',
+      desc: 'Flooded with light, open and effortlessly serene.',
+      img: styleImgLightAiry,
+    },
+    {
+      val: 'Warm Japandi',
+      tagline: 'Earthy · Tactile · Wabi-Sabi Simplicity',
+      desc: 'Layered neutrals of warm beige, pale stone and grounded timber.',
+      img: styleImgWarmJapandi,
+    },
+    {
+      val: 'Timeless Ease',
+      tagline: 'Classic · Refined · Quietly Luxurious',
+      desc: 'Understated yet full of detail. Warm whites, aged brass accents.',
+      img: styleImgTimelessEase,
+    },
+    {
+      val: 'Calm Retreat',
+      tagline: 'Muted · Organic · Quiet Luxury',
+      desc: 'Deeply considered, never excessive. Natural materials, tactile surfaces.',
+      img: styleImgCalmRetreat,
+    },
+    {
+      val: 'Coastal Natural',
+      tagline: 'Relaxed · Sun-bleached · Textural',
+      desc: 'Effortlessly relaxed and deeply connected to its environment.',
+      img: styleImgCoastalNatural,
+    },
+    {
+      val: 'Farmhouse',
+      tagline: 'Warm · Rustic · Enduring Character',
+      desc: 'Timeless, welcoming and full of considered detail. Shaker doors, warm wood and aged brass.',
+      img: styleImgFarmhouse,
+    },
+    {
+      val: 'Open to Direction',
+      tagline: 'Flexible · Exploratory · Designer-Led',
+      desc: 'No strong preference yet, or elements from multiple styles appeal to you.',
+      img: null,
+    },
   ];
 
   const STYLE_CONTENT = {
@@ -589,6 +653,181 @@ function Kitchen() {
           { val: 'Open to Advice', sub: 'Perrem will recommend' }
         ]
       }
+    },
+    // Calm Retreat — reuses Warm Japandi product data (closest match)
+    'Calm Retreat': {
+      s4: {
+        title: 'Cabinetry & Benchtops',
+        desc: 'Calm Retreat cabinetry is quietly restrained — muted organic tones, soft stone benchtops and minimal surface decoration.',
+        door: [
+          { val: 'Flat / Slab Door', sub: 'Clean profile — no hardware distraction', img: wjDoorFlat },
+          { val: 'Rattan Insert Panel', sub: 'Framed door with woven rattan — organic texture', img: wjDoorRattan },
+          { val: 'Open to Advice', sub: 'Perrem will recommend based on your layout' }
+        ],
+        cabinet: [
+          { val: 'Haze Ivory — Stone Ambassador Vasari', sub: 'Very soft barely-there veining — deeply calm', img: wjBenchHaze },
+          { val: 'Florentine Walnut (Polytec Woodmatt)', sub: 'Muted warm walnut — grounded and quiet', img: wjCabFlorentine },
+          { val: 'Notaio Walnut (Polytec Woodmatt)', sub: 'Cooler walnut — calm and contemporary', img: wjCabNotaio },
+          { val: 'Oak with Clear Stain (Farmers Doors)', sub: 'Pale American oak — light and organic', img: wjCabOak },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ],
+        benchtop: [
+          { val: 'Haze Ivory — Stone Ambassador Vasari', sub: 'Very soft, barely-there veining — calm and clean', img: wjBenchHaze },
+          { val: 'Savoy Ivory — Stone Ambassador Vasari', sub: 'Soft ivory with subtle movement', img: wjBenchSavoy },
+          { val: 'Morocca — Stone Ambassador Vasari', sub: 'Earthy veining — tactile and grounded', img: wjBenchMorocca },
+          { val: 'Nacre Dekton — Cosentino', sub: 'Carbon neutral — textured or velvet finish', img: wjBenchNacre },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ]
+      },
+      s5: {
+        desc: 'Calm Retreat surfaces are quiet and unassuming — soft stone, subtle mosaic or muted timber. Nothing too loud.',
+        splashback: [
+          { val: 'Memphis Travertine Dune — Perini', sub: 'Large format 600x1200mm — muted travertine look', img: wjSplashMemphis },
+          { val: 'Houston Vanilla — Perini Tiles', sub: 'Satin 284x295mm — soft vanilla backdrop', img: wjSplashHouVanilla },
+          { val: 'Benchtop stone extended to wall', sub: 'Seamless — no separate splashback tile' },
+          { val: '245J Hanten Sugie — Artedomus', sub: 'Structured 300x300mm — subtle quiet texture', img: wjSplash245J },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ],
+        flooring: [
+          { val: 'Chestnut — Made by Storey', sub: 'Matt lacquer engineered timber — warm character', img: wjFloorChestnut },
+          { val: 'Foster Beige 600x600 — Perini Tiles', sub: 'Matt porcelain — muted and quiet', img: wjFloorFoster },
+          { val: 'Khaki Jam — Fibonacci Terrazzo', sub: 'Honed terrazzo — earthy warmth', img: wjFloorKhaki },
+          { val: 'Nacre Dekton — Cosentino', sub: 'Textured or velvet porcelain', img: wjFloorNacreDek },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ]
+      },
+      s6: {
+        desc: 'Matte black or gunmetal finishes for tapware — understated and refined. Undermount sinks.',
+        tapware: [
+          { val: 'Gooseneck Square Mixer Gunmetal — Reece Mizu Drift', sub: '5 Star WELS — quiet confidence', img: wjTapGooseneckSq },
+          { val: 'Gooseneck Curve Mixer Gunmetal — Reece Mizu Drift', sub: 'Softer more organic gooseneck form', img: wjTapGooseneckCv },
+          { val: 'Blix Flexible Hose Mixer Brushed Carbon — Phoenix', sub: 'Velvet-touch silicone hose — calm finish', img: wjTapBlix },
+          { val: 'Open to Advice', sub: 'Perrem will recommend based on layout' }
+        ],
+        sinks: [
+          { val: 'Lavello Single + Drain Gunmetal — Meir', sub: 'Undermount with drainer — 840x440mm', img: wjSinkLavelloSingle },
+          { val: 'Double Bowl Brushed Nickel — Meir', sub: 'Undermount or topmount — 860x440mm', img: wjSinkDouble },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ]
+      },
+      s7: {
+        desc: 'Minimal hardware, sculptural pendants in organic forms, warm muted wall tones — everything quietly considered.',
+        hardware: [
+          { val: 'Bevelled Edge Finger Pull', sub: 'Integrated handleless — zero visual noise', img: wjHwBevelled },
+          { val: 'Leo Timber Knob Spotted Gum — Touch Handles', sub: 'Organic timber knob — warm and tactile', img: wjHwLeo },
+          { val: 'Cadello Crest Timber Ebony — Touch Handles', sub: 'Muted timber tone — refined', img: wjHwCadello },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ],
+        pendants: [
+          { val: 'Tapa Pendant Bone — Robert Gordon', sub: 'Ceramic handmade — beautifully imperfect', img: wjPendTapa },
+          { val: 'July 1 Round Textured Chalk — Beacon', sub: 'Simple organic form — calm presence', img: wjPendJuly },
+          { val: 'Bubble Lamps — George Nelson / Living Edge', sub: 'Silk — various sizes — organic sculptural', img: wjPendBubble },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ],
+        walls: [
+          { val: 'Natural White — Dulux', sub: 'Warm quiet white — deeply liveable', img: wjWallNatural },
+          { val: 'Apparition — Dulux', sub: 'Greige — warm grey-beige', img: wjWallApparition },
+          { val: 'Clay Pipe — Dulux', sub: 'Warm earthy depth', img: wjWallClay },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ],
+        panels: [
+          { val: 'Calm Limewash — Bauwerk Colour', sub: 'Zero VOC — soft sage-grey — the Calm Retreat signature', img: wjPanelCalm },
+          { val: 'Still Limewash — Bauwerk Colour', sub: 'Zero VOC — deeper warm grey', img: wjPanelStill },
+          { val: 'Bone Limewash — Bauwerk Colour', sub: 'Zero VOC — soft warm white', img: wjPanelBone },
+          { val: 'No feature wall lining', sub: 'Paint only' },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ]
+      }
+    },
+    // Farmhouse — reuses Timeless Ease product data (Sussex Shaker focus)
+    'Farmhouse': {
+      s4: {
+        title: 'Cabinetry & Benchtops',
+        desc: 'Farmhouse cabinetry is warm, inviting and full of character — shaker profiles, warm off-whites and earthy timber tones. Benchtops are soft marble-look or warm stone.',
+        door: [
+          { val: 'Sussex Shaker — Polytec', sub: 'The definitive farmhouse profile — warm off-white', img: teDoorSussex },
+          { val: 'Calcutta 35 Profile — Polytec', sub: 'Wider shaker — bolder heritage proportion', img: teDoorCalcutta },
+          { val: 'Rattan Insert Panel', sub: 'Framed door with natural rattan — rustic warmth', img: wjDoorRattan },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ],
+        cabinet: [
+          { val: 'Raw Cotton Natural — Laminex', sub: 'Warm off-white linen texture — farmhouse-perfect', img: teCabRawCotton },
+          { val: 'Paperbark Absolute Matte — Laminex', sub: 'Warm sandy tone — matte and characterful', img: teCabPaperbark },
+          { val: 'Florentine Walnut (Polytec Woodmatt)', sub: 'Warm walnut — rich farmhouse accent', img: wjCabFlorentine },
+          { val: 'Coastal Oak Woodmatt — Polytec', sub: 'Light oak for island or overheads', img: teCabCoastalOak },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ],
+        benchtop: [
+          { val: 'Statuario Maximus — Caesarstone', sub: 'Classic white marble look — farmhouse statement', img: teBenchStatuario },
+          { val: 'Calacatta Nuvo — Caesarstone', sub: 'Bold Calacatta veining', img: teBenchCalacatta },
+          { val: 'Morocca — Stone Ambassador Vasari', sub: 'Earthy veining — warm and organic', img: wjBenchMorocca },
+          { val: 'White Truffle Zenith — Stone Ambassador', sub: 'Warm white soft veining — 89% recycled glass', img: teBenchWhiteTruffle },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ]
+      },
+      s5: {
+        desc: 'Farmhouse splashbacks are warm and textural — herringbone, subway or soft mosaic. Flooring is warm timber or classic cream tile.',
+        splashback: [
+          { val: 'Tully Heads Carrara Herringbone — Tile Cloud', sub: 'Marble-look herringbone — classic farmhouse tile', img: teSplashTully },
+          { val: 'Mallorca Subway Matt White — Porcelain RMS', sub: 'Matt white subway — enduring backdrop', img: teSplashMallorca },
+          { val: 'Japanese Impressions Snow — National Tiles', sub: 'Soft mosaic — subtle warmth', img: teSplashJapanese },
+          { val: 'Houston Vanilla — Perini Tiles', sub: 'Satin 284x295mm — warm vanilla tone', img: wjSplashHouVanilla },
+          { val: 'Benchtop stone extended to wall', sub: 'Seamless — no separate tile' },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ],
+        flooring: [
+          { val: 'Gosford — Havwoods Pure Plank', sub: 'Matt lacquer — warm classic timber', img: teFloorGosford },
+          { val: 'Mosman Herringbone — Havwoods V Collection', sub: 'Matt lacquer herringbone — elegant rustic lay', img: teFloorMosman },
+          { val: 'Chestnut — Made by Storey', sub: 'Warm character engineered timber', img: wjFloorChestnut },
+          { val: 'Verona Crema Matt 600x600 — National Tiles', sub: 'Warm cream porcelain — classic farmhouse floor', img: teFloorVerona },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ]
+      },
+      s6: {
+        desc: 'Aged brass or brushed brass throughout — warm and characterful. Undermount sinks for a clean look.',
+        tapware: [
+          { val: 'Namika Kitchen Mixer Brushed Brass — ABI Interiors', sub: 'Knurled reeded handle — farmhouse-perfect', img: teTapNamika },
+          { val: 'Elysian Mixer Brushed Brass — ABI Interiors', sub: 'Clean gooseneck — 5 Star WELS', img: teTapElysian },
+          { val: 'Elysian Commercial Pull-Out Brushed Brass — ABI', sub: 'Gooseneck pull-out — very practical', img: teTapElysianPO },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ],
+        sinks: [
+          { val: 'Lavello Single + Drain — Meir', sub: 'Undermount with drainer — 840x440mm', img: teSinkLavello },
+          { val: 'Andano 400-400-IF Undermount — Blanco', sub: 'Stainless double undermount', img: teSinkAndano },
+          { val: 'Sonetto Double Universal — Oliveri', sub: 'Stainless undermount — 785x455x205mm', img: teSinkSonetto },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ]
+      },
+      s7: {
+        desc: 'Aged brass hardware and warm ceramic or linen pendants. Warm off-white walls — inviting and enduring.',
+        hardware: [
+          { val: 'Brera Handle Aged Brass — Lo & Co', sub: 'Slender aged brass pull — refined farmhouse', img: teHwBrera },
+          { val: 'Isla Pull XL Aged Brass — Lo & Co', sub: 'Longer bar pull — appliance doors and drawers', img: teHwIsla },
+          { val: 'Sphere Knob Aged Brass — Lo & Co', sub: 'Round knob — soft and traditional', img: teHwSphere },
+          { val: 'Imogen Oval Pull Aged Brass — Manovella', sub: 'Soft oval form — warm aged brass', img: teHwImogen },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ],
+        pendants: [
+          { val: 'Calido Flare — Beacon Lighting', sub: 'Natural linen with tan hessian — handmade farmhouse', img: wjPendCalido },
+          { val: 'Tapa Pendant Bone — Robert Gordon', sub: 'Ceramic handmade — warm and inviting', img: tePendTapa },
+          { val: 'July 1 Round Textured Chalk — Beacon', sub: 'Organic form — excellent value', img: tePendJuly },
+          { val: 'Ballare 600mm Pendant Gypsum — Beacon', sub: 'White gypsum dome — timeless and classic', img: tePendBallare },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ],
+        walls: [
+          { val: 'Antique White USA — Dulux', sub: 'The classic farmhouse warm white', img: teWallAntique },
+          { val: 'Natural White — Dulux', sub: 'Clean warm white — very liveable', img: teWallNatural },
+          { val: 'Lexicon Quarter — Dulux', sub: 'Soft warm white — works with pale stone', img: teWallLexicon },
+          { val: 'Bone Limewash — Bauwerk Colour', sub: 'Zero VOC — premium texture option', img: teWallBone },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ],
+        panels: [
+          { val: 'No feature wall lining', sub: 'Paint only' },
+          { val: 'EasyVJ100 — EasyCraft', sub: 'VJ panelling — rangehood surround or island ends', img: tePanelEasyVJ },
+          { val: 'Surround Heritage — Laminex', sub: 'Heritage VJ profile — pairs beautifully with shaker', img: tePanelSurround },
+          { val: 'Open to Advice', sub: 'Perrem will recommend' }
+        ]
+      }
     }
   };
 
@@ -671,6 +910,7 @@ function Kitchen() {
     });
   };
 
+  // ── Option grid with fixed image display ─────────────────────────────────
   const renderOptionGrid = (items, selectionKey) => {
     if (!items) return null;
     return (
@@ -681,17 +921,23 @@ function Kitchen() {
             className={`option-card ${selections[selectionKey] === item.val ? 'selected' : ''}`}
             onClick={() => updateSelections(selectionKey, item.val)}
           >
-            {item.img && (
+            {item.img ? (
               <div className="option-card-img">
                 <img
                   src={item.img}
                   alt={item.val}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', borderRadius: 'inherit' }}
+                  loading="lazy"
                 />
               </div>
+            ) : (
+              <div className="option-card-img option-card-img--placeholder">
+                <span>No image</span>
+              </div>
             )}
-            <div className="option-card-title">{item.val}</div>
-            <div className="option-card-sub">{item.sub}</div>
+            <div className="option-card-body">
+              <div className="option-card-title">{item.val}</div>
+              <div className="option-card-sub">{item.sub}</div>
+            </div>
           </div>
         ))}
       </div>
@@ -882,15 +1128,115 @@ function Kitchen() {
             </div>
             <div className="section-label">Layout Type — Select One</div>
             <div className="card-grid two">
-              {['Single Wall / Galley', 'L-Shape', 'U-Shape', 'L-Shape with Island', 'Galley with Island', 'Open to Advice'].map(layout => (
-                <div key={layout} className={`layout-card ${selections.layout === layout ? 'selected' : ''}`} onClick={() => toggleSingle(layout, 'layout')}>
-                  <div className="layout-card-body">
-                    <div className="layout-card-name">{layout}</div>
-                    <div className="layout-card-sub">{layout === 'Single Wall / Galley' ? 'Everything on one run. Efficient, suits open-plan spaces.' : layout === 'L-Shape' ? 'Two adjacent walls. Good corner use, natural work triangle.' : layout === 'U-Shape' ? 'Three walls of cabinetry. Maximum bench space and storage.' : layout === 'L-Shape with Island' ? 'Our most popular. Excellent workflow, generous bench.' : layout === 'Galley with Island' ? 'Two parallel runs plus central island. Chef-style workflow.' : "We'll work with your existing plans and recommend the best layout for your space."}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
+
+  <div className={`layout-card ${selections.layout === 'Single Wall / Galley' ? 'selected' : ''}`} onClick={() => toggleSingle('Single Wall / Galley', 'layout')}>
+    <div className="layout-svg-wrap">
+      <svg width="180" height="90" viewBox="0 0 180 90" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="30" width="160" height="28" rx="2" fill="#00B5CC" opacity="0.25" stroke="#00B5CC" strokeWidth="1.5"/>
+        <rect x="10" y="30" width="160" height="8" rx="2" fill="#00B5CC" opacity="0.5"/>
+        <rect x="18" y="42" width="16" height="12" rx="1" fill="none" stroke="#00B5CC" strokeWidth="1" opacity="0.6"/>
+        <rect x="42" y="42" width="16" height="12" rx="1" fill="none" stroke="#00B5CC" strokeWidth="1" opacity="0.6"/>
+        <rect x="120" y="42" width="22" height="12" rx="1" fill="none" stroke="#00B5CC" strokeWidth="1" opacity="0.6"/>
+        <text x="90" y="80" textAnchor="middle" fontFamily="sans-serif" fontSize="9" fill="#999" fontWeight="600">SINGLE WALL</text>
+      </svg>
+    </div>
+    <div className="layout-card-body">
+      <div className="layout-card-name">Single Wall / Galley</div>
+      <div className="layout-card-sub">Everything on one run. Efficient, suits open-plan spaces or narrower rooms.</div>
+    </div>
+  </div>
+
+  <div className={`layout-card ${selections.layout === 'L-Shape' ? 'selected' : ''}`} onClick={() => toggleSingle('L-Shape', 'layout')}>
+    <div className="layout-svg-wrap">
+      <svg width="180" height="90" viewBox="0 0 180 90" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="10" width="28" height="68" rx="2" fill="#00B5CC" opacity="0.25" stroke="#00B5CC" strokeWidth="1.5"/>
+        <rect x="10" y="10" width="8" height="68" rx="2" fill="#00B5CC" opacity="0.5"/>
+        <rect x="10" y="62" width="130" height="28" rx="2" fill="#00B5CC" opacity="0.25" stroke="#00B5CC" strokeWidth="1.5"/>
+        <rect x="10" y="62" width="130" height="8" rx="2" fill="#00B5CC" opacity="0.5"/>
+        <rect x="18" y="18" width="12" height="12" rx="1" fill="none" stroke="#00B5CC" strokeWidth="1" opacity="0.6"/>
+        <rect x="18" y="36" width="12" height="12" rx="1" fill="none" stroke="#00B5CC" strokeWidth="1" opacity="0.6"/>
+        <rect x="50" y="70" width="16" height="12" rx="1" fill="none" stroke="#00B5CC" strokeWidth="1" opacity="0.6"/>
+        <rect x="100" y="70" width="22" height="12" rx="1" fill="none" stroke="#00B5CC" strokeWidth="1" opacity="0.6"/>
+        <text x="120" y="50" textAnchor="middle" fontFamily="sans-serif" fontSize="9" fill="#999" fontWeight="600">L-SHAPE</text>
+      </svg>
+    </div>
+    <div className="layout-card-body">
+      <div className="layout-card-name">L-Shape</div>
+      <div className="layout-card-sub">Two adjacent walls. Good corner use, natural work triangle. Option to add island later.</div>
+    </div>
+  </div>
+
+  <div className={`layout-card ${selections.layout === 'U-Shape' ? 'selected' : ''}`} onClick={() => toggleSingle('U-Shape', 'layout')}>
+    <div className="layout-svg-wrap">
+      <svg width="180" height="90" viewBox="0 0 180 90" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="10" width="28" height="68" rx="2" fill="#00B5CC" opacity="0.25" stroke="#00B5CC" strokeWidth="1.5"/>
+        <rect x="10" y="10" width="8" height="68" rx="2" fill="#00B5CC" opacity="0.5"/>
+        <rect x="10" y="62" width="142" height="28" rx="2" fill="#00B5CC" opacity="0.25" stroke="#00B5CC" strokeWidth="1.5"/>
+        <rect x="10" y="62" width="142" height="8" rx="2" fill="#00B5CC" opacity="0.5"/>
+        <rect x="124" y="10" width="28" height="68" rx="2" fill="#00B5CC" opacity="0.25" stroke="#00B5CC" strokeWidth="1.5"/>
+        <rect x="144" y="10" width="8" height="68" rx="2" fill="#00B5CC" opacity="0.5"/>
+        <rect x="18" y="22" width="12" height="12" rx="1" fill="none" stroke="#00B5CC" strokeWidth="1" opacity="0.6"/>
+        <rect x="132" y="22" width="12" height="12" rx="1" fill="none" stroke="#00B5CC" strokeWidth="1" opacity="0.6"/>
+        <rect x="60" y="70" width="42" height="12" rx="1" fill="none" stroke="#00B5CC" strokeWidth="1" opacity="0.6"/>
+        <text x="91" y="46" textAnchor="middle" fontFamily="sans-serif" fontSize="9" fill="#999" fontWeight="600">U-SHAPE</text>
+      </svg>
+    </div>
+    <div className="layout-card-body">
+      <div className="layout-card-name">U-Shape</div>
+      <div className="layout-card-sub">Three walls of cabinetry. Maximum bench space and storage. Suited to larger dedicated kitchen rooms.</div>
+    </div>
+  </div>
+
+  <div className={`layout-card ${selections.layout === 'L-Shape with Island' ? 'selected' : ''}`} onClick={() => toggleSingle('L-Shape with Island', 'layout')}>
+    <div className="layout-svg-wrap">
+      <svg width="180" height="90" viewBox="0 0 180 90" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="10" width="28" height="58" rx="2" fill="#00B5CC" opacity="0.25" stroke="#00B5CC" strokeWidth="1.5"/>
+        <rect x="10" y="10" width="8" height="58" rx="2" fill="#00B5CC" opacity="0.5"/>
+        <rect x="10" y="58" width="120" height="22" rx="2" fill="#00B5CC" opacity="0.25" stroke="#00B5CC" strokeWidth="1.5"/>
+        <rect x="10" y="58" width="120" height="7" rx="2" fill="#00B5CC" opacity="0.5"/>
+        <rect x="52" y="16" width="80" height="32" rx="2" fill="#00B5CC" opacity="0.15" stroke="#00B5CC" strokeWidth="1.5" strokeDasharray="4,3"/>
+        <text x="92" y="36" textAnchor="middle" fontFamily="sans-serif" fontSize="8" fill="#00B5CC" fontWeight="700" opacity="0.8">ISLAND</text>
+        <text x="120" y="82" textAnchor="middle" fontFamily="sans-serif" fontSize="9" fill="#999" fontWeight="600">L + ISLAND</text>
+      </svg>
+    </div>
+    <div className="layout-card-body">
+      <div className="layout-card-name">L-Shape with Island</div>
+      <div className="layout-card-sub">Our most popular. Excellent workflow, generous bench, and the island becomes the social hub of the home.</div>
+    </div>
+  </div>
+
+  <div className={`layout-card ${selections.layout === 'Galley with Island' ? 'selected' : ''}`} onClick={() => toggleSingle('Galley with Island', 'layout')}>
+    <div className="layout-svg-wrap">
+      <svg width="180" height="90" viewBox="0 0 180 90" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="10" width="160" height="18" rx="2" fill="#00B5CC" opacity="0.25" stroke="#00B5CC" strokeWidth="1.5"/>
+        <rect x="10" y="10" width="160" height="6" rx="2" fill="#00B5CC" opacity="0.5"/>
+        <rect x="10" y="62" width="160" height="18" rx="2" fill="#00B5CC" opacity="0.25" stroke="#00B5CC" strokeWidth="1.5"/>
+        <rect x="10" y="74" width="160" height="6" rx="2" fill="#00B5CC" opacity="0.5"/>
+        <rect x="50" y="32" width="80" height="22" rx="2" fill="#00B5CC" opacity="0.15" stroke="#00B5CC" strokeWidth="1.5" strokeDasharray="4,3"/>
+        <text x="90" y="47" textAnchor="middle" fontFamily="sans-serif" fontSize="8" fill="#00B5CC" fontWeight="700" opacity="0.8">ISLAND</text>
+      </svg>
+    </div>
+    <div className="layout-card-body">
+      <div className="layout-card-name">Galley with Island</div>
+      <div className="layout-card-sub">Two parallel runs plus central island. Chef-style workflow, excellent for high-use kitchens.</div>
+    </div>
+  </div>
+
+  <div className={`layout-card ${selections.layout === 'Open to Advice' ? 'selected' : ''}`} onClick={() => toggleSingle('Open to Advice', 'layout')}>
+    <div className="layout-svg-wrap" style={{height:'90px', display:'flex', alignItems:'center', justifyContent:'center'}}>
+      <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="30" cy="30" r="28" fill="none" stroke="#DEDAD4" strokeWidth="2"/>
+        <text x="30" y="26" textAnchor="middle" fontFamily="sans-serif" fontSize="22" fill="#CCCCCC" fontWeight="700">?</text>
+        <text x="30" y="42" textAnchor="middle" fontFamily="sans-serif" fontSize="8" fill="#CCCCCC" fontWeight="600">ADVISE ME</text>
+      </svg>
+    </div>
+    <div className="layout-card-body">
+      <div className="layout-card-name">Open to Advice</div>
+      <div className="layout-card-sub">We'll work with your existing plans and recommend the best layout for your space and lifestyle.</div>
+    </div>
+  </div>
+
+</div>
             <div className={`custom-option-wrap ${customSelections.custom_layout?.active ? 'active' : ''}`}>
               <div className="custom-option-header" onClick={() => toggleCustomOption('custom_layout')}>
                 <div className="custom-option-toggle">✓</div>
@@ -964,7 +1310,6 @@ function Kitchen() {
         );
 
       case 3:
-        const styleOptions = ['Light & Airy', 'Warm Japandi', 'Timeless Ease', 'Calm Retreat', 'Coastal Natural', 'Dark & Dramatic', 'French Provincial / Hamptons', 'Contemporary Minimal', 'Open to Direction'];
         return (
           <div className="step-screen active">
             <div className="step-header">
@@ -973,17 +1318,32 @@ function Kitchen() {
               <p className="step-desc">Choose the aesthetic that resonates most with you. This becomes the foundation for every material and finish selection that follows.</p>
             </div>
             <div className="section-label">Choose a Style — Select One</div>
+
+            {/* ── Style grid with images ── */}
             <div className="style-card-grid">
-              {styleOptions.map(style => (
-                <div key={style} className={`style-card ${selections.style === style ? 'selected' : ''} ${style === 'Open to Direction' ? 'full-width' : ''}`} onClick={() => toggleSingle(style, 'style')}>
-                  <div className="style-card-header">
-                    <div className="style-card-title">{style}</div>
-                    <div className="style-card-tagline">{style === 'Light & Airy' ? 'Bright · Serene · Timeless White' : style === 'Warm Japandi' ? 'Earthy · Tactile · Wabi-Sabi Simplicity' : style === 'Timeless Ease' ? 'Classic · Refined · Quietly Luxurious' : style === 'Calm Retreat' ? 'Muted · Organic · Quiet Luxury' : style === 'Coastal Natural' ? 'Relaxed · Sun-bleached · Textural' : style === 'Dark & Dramatic' ? 'Bold · Moody · High Contrast' : style === 'French Provincial / Hamptons' ? 'Classic · Comfortable · Enduring' : style === 'Contemporary Minimal' ? 'Architectural · Handleless · Monochromatic' : 'Flexible · Exploratory · Designer-Led'}</div>
-                    <div className="style-card-desc">{style === 'Light & Airy' ? 'Flooded with light, open and effortlessly serene.' : style === 'Warm Japandi' ? 'Layered neutrals of warm beige, pale stone and grounded timber.' : style === 'Timeless Ease' ? 'Understated yet full of detail. Warm whites, aged brass accents.' : style === 'Calm Retreat' ? 'Deeply considered, never excessive. Natural materials, tactile surfaces.' : style === 'Coastal Natural' ? 'Effortlessly relaxed and deeply connected to its environment.' : style === 'Dark & Dramatic' ? 'A confident, design-forward kitchen that makes a statement.' : style === 'French Provincial / Hamptons' ? 'Timeless, welcoming and full of considered detail.' : style === 'Contemporary Minimal' ? 'Serious architectural restraint with zero decorative detail.' : 'No strong preference yet, or elements from multiple styles appeal to you.'}</div>
+              {STYLE_OPTIONS.map(style => (
+                <div
+                  key={style.val}
+                  className={`style-card ${selections.style === style.val ? 'selected' : ''} ${style.val === 'Open to Direction' ? 'style-card--full' : ''}`}
+                  onClick={() => toggleSingle(style.val, 'style')}
+                >
+                  {style.img && (
+                    <div className="style-card-img">
+                      <img src={style.img} alt={style.val} loading="lazy" />
+                    </div>
+                  )}
+                  <div className="style-card-text">
+                    <div className="style-card-title">{style.val}</div>
+                    <div className="style-card-tagline">{style.tagline}</div>
+                    <div className="style-card-desc">{style.desc}</div>
                   </div>
+                  {selections.style === style.val && (
+                    <div className="style-card-check">✓</div>
+                  )}
                 </div>
               ))}
             </div>
+
             <div className="section-label">Colour Palette Preference</div>
             <p className="multi-hint">Select all that apply</p>
             <div className="pill-group">
@@ -1008,7 +1368,7 @@ function Kitchen() {
       case 4:
         if (!styleContent) return (
           <div className="step-screen active">
-            <div className="loading">Please go back to Step 3 and select a curated style (Warm Japandi, Timeless Ease, Light & Airy, or Coastal Natural) to see product options with images. Other styles are available — the Perrem team will guide you through selections in consultation.</div>
+            <div className="loading">Please go back to Step 3 and select a curated style to see product options with images.</div>
             <div className="nav-row">
               <button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button>
               <button className="btn btn-primary" onClick={() => goToStep(5)}>Continue →</button>
