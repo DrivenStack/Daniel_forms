@@ -132,13 +132,13 @@ import resortShower2 from '../assets/bathroom images/Resort/Step 7 - Shower/Meir
 import resortShower3 from '../assets/bathroom images/Resort/Step 7 - Shower/Meir Australia Overhead Only.png';
 
 // ─── Style hero images ────────────────────────────────────────────────────────
-import styleImgScandi from '../assets/bathroom images/Scandi/Step 4 - Vanity/polytec angora oak woodmatt.jpg';
-import styleImgHamptons from '../assets/bathroom images/Hamptons/Step 5 - Tiling/Tile & Stone Gallery Carrara Bianco Matt.png';
-import styleImgClassicCoastal from '../assets/bathroom images/Classic coastal/Step 4 - Vanity/Polytec Natural Oak Ravine.jpg';
-import styleImgContemCoastal from '../assets/bathroom images/Contemporary Coastal/Step 5 - Tiling/Ace Stone + Tiles Pietre 41 Scrambled Griege.jpg';
-import styleImgCoralHouse from '../assets/bathroom images/Coral house/Step 4 - Vanity/ADP Australia Clifton Prime Oak Woodmatt.jpeg';
-import styleImgFiftyShades from '../assets/bathroom images/Fifty shades/Step 4 - Vanity/Polytec Maison Oak Ravine.png';
-import styleImgResort from '../assets/bathroom images/Resort/Step 4 -Vanity/Polytec Stone Grey Matt.jpg';
+import styleImgScandi from '../assets/bathroom images/Scandi/Scandi v2.png';
+import styleImgHamptons from '../assets/bathroom images/Hamptons/Hamptons v2.png';
+import styleImgClassicCoastal from '../assets/bathroom images/Classic coastal/Classical Coastal v2.png';
+import styleImgContemCoastal from '../assets/bathroom images/Contemporary Coastal/Contemporary Coastal v2.png';
+import styleImgCoralHouse from '../assets/bathroom images/Coral house/Coral house v2.png';
+import styleImgFiftyShades from '../assets/bathroom images/Fifty shades/Fifty Shades v2.png';
+import styleImgResort from '../assets/bathroom images/Resort/Resort v2.png';
 
 // ─────────────────────────────────────────────────────────────────────────────
 
