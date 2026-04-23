@@ -197,19 +197,17 @@ import cnWallChalk from '../assets/kitchen images/Coastal Natural/Step 7 - Hardw
 import cnPanelEasyVJ from '../assets/kitchen images/Coastal Natural/Step 7 - Hardware & light/EasyVJ100 — EasyCraft.jpg';
 
 // ─── Style Preview Images (Step 3) ───────────────────────────────────────────
-// Use one strong hero image per style from their Step 4 assets
-// Warm Japandi hero
 import styleImgWarmJapandi from '../assets/kitchen images/Warm Japandi/Warm Japandi.png';
-// Timeless Ease hero
 import styleImgTimelessEase from '../assets/kitchen images/Timeless Ease/Timeless Ease.png';
-// Light & Airy hero
 import styleImgLightAiry from '../assets/kitchen images/Light & Airy/Light & Airy.png';
-// Calm Retreat hero — reuse a soft, muted image (Haze Ivory works perfectly)
 import styleImgCalmRetreat from '../assets/kitchen images/Calm Retreat/Calm Retreat.png';
-// Coastal Natural hero
 import styleImgCoastalNatural from '../assets/kitchen images/Coastal Natural/Coastal Natural.png';
-// Farmhouse hero — reuse Sussex Shaker (closest match)
 import styleImgFarmhouse from '../assets/kitchen images/Farmhouse/Farmhouse.png';
+
+// ─── GHL Configuration ───────────────────────────────────────────────────────
+const GHL_API_URL = 'https://services.leadconnectorhq.com/contacts/';
+const GHL_API_TOKEN = 'pit-877b392e-a6b0-47a5-aacf-08a2fc78525a';
+const GHL_LOCATION_ID = 'Ir7r7duXyPwmyoxfC7Uz';
 
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -218,6 +216,8 @@ function Kitchen() {
   const [selections, setSelections] = useState({});
   const [customSelections, setCustomSelections] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
   const [styleContent, setStyleContent] = useState(null);
 
   const steps = [
@@ -654,180 +654,17 @@ function Kitchen() {
         ]
       }
     },
-    // Calm Retreat — reuses Warm Japandi product data (closest match)
     'Calm Retreat': {
-      s4: {
-        title: 'Cabinetry & Benchtops',
-        desc: 'Calm Retreat cabinetry is quietly restrained — muted organic tones, soft stone benchtops and minimal surface decoration.',
-        door: [
-          { val: 'Flat / Slab Door', sub: 'Clean profile — no hardware distraction', img: wjDoorFlat },
-          { val: 'Rattan Insert Panel', sub: 'Framed door with woven rattan — organic texture', img: wjDoorRattan },
-          { val: 'Open to Advice', sub: 'Perrem will recommend based on your layout' }
-        ],
-        cabinet: [
-          { val: 'Haze Ivory — Stone Ambassador Vasari', sub: 'Very soft barely-there veining — deeply calm', img: wjBenchHaze },
-          { val: 'Florentine Walnut (Polytec Woodmatt)', sub: 'Muted warm walnut — grounded and quiet', img: wjCabFlorentine },
-          { val: 'Notaio Walnut (Polytec Woodmatt)', sub: 'Cooler walnut — calm and contemporary', img: wjCabNotaio },
-          { val: 'Oak with Clear Stain (Farmers Doors)', sub: 'Pale American oak — light and organic', img: wjCabOak },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ],
-        benchtop: [
-          { val: 'Haze Ivory — Stone Ambassador Vasari', sub: 'Very soft, barely-there veining — calm and clean', img: wjBenchHaze },
-          { val: 'Savoy Ivory — Stone Ambassador Vasari', sub: 'Soft ivory with subtle movement', img: wjBenchSavoy },
-          { val: 'Morocca — Stone Ambassador Vasari', sub: 'Earthy veining — tactile and grounded', img: wjBenchMorocca },
-          { val: 'Nacre Dekton — Cosentino', sub: 'Carbon neutral — textured or velvet finish', img: wjBenchNacre },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ]
-      },
-      s5: {
-        desc: 'Calm Retreat surfaces are quiet and unassuming — soft stone, subtle mosaic or muted timber. Nothing too loud.',
-        splashback: [
-          { val: 'Memphis Travertine Dune — Perini', sub: 'Large format 600x1200mm — muted travertine look', img: wjSplashMemphis },
-          { val: 'Houston Vanilla — Perini Tiles', sub: 'Satin 284x295mm — soft vanilla backdrop', img: wjSplashHouVanilla },
-          { val: 'Benchtop stone extended to wall', sub: 'Seamless — no separate splashback tile' },
-          { val: '245J Hanten Sugie — Artedomus', sub: 'Structured 300x300mm — subtle quiet texture', img: wjSplash245J },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ],
-        flooring: [
-          { val: 'Chestnut — Made by Storey', sub: 'Matt lacquer engineered timber — warm character', img: wjFloorChestnut },
-          { val: 'Foster Beige 600x600 — Perini Tiles', sub: 'Matt porcelain — muted and quiet', img: wjFloorFoster },
-          { val: 'Khaki Jam — Fibonacci Terrazzo', sub: 'Honed terrazzo — earthy warmth', img: wjFloorKhaki },
-          { val: 'Nacre Dekton — Cosentino', sub: 'Textured or velvet porcelain', img: wjFloorNacreDek },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ]
-      },
-      s6: {
-        desc: 'Matte black or gunmetal finishes for tapware — understated and refined. Undermount sinks.',
-        tapware: [
-          { val: 'Gooseneck Square Mixer Gunmetal — Reece Mizu Drift', sub: '5 Star WELS — quiet confidence', img: wjTapGooseneckSq },
-          { val: 'Gooseneck Curve Mixer Gunmetal — Reece Mizu Drift', sub: 'Softer more organic gooseneck form', img: wjTapGooseneckCv },
-          { val: 'Blix Flexible Hose Mixer Brushed Carbon — Phoenix', sub: 'Velvet-touch silicone hose — calm finish', img: wjTapBlix },
-          { val: 'Open to Advice', sub: 'Perrem will recommend based on layout' }
-        ],
-        sinks: [
-          { val: 'Lavello Single + Drain Gunmetal — Meir', sub: 'Undermount with drainer — 840x440mm', img: wjSinkLavelloSingle },
-          { val: 'Double Bowl Brushed Nickel — Meir', sub: 'Undermount or topmount — 860x440mm', img: wjSinkDouble },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ]
-      },
-      s7: {
-        desc: 'Minimal hardware, sculptural pendants in organic forms, warm muted wall tones — everything quietly considered.',
-        hardware: [
-          { val: 'Bevelled Edge Finger Pull', sub: 'Integrated handleless — zero visual noise', img: wjHwBevelled },
-          { val: 'Leo Timber Knob Spotted Gum — Touch Handles', sub: 'Organic timber knob — warm and tactile', img: wjHwLeo },
-          { val: 'Cadello Crest Timber Ebony — Touch Handles', sub: 'Muted timber tone — refined', img: wjHwCadello },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ],
-        pendants: [
-          { val: 'Tapa Pendant Bone — Robert Gordon', sub: 'Ceramic handmade — beautifully imperfect', img: wjPendTapa },
-          { val: 'July 1 Round Textured Chalk — Beacon', sub: 'Simple organic form — calm presence', img: wjPendJuly },
-          { val: 'Bubble Lamps — George Nelson / Living Edge', sub: 'Silk — various sizes — organic sculptural', img: wjPendBubble },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ],
-        walls: [
-          { val: 'Natural White — Dulux', sub: 'Warm quiet white — deeply liveable', img: wjWallNatural },
-          { val: 'Apparition — Dulux', sub: 'Greige — warm grey-beige', img: wjWallApparition },
-          { val: 'Clay Pipe — Dulux', sub: 'Warm earthy depth', img: wjWallClay },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ],
-        panels: [
-          { val: 'Calm Limewash — Bauwerk Colour', sub: 'Zero VOC — soft sage-grey — the Calm Retreat signature', img: wjPanelCalm },
-          { val: 'Still Limewash — Bauwerk Colour', sub: 'Zero VOC — deeper warm grey', img: wjPanelStill },
-          { val: 'Bone Limewash — Bauwerk Colour', sub: 'Zero VOC — soft warm white', img: wjPanelBone },
-          { val: 'No feature wall lining', sub: 'Paint only' },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ]
-      }
+      s4: { title: 'Cabinetry & Benchtops', desc: 'Calm Retreat cabinetry is quietly restrained — muted organic tones, soft stone benchtops and minimal surface decoration.', door: [ { val: 'Flat / Slab Door', sub: 'Clean profile — no hardware distraction', img: wjDoorFlat }, { val: 'Rattan Insert Panel', sub: 'Framed door with woven rattan — organic texture', img: wjDoorRattan }, { val: 'Open to Advice', sub: 'Perrem will recommend based on your layout' } ], cabinet: [ { val: 'Haze Ivory — Stone Ambassador Vasari', sub: 'Very soft barely-there veining — deeply calm', img: wjBenchHaze }, { val: 'Florentine Walnut (Polytec Woodmatt)', sub: 'Muted warm walnut — grounded and quiet', img: wjCabFlorentine }, { val: 'Notaio Walnut (Polytec Woodmatt)', sub: 'Cooler walnut — calm and contemporary', img: wjCabNotaio }, { val: 'Oak with Clear Stain (Farmers Doors)', sub: 'Pale American oak — light and organic', img: wjCabOak }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ], benchtop: [ { val: 'Haze Ivory — Stone Ambassador Vasari', sub: 'Very soft, barely-there veining — calm and clean', img: wjBenchHaze }, { val: 'Savoy Ivory — Stone Ambassador Vasari', sub: 'Soft ivory with subtle movement', img: wjBenchSavoy }, { val: 'Morocca — Stone Ambassador Vasari', sub: 'Earthy veining — tactile and grounded', img: wjBenchMorocca }, { val: 'Nacre Dekton — Cosentino', sub: 'Carbon neutral — textured or velvet finish', img: wjBenchNacre }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ] },
+      s5: { desc: 'Calm Retreat surfaces are quiet and unassuming — soft stone, subtle mosaic or muted timber. Nothing too loud.', splashback: [ { val: 'Memphis Travertine Dune — Perini', sub: 'Large format 600x1200mm — muted travertine look', img: wjSplashMemphis }, { val: 'Houston Vanilla — Perini Tiles', sub: 'Satin 284x295mm — soft vanilla backdrop', img: wjSplashHouVanilla }, { val: 'Benchtop stone extended to wall', sub: 'Seamless — no separate splashback tile' }, { val: '245J Hanten Sugie — Artedomus', sub: 'Structured 300x300mm — subtle quiet texture', img: wjSplash245J }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ], flooring: [ { val: 'Chestnut — Made by Storey', sub: 'Matt lacquer engineered timber — warm character', img: wjFloorChestnut }, { val: 'Foster Beige 600x600 — Perini Tiles', sub: 'Matt porcelain — muted and quiet', img: wjFloorFoster }, { val: 'Khaki Jam — Fibonacci Terrazzo', sub: 'Honed terrazzo — earthy warmth', img: wjFloorKhaki }, { val: 'Nacre Dekton — Cosentino', sub: 'Textured or velvet porcelain', img: wjFloorNacreDek }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ] },
+      s6: { desc: 'Matte black or gunmetal finishes for tapware — understated and refined. Undermount sinks.', tapware: [ { val: 'Gooseneck Square Mixer Gunmetal — Reece Mizu Drift', sub: '5 Star WELS — quiet confidence', img: wjTapGooseneckSq }, { val: 'Gooseneck Curve Mixer Gunmetal — Reece Mizu Drift', sub: 'Softer more organic gooseneck form', img: wjTapGooseneckCv }, { val: 'Blix Flexible Hose Mixer Brushed Carbon — Phoenix', sub: 'Velvet-touch silicone hose — calm finish', img: wjTapBlix }, { val: 'Open to Advice', sub: 'Perrem will recommend based on layout' } ], sinks: [ { val: 'Lavello Single + Drain Gunmetal — Meir', sub: 'Undermount with drainer — 840x440mm', img: wjSinkLavelloSingle }, { val: 'Double Bowl Brushed Nickel — Meir', sub: 'Undermount or topmount — 860x440mm', img: wjSinkDouble }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ] },
+      s7: { desc: 'Minimal hardware, sculptural pendants in organic forms, warm muted wall tones — everything quietly considered.', hardware: [ { val: 'Bevelled Edge Finger Pull', sub: 'Integrated handleless — zero visual noise', img: wjHwBevelled }, { val: 'Leo Timber Knob Spotted Gum — Touch Handles', sub: 'Organic timber knob — warm and tactile', img: wjHwLeo }, { val: 'Cadello Crest Timber Ebony — Touch Handles', sub: 'Muted timber tone — refined', img: wjHwCadello }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ], pendants: [ { val: 'Tapa Pendant Bone — Robert Gordon', sub: 'Ceramic handmade — beautifully imperfect', img: wjPendTapa }, { val: 'July 1 Round Textured Chalk — Beacon', sub: 'Simple organic form — calm presence', img: wjPendJuly }, { val: 'Bubble Lamps — George Nelson / Living Edge', sub: 'Silk — various sizes — organic sculptural', img: wjPendBubble }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ], walls: [ { val: 'Natural White — Dulux', sub: 'Warm quiet white — deeply liveable', img: wjWallNatural }, { val: 'Apparition — Dulux', sub: 'Greige — warm grey-beige', img: wjWallApparition }, { val: 'Clay Pipe — Dulux', sub: 'Warm earthy depth', img: wjWallClay }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ], panels: [ { val: 'Calm Limewash — Bauwerk Colour', sub: 'Zero VOC — soft sage-grey — the Calm Retreat signature', img: wjPanelCalm }, { val: 'Still Limewash — Bauwerk Colour', sub: 'Zero VOC — deeper warm grey', img: wjPanelStill }, { val: 'Bone Limewash — Bauwerk Colour', sub: 'Zero VOC — soft warm white', img: wjPanelBone }, { val: 'No feature wall lining', sub: 'Paint only' }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ] }
     },
-    // Farmhouse — reuses Timeless Ease product data (Sussex Shaker focus)
     'Farmhouse': {
-      s4: {
-        title: 'Cabinetry & Benchtops',
-        desc: 'Farmhouse cabinetry is warm, inviting and full of character — shaker profiles, warm off-whites and earthy timber tones. Benchtops are soft marble-look or warm stone.',
-        door: [
-          { val: 'Sussex Shaker — Polytec', sub: 'The definitive farmhouse profile — warm off-white', img: teDoorSussex },
-          { val: 'Calcutta 35 Profile — Polytec', sub: 'Wider shaker — bolder heritage proportion', img: teDoorCalcutta },
-          { val: 'Rattan Insert Panel', sub: 'Framed door with natural rattan — rustic warmth', img: wjDoorRattan },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ],
-        cabinet: [
-          { val: 'Raw Cotton Natural — Laminex', sub: 'Warm off-white linen texture — farmhouse-perfect', img: teCabRawCotton },
-          { val: 'Paperbark Absolute Matte — Laminex', sub: 'Warm sandy tone — matte and characterful', img: teCabPaperbark },
-          { val: 'Florentine Walnut (Polytec Woodmatt)', sub: 'Warm walnut — rich farmhouse accent', img: wjCabFlorentine },
-          { val: 'Coastal Oak Woodmatt — Polytec', sub: 'Light oak for island or overheads', img: teCabCoastalOak },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ],
-        benchtop: [
-          { val: 'Statuario Maximus — Caesarstone', sub: 'Classic white marble look — farmhouse statement', img: teBenchStatuario },
-          { val: 'Calacatta Nuvo — Caesarstone', sub: 'Bold Calacatta veining', img: teBenchCalacatta },
-          { val: 'Morocca — Stone Ambassador Vasari', sub: 'Earthy veining — warm and organic', img: wjBenchMorocca },
-          { val: 'White Truffle Zenith — Stone Ambassador', sub: 'Warm white soft veining — 89% recycled glass', img: teBenchWhiteTruffle },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ]
-      },
-      s5: {
-        desc: 'Farmhouse splashbacks are warm and textural — herringbone, subway or soft mosaic. Flooring is warm timber or classic cream tile.',
-        splashback: [
-          { val: 'Tully Heads Carrara Herringbone — Tile Cloud', sub: 'Marble-look herringbone — classic farmhouse tile', img: teSplashTully },
-          { val: 'Mallorca Subway Matt White — Porcelain RMS', sub: 'Matt white subway — enduring backdrop', img: teSplashMallorca },
-          { val: 'Japanese Impressions Snow — National Tiles', sub: 'Soft mosaic — subtle warmth', img: teSplashJapanese },
-          { val: 'Houston Vanilla — Perini Tiles', sub: 'Satin 284x295mm — warm vanilla tone', img: wjSplashHouVanilla },
-          { val: 'Benchtop stone extended to wall', sub: 'Seamless — no separate tile' },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ],
-        flooring: [
-          { val: 'Gosford — Havwoods Pure Plank', sub: 'Matt lacquer — warm classic timber', img: teFloorGosford },
-          { val: 'Mosman Herringbone — Havwoods V Collection', sub: 'Matt lacquer herringbone — elegant rustic lay', img: teFloorMosman },
-          { val: 'Chestnut — Made by Storey', sub: 'Warm character engineered timber', img: wjFloorChestnut },
-          { val: 'Verona Crema Matt 600x600 — National Tiles', sub: 'Warm cream porcelain — classic farmhouse floor', img: teFloorVerona },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ]
-      },
-      s6: {
-        desc: 'Aged brass or brushed brass throughout — warm and characterful. Undermount sinks for a clean look.',
-        tapware: [
-          { val: 'Namika Kitchen Mixer Brushed Brass — ABI Interiors', sub: 'Knurled reeded handle — farmhouse-perfect', img: teTapNamika },
-          { val: 'Elysian Mixer Brushed Brass — ABI Interiors', sub: 'Clean gooseneck — 5 Star WELS', img: teTapElysian },
-          { val: 'Elysian Commercial Pull-Out Brushed Brass — ABI', sub: 'Gooseneck pull-out — very practical', img: teTapElysianPO },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ],
-        sinks: [
-          { val: 'Lavello Single + Drain — Meir', sub: 'Undermount with drainer — 840x440mm', img: teSinkLavello },
-          { val: 'Andano 400-400-IF Undermount — Blanco', sub: 'Stainless double undermount', img: teSinkAndano },
-          { val: 'Sonetto Double Universal — Oliveri', sub: 'Stainless undermount — 785x455x205mm', img: teSinkSonetto },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ]
-      },
-      s7: {
-        desc: 'Aged brass hardware and warm ceramic or linen pendants. Warm off-white walls — inviting and enduring.',
-        hardware: [
-          { val: 'Brera Handle Aged Brass — Lo & Co', sub: 'Slender aged brass pull — refined farmhouse', img: teHwBrera },
-          { val: 'Isla Pull XL Aged Brass — Lo & Co', sub: 'Longer bar pull — appliance doors and drawers', img: teHwIsla },
-          { val: 'Sphere Knob Aged Brass — Lo & Co', sub: 'Round knob — soft and traditional', img: teHwSphere },
-          { val: 'Imogen Oval Pull Aged Brass — Manovella', sub: 'Soft oval form — warm aged brass', img: teHwImogen },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ],
-        pendants: [
-          { val: 'Calido Flare — Beacon Lighting', sub: 'Natural linen with tan hessian — handmade farmhouse', img: wjPendCalido },
-          { val: 'Tapa Pendant Bone — Robert Gordon', sub: 'Ceramic handmade — warm and inviting', img: tePendTapa },
-          { val: 'July 1 Round Textured Chalk — Beacon', sub: 'Organic form — excellent value', img: tePendJuly },
-          { val: 'Ballare 600mm Pendant Gypsum — Beacon', sub: 'White gypsum dome — timeless and classic', img: tePendBallare },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ],
-        walls: [
-          { val: 'Antique White USA — Dulux', sub: 'The classic farmhouse warm white', img: teWallAntique },
-          { val: 'Natural White — Dulux', sub: 'Clean warm white — very liveable', img: teWallNatural },
-          { val: 'Lexicon Quarter — Dulux', sub: 'Soft warm white — works with pale stone', img: teWallLexicon },
-          { val: 'Bone Limewash — Bauwerk Colour', sub: 'Zero VOC — premium texture option', img: teWallBone },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ],
-        panels: [
-          { val: 'No feature wall lining', sub: 'Paint only' },
-          { val: 'EasyVJ100 — EasyCraft', sub: 'VJ panelling — rangehood surround or island ends', img: tePanelEasyVJ },
-          { val: 'Surround Heritage — Laminex', sub: 'Heritage VJ profile — pairs beautifully with shaker', img: tePanelSurround },
-          { val: 'Open to Advice', sub: 'Perrem will recommend' }
-        ]
-      }
+      s4: { title: 'Cabinetry & Benchtops', desc: 'Farmhouse cabinetry is warm, inviting and full of character — shaker profiles, warm off-whites and earthy timber tones. Benchtops are soft marble-look or warm stone.', door: [ { val: 'Sussex Shaker — Polytec', sub: 'The definitive farmhouse profile — warm off-white', img: teDoorSussex }, { val: 'Calcutta 35 Profile — Polytec', sub: 'Wider shaker — bolder heritage proportion', img: teDoorCalcutta }, { val: 'Rattan Insert Panel', sub: 'Framed door with natural rattan — rustic warmth', img: wjDoorRattan }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ], cabinet: [ { val: 'Raw Cotton Natural — Laminex', sub: 'Warm off-white linen texture — farmhouse-perfect', img: teCabRawCotton }, { val: 'Paperbark Absolute Matte — Laminex', sub: 'Warm sandy tone — matte and characterful', img: teCabPaperbark }, { val: 'Florentine Walnut (Polytec Woodmatt)', sub: 'Warm walnut — rich farmhouse accent', img: wjCabFlorentine }, { val: 'Coastal Oak Woodmatt — Polytec', sub: 'Light oak for island or overheads', img: teCabCoastalOak }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ], benchtop: [ { val: 'Statuario Maximus — Caesarstone', sub: 'Classic white marble look — farmhouse statement', img: teBenchStatuario }, { val: 'Calacatta Nuvo — Caesarstone', sub: 'Bold Calacatta veining', img: teBenchCalacatta }, { val: 'Morocca — Stone Ambassador Vasari', sub: 'Earthy veining — warm and organic', img: wjBenchMorocca }, { val: 'White Truffle Zenith — Stone Ambassador', sub: 'Warm white soft veining — 89% recycled glass', img: teBenchWhiteTruffle }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ] },
+      s5: { desc: 'Farmhouse splashbacks are warm and textural — herringbone, subway or soft mosaic. Flooring is warm timber or classic cream tile.', splashback: [ { val: 'Tully Heads Carrara Herringbone — Tile Cloud', sub: 'Marble-look herringbone — classic farmhouse tile', img: teSplashTully }, { val: 'Mallorca Subway Matt White — Porcelain RMS', sub: 'Matt white subway — enduring backdrop', img: teSplashMallorca }, { val: 'Japanese Impressions Snow — National Tiles', sub: 'Soft mosaic — subtle warmth', img: teSplashJapanese }, { val: 'Houston Vanilla — Perini Tiles', sub: 'Satin 284x295mm — warm vanilla tone', img: wjSplashHouVanilla }, { val: 'Benchtop stone extended to wall', sub: 'Seamless — no separate tile' }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ], flooring: [ { val: 'Gosford — Havwoods Pure Plank', sub: 'Matt lacquer — warm classic timber', img: teFloorGosford }, { val: 'Mosman Herringbone — Havwoods V Collection', sub: 'Matt lacquer herringbone — elegant rustic lay', img: teFloorMosman }, { val: 'Chestnut — Made by Storey', sub: 'Warm character engineered timber', img: wjFloorChestnut }, { val: 'Verona Crema Matt 600x600 — National Tiles', sub: 'Warm cream porcelain — classic farmhouse floor', img: teFloorVerona }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ] },
+      s6: { desc: 'Aged brass or brushed brass throughout — warm and characterful. Undermount sinks for a clean look.', tapware: [ { val: 'Namika Kitchen Mixer Brushed Brass — ABI Interiors', sub: 'Knurled reeded handle — farmhouse-perfect', img: teTapNamika }, { val: 'Elysian Mixer Brushed Brass — ABI Interiors', sub: 'Clean gooseneck — 5 Star WELS', img: teTapElysian }, { val: 'Elysian Commercial Pull-Out Brushed Brass — ABI', sub: 'Gooseneck pull-out — very practical', img: teTapElysianPO }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ], sinks: [ { val: 'Lavello Single + Drain — Meir', sub: 'Undermount with drainer — 840x440mm', img: teSinkLavello }, { val: 'Andano 400-400-IF Undermount — Blanco', sub: 'Stainless double undermount', img: teSinkAndano }, { val: 'Sonetto Double Universal — Oliveri', sub: 'Stainless undermount — 785x455x205mm', img: teSinkSonetto }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ] },
+      s7: { desc: 'Aged brass hardware and warm ceramic or linen pendants. Warm off-white walls — inviting and enduring.', hardware: [ { val: 'Brera Handle Aged Brass — Lo & Co', sub: 'Slender aged brass pull — refined farmhouse', img: teHwBrera }, { val: 'Isla Pull XL Aged Brass — Lo & Co', sub: 'Longer bar pull — appliance doors and drawers', img: teHwIsla }, { val: 'Sphere Knob Aged Brass — Lo & Co', sub: 'Round knob — soft and traditional', img: teHwSphere }, { val: 'Imogen Oval Pull Aged Brass — Manovella', sub: 'Soft oval form — warm aged brass', img: teHwImogen }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ], pendants: [ { val: 'Calido Flare — Beacon Lighting', sub: 'Natural linen with tan hessian — handmade farmhouse', img: wjPendCalido }, { val: 'Tapa Pendant Bone — Robert Gordon', sub: 'Ceramic handmade — warm and inviting', img: tePendTapa }, { val: 'July 1 Round Textured Chalk — Beacon', sub: 'Organic form — excellent value', img: tePendJuly }, { val: 'Ballare 600mm Pendant Gypsum — Beacon', sub: 'White gypsum dome — timeless and classic', img: tePendBallare }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ], walls: [ { val: 'Antique White USA — Dulux', sub: 'The classic farmhouse warm white', img: teWallAntique }, { val: 'Natural White — Dulux', sub: 'Clean warm white — very liveable', img: teWallNatural }, { val: 'Lexicon Quarter — Dulux', sub: 'Soft warm white — works with pale stone', img: teWallLexicon }, { val: 'Bone Limewash — Bauwerk Colour', sub: 'Zero VOC — premium texture option', img: teWallBone }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ], panels: [ { val: 'No feature wall lining', sub: 'Paint only' }, { val: 'EasyVJ100 — EasyCraft', sub: 'VJ panelling — rangehood surround or island ends', img: tePanelEasyVJ }, { val: 'Surround Heritage — Laminex', sub: 'Heritage VJ profile — pairs beautifully with shaker', img: tePanelSurround }, { val: 'Open to Advice', sub: 'Perrem will recommend' } ] }
     }
   };
 
@@ -910,7 +747,6 @@ function Kitchen() {
     });
   };
 
-  // ── Option grid with fixed image display ─────────────────────────────────
   const renderOptionGrid = (items, selectionKey) => {
     if (!items) return null;
     return (
@@ -923,11 +759,7 @@ function Kitchen() {
           >
             {item.img ? (
               <div className="option-card-img">
-                <img
-                  src={item.img}
-                  alt={item.val}
-                  loading="lazy"
-                />
+                <img src={item.img} alt={item.val} loading="lazy" />
               </div>
             ) : (
               <div className="option-card-img option-card-img--placeholder">
@@ -950,6 +782,8 @@ function Kitchen() {
         <div className="summary-section">
           <h3>Client Information</h3>
           {summaryRow('Name', `${getInputValue('firstName') || ''} ${getInputValue('lastName') || ''}`)}
+          {summaryRow('Email', getInputValue('email'))}
+          {summaryRow('Phone', getInputValue('phone'))}
           {summaryRow('Project Type', getInputValue('projectType'))}
           {summaryRow('Budget', getInputValue('budget'))}
           {summaryRow('Initial Notes', getInputValue('extraNotes'))}
@@ -1018,7 +852,7 @@ function Kitchen() {
   const downloadSummary = () => {
     const name = `${getInputValue('firstName') || ''} ${getInputValue('lastName') || ''}`.trim() || 'Client';
     const date = new Date().toLocaleDateString('en-AU', { day: '2-digit', month: 'long', year: 'numeric' });
-    let text = `PERREM DESIGN & CONSTRUCTION — KITCHEN DESIGN BRIEF\nGenerated: ${date}\nClient: ${name}\n\n`;
+    let text = `PERREM DESIGN & CONSTRUCTION — KITCHEN DESIGN BRIEF\nGenerated: ${date}\nClient: ${name}\nEmail: ${getInputValue('email')}\nPhone: ${getInputValue('phone')}\n\n`;
     text += `PROJECT\nType: ${getInputValue('projectType')}\nBudget: ${getInputValue('budget')}\nNotes: ${getInputValue('extraNotes')}\n\n`;
     text += `LAYOUT\nType: ${selections.layout || '—'}\nIsland: ${getInputValue('islandIncluded')}\nBar Seating: ${getInputValue('barSeating')}\nButler Pantry: ${getInputValue('butlersPantry')}\nOverheads: ${getInputValue('overheads')}\n\n`;
     text += `STYLE\nDirection: ${selections.style || '—'}\n\n`;
@@ -1034,10 +868,104 @@ function Kitchen() {
     a.click();
   };
 
-  const submitForm = () => {
+  const submitToGHL = async (data) => {
+  const customFields = [
+    { key: 'project_type',          field_value: data.projectType || '' },
+    { key: 'budget',                field_value: data.budget || '' },
+    { key: 'rooms',                 field_value: data.rooms },
+    { key: 'bathroom_dimensions',   field_value: data.dims },
+    { key: 'floor_plans_available', field_value: data.plans },
+    { key: 'freestanding_bath',     field_value: data.bath },
+    { key: 'bath_mixer_type',       field_value: data.bathMixer },
+    { key: 'separate_toilet',       field_value: data.toilet },
+    { key: 'skylight',              field_value: data.skylight },
+    { key: 'heated_towel_rail',     field_value: data.htr },
+    { key: 'underfloor_heating',    field_value: data.ufh },
+    { key: 'vanity_powerpoints',    field_value: data.pp },
+    { key: 'shower_niche',          field_value: data.niche },
+    { key: 'nib_wall',              field_value: data.nib },
+    { key: 'shower_seat',           field_value: data.seat },
+    { key: 'shower_screen_glass',   field_value: data.glass },
+    { key: 'bathroom_style',        field_value: data.styleName },
+    { key: 'vanity_layout_variant', field_value: data.variantName },
+    { key: 'vanity_mount_type',     field_value: data.vanityMount },
+    { key: 'custom_vanity',         field_value: data.customVan },
+    { key: 'cabinetry_selection',   field_value: data.s4['Cabinetry'] || '' },
+    { key: 'benchtop_selection',    field_value: data.s4['Benchtop'] || '' },
+    { key: 'mirror_selection',      field_value: data.s4['Mirror'] || '' },
+    { key: 'floor__wall_tile',      field_value: data.s5['Floor & Wall Tile'] || '' },
+    { key: 'feature_wall',          field_value: data.s5['Feature Wall'] || '' },
+    { key: 'grout_colour',          field_value: data.grout },
+    { key: 'tapware_finish',        field_value: data.tapFinish },
+    { key: 'tapware_selection',     field_value: data.s6['Tapware'] || '' },
+    { key: 'basin_selection',       field_value: data.s6['Basin'] || '' },
+    { key: 'mirror_tapware_step',   field_value: data.s6['Mirror'] || '' },
+    { key: 'shower_head_selection', field_value: data.s7['Shower Head'] || '' },
+    { key: 'hardware_finish',       field_value: data.hwFinish },
+    { key: 'wall_lights',           field_value: data.wallLights },
+    { key: 'backlit_mirror',        field_value: data.backlitMirror },
+    { key: 'led_strip_niche',       field_value: data.ledNiche },
+    { key: 'led_strip_vanity',      field_value: data.ledVan },
+    { key: 'extra_notes',           field_value: data.notes || '' },
+  ].filter(f => f.field_value); // ← matches Kitchen: remove empty fields
+
+ const payload = {
+  firstName: data.fname || '',
+  lastName: data.lname || '',
+  email: data.email && data.email.includes('@') ? data.email : undefined,
+  phone: data.phone || undefined,
+  locationId: GHL_LOCATION_ID,
+  customFields,
+  tags: ['bathroom-brief'],
+  source: 'Bathroom Design Portal',
+};
+
+  const response = await fetch(GHL_API_URL, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${GHL_API_KEY}`,
+      'Content-Type': 'application/json',
+      'Version': '2021-07-28',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const responseData = await response.json();
+
+  if (!response.ok) {
+    console.error('GHL API error:', responseData);
+    throw new Error(responseData.message || 'Something went wrong. Please try again.');
+  }
+
+  return responseData;
+};
+
+  // ─── GHL API: Create Contact on Submit ───────────────────────────────────
+  const submitForm = async () => {
+  setIsSubmitting(true);
+  setSubmitError(null);
+
+  const data = buildSummary();
+
+  // Validate email before sending
+  if (!data.email || !data.email.includes('@')) {
+    setSubmitError('Please go back to Step 1 and enter a valid email address.');
+    setIsSubmitting(false);
+    return;
+  }
+
+  try {
+    await submitToGHL(data);
     setIsSubmitted(true);
+    setCurrentStep(9);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  } catch (err) {
+    console.error('GHL submission failed:', err);
+    setSubmitError(err.message || 'There was a problem submitting your brief. Please try again or contact us directly.');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const goToStep = (step) => {
     if (step >= 1 && step <= 9) {
@@ -1078,6 +1006,16 @@ function Kitchen() {
               <div className="field">
                 <label>Last Name <span className="required">*</span></label>
                 <input type="text" value={getInputValue('lastName')} onChange={(e) => updateSelections('lastName', e.target.value)} placeholder="e.g. Thompson" />
+              </div>
+            </div>
+            <div className="field-group">
+              <div className="field">
+                <label>Email Address <span className="required">*</span></label>
+                <input type="email" value={getInputValue('email')} onChange={(e) => updateSelections('email', e.target.value)} placeholder="e.g. sarah@example.com" />
+              </div>
+              <div className="field">
+                <label>Phone Number</label>
+                <input type="tel" value={getInputValue('phone')} onChange={(e) => updateSelections('phone', e.target.value)} placeholder="e.g. 0412 345 678" />
               </div>
             </div>
             <div className="section-label">Project Details</div>
@@ -1140,10 +1078,7 @@ function Kitchen() {
         <text x="90" y="80" textAnchor="middle" fontFamily="sans-serif" fontSize="9" fill="#999" fontWeight="600">SINGLE WALL</text>
       </svg>
     </div>
-    <div className="layout-card-body">
-      <div className="layout-card-name">Single Wall / Galley</div>
-      <div className="layout-card-sub">Everything on one run. Efficient, suits open-plan spaces or narrower rooms.</div>
-    </div>
+    <div className="layout-card-body"><div className="layout-card-name">Single Wall / Galley</div><div className="layout-card-sub">Everything on one run. Efficient, suits open-plan spaces or narrower rooms.</div></div>
   </div>
 
   <div className={`layout-card ${selections.layout === 'L-Shape' ? 'selected' : ''}`} onClick={() => toggleSingle('L-Shape', 'layout')}>
@@ -1160,10 +1095,7 @@ function Kitchen() {
         <text x="120" y="50" textAnchor="middle" fontFamily="sans-serif" fontSize="9" fill="#999" fontWeight="600">L-SHAPE</text>
       </svg>
     </div>
-    <div className="layout-card-body">
-      <div className="layout-card-name">L-Shape</div>
-      <div className="layout-card-sub">Two adjacent walls. Good corner use, natural work triangle. Option to add island later.</div>
-    </div>
+    <div className="layout-card-body"><div className="layout-card-name">L-Shape</div><div className="layout-card-sub">Two adjacent walls. Good corner use, natural work triangle. Option to add island later.</div></div>
   </div>
 
   <div className={`layout-card ${selections.layout === 'U-Shape' ? 'selected' : ''}`} onClick={() => toggleSingle('U-Shape', 'layout')}>
@@ -1181,10 +1113,7 @@ function Kitchen() {
         <text x="91" y="46" textAnchor="middle" fontFamily="sans-serif" fontSize="9" fill="#999" fontWeight="600">U-SHAPE</text>
       </svg>
     </div>
-    <div className="layout-card-body">
-      <div className="layout-card-name">U-Shape</div>
-      <div className="layout-card-sub">Three walls of cabinetry. Maximum bench space and storage. Suited to larger dedicated kitchen rooms.</div>
-    </div>
+    <div className="layout-card-body"><div className="layout-card-name">U-Shape</div><div className="layout-card-sub">Three walls of cabinetry. Maximum bench space and storage. Suited to larger dedicated kitchen rooms.</div></div>
   </div>
 
   <div className={`layout-card ${selections.layout === 'L-Shape with Island' ? 'selected' : ''}`} onClick={() => toggleSingle('L-Shape with Island', 'layout')}>
@@ -1199,10 +1128,7 @@ function Kitchen() {
         <text x="120" y="82" textAnchor="middle" fontFamily="sans-serif" fontSize="9" fill="#999" fontWeight="600">L + ISLAND</text>
       </svg>
     </div>
-    <div className="layout-card-body">
-      <div className="layout-card-name">L-Shape with Island</div>
-      <div className="layout-card-sub">Our most popular. Excellent workflow, generous bench, and the island becomes the social hub of the home.</div>
-    </div>
+    <div className="layout-card-body"><div className="layout-card-name">L-Shape with Island</div><div className="layout-card-sub">Our most popular. Excellent workflow, generous bench, and the island becomes the social hub of the home.</div></div>
   </div>
 
   <div className={`layout-card ${selections.layout === 'Galley with Island' ? 'selected' : ''}`} onClick={() => toggleSingle('Galley with Island', 'layout')}>
@@ -1216,10 +1142,7 @@ function Kitchen() {
         <text x="90" y="47" textAnchor="middle" fontFamily="sans-serif" fontSize="8" fill="#00B5CC" fontWeight="700" opacity="0.8">ISLAND</text>
       </svg>
     </div>
-    <div className="layout-card-body">
-      <div className="layout-card-name">Galley with Island</div>
-      <div className="layout-card-sub">Two parallel runs plus central island. Chef-style workflow, excellent for high-use kitchens.</div>
-    </div>
+    <div className="layout-card-body"><div className="layout-card-name">Galley with Island</div><div className="layout-card-sub">Two parallel runs plus central island. Chef-style workflow, excellent for high-use kitchens.</div></div>
   </div>
 
   <div className={`layout-card ${selections.layout === 'Open to Advice' ? 'selected' : ''}`} onClick={() => toggleSingle('Open to Advice', 'layout')}>
@@ -1230,10 +1153,7 @@ function Kitchen() {
         <text x="30" y="42" textAnchor="middle" fontFamily="sans-serif" fontSize="8" fill="#CCCCCC" fontWeight="600">ADVISE ME</text>
       </svg>
     </div>
-    <div className="layout-card-body">
-      <div className="layout-card-name">Open to Advice</div>
-      <div className="layout-card-sub">We'll work with your existing plans and recommend the best layout for your space and lifestyle.</div>
-    </div>
+    <div className="layout-card-body"><div className="layout-card-name">Open to Advice</div><div className="layout-card-sub">We'll work with your existing plans and recommend the best layout for your space and lifestyle.</div></div>
   </div>
 
 </div>
@@ -1258,47 +1178,26 @@ function Kitchen() {
             </div>
             <div className="section-label">Island & Pantry</div>
             <div className="field-group">
-              <div className="field">
-                <label>Island included?</label>
+              <div className="field"><label>Island included?</label>
                 <select value={getInputValue('islandIncluded')} onChange={(e) => updateSelections('islandIncluded', e.target.value)}>
-                  <option value="">Select...</option>
-                  <option>Yes definitely</option>
-                  <option>Yes if space allows</option>
-                  <option>No island</option>
-                  <option>Not sure yet</option>
+                  <option value="">Select...</option><option>Yes definitely</option><option>Yes if space allows</option><option>No island</option><option>Not sure yet</option>
                 </select>
               </div>
-              <div className="field">
-                <label>Bar seating on island?</label>
+              <div className="field"><label>Bar seating on island?</label>
                 <select value={getInputValue('barSeating')} onChange={(e) => updateSelections('barSeating', e.target.value)}>
-                  <option value="">Select...</option>
-                  <option>Yes — 2 stools</option>
-                  <option>Yes — 3–4 stools</option>
-                  <option>Yes — 4+ stools</option>
-                  <option>No bar seating</option>
-                  <option>Not sure</option>
+                  <option value="">Select...</option><option>Yes — 2 stools</option><option>Yes — 3–4 stools</option><option>Yes — 4+ stools</option><option>No bar seating</option><option>Not sure</option>
                 </select>
               </div>
             </div>
             <div className="field-group">
-              <div className="field">
-                <label>Butler's pantry?</label>
+              <div className="field"><label>Butler's pantry?</label>
                 <select value={getInputValue('butlersPantry')} onChange={(e) => updateSelections('butlersPantry', e.target.value)}>
-                  <option value="">Select...</option>
-                  <option>Yes with door</option>
-                  <option>Yes open / pass-through</option>
-                  <option>No</option>
-                  <option>Subject to space</option>
+                  <option value="">Select...</option><option>Yes with door</option><option>Yes open / pass-through</option><option>No</option><option>Subject to space</option>
                 </select>
               </div>
-              <div className="field">
-                <label>Overhead cabinets?</label>
+              <div className="field"><label>Overhead cabinets?</label>
                 <select value={getInputValue('overheads')} onChange={(e) => updateSelections('overheads', e.target.value)}>
-                  <option value="">Select...</option>
-                  <option>Yes full run</option>
-                  <option>Yes partial / feature section only</option>
-                  <option>No overheads</option>
-                  <option>Mix of overheads and open shelving</option>
+                  <option value="">Select...</option><option>Yes full run</option><option>Yes partial / feature section only</option><option>No overheads</option><option>Mix of overheads and open shelving</option>
                 </select>
               </div>
             </div>
@@ -1318,32 +1217,19 @@ function Kitchen() {
               <p className="step-desc">Choose the aesthetic that resonates most with you. This becomes the foundation for every material and finish selection that follows.</p>
             </div>
             <div className="section-label">Choose a Style — Select One</div>
-
-            {/* ── Style grid with images ── */}
             <div className="style-card-grid">
               {STYLE_OPTIONS.map(style => (
-                <div
-                  key={style.val}
-                  className={`style-card ${selections.style === style.val ? 'selected' : ''} ${style.val === 'Open to Direction' ? 'style-card--full' : ''}`}
-                  onClick={() => toggleSingle(style.val, 'style')}
-                >
-                  {style.img && (
-                    <div className="style-card-img">
-                      <img src={style.img} alt={style.val} loading="lazy" />
-                    </div>
-                  )}
+                <div key={style.val} className={`style-card ${selections.style === style.val ? 'selected' : ''} ${style.val === 'Open to Direction' ? 'style-card--full' : ''}`} onClick={() => toggleSingle(style.val, 'style')}>
+                  {style.img && (<div className="style-card-img"><img src={style.img} alt={style.val} loading="lazy" /></div>)}
                   <div className="style-card-text">
                     <div className="style-card-title">{style.val}</div>
                     <div className="style-card-tagline">{style.tagline}</div>
                     <div className="style-card-desc">{style.desc}</div>
                   </div>
-                  {selections.style === style.val && (
-                    <div className="style-card-check">✓</div>
-                  )}
+                  {selections.style === style.val && (<div className="style-card-check">✓</div>)}
                 </div>
               ))}
             </div>
-
             <div className="section-label">Colour Palette Preference</div>
             <p className="multi-hint">Select all that apply</p>
             <div className="pill-group">
@@ -1366,108 +1252,51 @@ function Kitchen() {
         );
 
       case 4:
-        if (!styleContent) return (
-          <div className="step-screen active">
-            <div className="loading">Please go back to Step 3 and select a curated style to see product options with images.</div>
-            <div className="nav-row">
-              <button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button>
-              <button className="btn btn-primary" onClick={() => goToStep(5)}>Continue →</button>
-            </div>
-          </div>
-        );
+        if (!styleContent) return (<div className="step-screen active"><div className="loading">Please go back to Step 3 and select a curated style to see product options with images.</div><div className="nav-row"><button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button><button className="btn btn-primary" onClick={() => goToStep(5)}>Continue →</button></div></div>);
         return (
           <div className="step-screen active">
-            <div className="step-header">
-              <div className="step-eyebrow">Step 4 of 9</div>
-              <h1 className="step-title">{styleContent.s4.title}</h1>
-              <p className="step-desc">{styleContent.s4.desc}</p>
-            </div>
+            <div className="step-header"><div className="step-eyebrow">Step 4 of 9</div><h1 className="step-title">{styleContent.s4.title}</h1><p className="step-desc">{styleContent.s4.desc}</p></div>
             <div className="section-label">Door Profile / Style</div>
             {renderOptionGrid(styleContent.s4.door, 'doorStyle')}
             <div className="section-label">Cabinet Finish</div>
             {renderOptionGrid(styleContent.s4.cabinet, 'underbench')}
             <div className="section-label">Benchtop Material</div>
             {renderOptionGrid(styleContent.s4.benchtop, 'benchtop')}
-            <div className="nav-row">
-              <button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back</button>
-              <button className="btn btn-primary" onClick={() => goToStep(5)}>Next: Splashback & Flooring →</button>
-            </div>
+            <div className="nav-row"><button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back</button><button className="btn btn-primary" onClick={() => goToStep(5)}>Next: Splashback & Flooring →</button></div>
           </div>
         );
 
       case 5:
-        if (!styleContent) return (
-          <div className="step-screen active">
-            <div className="loading">Please select a curated style in Step 3 to see product options.</div>
-            <div className="nav-row">
-              <button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button>
-              <button className="btn btn-primary" onClick={() => goToStep(6)}>Continue →</button>
-            </div>
-          </div>
-        );
+        if (!styleContent) return (<div className="step-screen active"><div className="loading">Please select a curated style in Step 3 to see product options.</div><div className="nav-row"><button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button><button className="btn btn-primary" onClick={() => goToStep(6)}>Continue →</button></div></div>);
         return (
           <div className="step-screen active">
-            <div className="step-header">
-              <div className="step-eyebrow">Step 5 of 9</div>
-              <h1 className="step-title">Splashback & Flooring</h1>
-              <p className="step-desc">{styleContent.s5.desc}</p>
-            </div>
+            <div className="step-header"><div className="step-eyebrow">Step 5 of 9</div><h1 className="step-title">Splashback & Flooring</h1><p className="step-desc">{styleContent.s5.desc}</p></div>
             <div className="section-label">Splashback Direction</div>
             {renderOptionGrid(styleContent.s5.splashback, 'splashback')}
             <div className="section-label">Flooring Direction</div>
             {renderOptionGrid(styleContent.s5.flooring, 'flooring')}
-            <div className="nav-row">
-              <button className="btn btn-secondary" onClick={() => goToStep(4)}>← Back</button>
-              <button className="btn btn-primary" onClick={() => goToStep(6)}>Next: Tapware & Sinks →</button>
-            </div>
+            <div className="nav-row"><button className="btn btn-secondary" onClick={() => goToStep(4)}>← Back</button><button className="btn btn-primary" onClick={() => goToStep(6)}>Next: Tapware & Sinks →</button></div>
           </div>
         );
 
       case 6:
-        if (!styleContent) return (
-          <div className="step-screen active">
-            <div className="loading">Please select a curated style in Step 3 to see product options.</div>
-            <div className="nav-row">
-              <button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button>
-              <button className="btn btn-primary" onClick={() => goToStep(7)}>Continue →</button>
-            </div>
-          </div>
-        );
+        if (!styleContent) return (<div className="step-screen active"><div className="loading">Please select a curated style in Step 3 to see product options.</div><div className="nav-row"><button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button><button className="btn btn-primary" onClick={() => goToStep(7)}>Continue →</button></div></div>);
         return (
           <div className="step-screen active">
-            <div className="step-header">
-              <div className="step-eyebrow">Step 6 of 9</div>
-              <h1 className="step-title">Tapware & Sinks</h1>
-              <p className="step-desc">{styleContent.s6.desc}</p>
-            </div>
+            <div className="step-header"><div className="step-eyebrow">Step 6 of 9</div><h1 className="step-title">Tapware & Sinks</h1><p className="step-desc">{styleContent.s6.desc}</p></div>
             <div className="section-label">Tapware</div>
             {renderOptionGrid(styleContent.s6.tapware, 'tapStyle')}
             <div className="section-label">Sink Configuration</div>
             {renderOptionGrid(styleContent.s6.sinks, 'sinkType')}
-            <div className="nav-row">
-              <button className="btn btn-secondary" onClick={() => goToStep(5)}>← Back</button>
-              <button className="btn btn-primary" onClick={() => goToStep(7)}>Next: Hardware & Lighting →</button>
-            </div>
+            <div className="nav-row"><button className="btn btn-secondary" onClick={() => goToStep(5)}>← Back</button><button className="btn btn-primary" onClick={() => goToStep(7)}>Next: Hardware & Lighting →</button></div>
           </div>
         );
 
       case 7:
-        if (!styleContent) return (
-          <div className="step-screen active">
-            <div className="loading">Please select a curated style in Step 3 to see product options.</div>
-            <div className="nav-row">
-              <button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button>
-              <button className="btn btn-primary" onClick={() => goToStep(8)}>Continue →</button>
-            </div>
-          </div>
-        );
+        if (!styleContent) return (<div className="step-screen active"><div className="loading">Please select a curated style in Step 3 to see product options.</div><div className="nav-row"><button className="btn btn-secondary" onClick={() => goToStep(3)}>← Back to Style</button><button className="btn btn-primary" onClick={() => goToStep(8)}>Continue →</button></div></div>);
         return (
           <div className="step-screen active">
-            <div className="step-header">
-              <div className="step-eyebrow">Step 7 of 9</div>
-              <h1 className="step-title">Hardware & Lighting</h1>
-              <p className="step-desc">{styleContent.s7.desc}</p>
-            </div>
+            <div className="step-header"><div className="step-eyebrow">Step 7 of 9</div><h1 className="step-title">Hardware & Lighting</h1><p className="step-desc">{styleContent.s7.desc}</p></div>
             <div className="section-label">Cabinet Hardware</div>
             {renderOptionGrid(styleContent.s7.hardware, 'hardware')}
             <div className="section-label">Pendant Lighting</div>
@@ -1476,188 +1305,52 @@ function Kitchen() {
             {renderOptionGrid(styleContent.s7.walls, 'wallColour')}
             <div className="section-label">Wall Linings & Panels</div>
             {renderOptionGrid(styleContent.s7.panels, 'wallPanel')}
-            <div className="nav-row">
-              <button className="btn btn-secondary" onClick={() => goToStep(6)}>← Back</button>
-              <button className="btn btn-primary" onClick={() => goToStep(8)}>Next: Appliances →</button>
-            </div>
+            <div className="nav-row"><button className="btn btn-secondary" onClick={() => goToStep(6)}>← Back</button><button className="btn btn-primary" onClick={() => goToStep(8)}>Next: Appliances →</button></div>
           </div>
         );
 
       case 8:
         return (
           <div className="step-screen active">
-            <div className="step-header">
-              <div className="step-eyebrow">Step 8 of 9</div>
-              <h1 className="step-title">Appliances & Storage</h1>
-              <p className="step-desc">Appliance sizes and integration types directly affect cabinetry layout. The more specific you can be, the more accurate your initial design.</p>
-            </div>
+            <div className="step-header"><div className="step-eyebrow">Step 8 of 9</div><h1 className="step-title">Appliances & Storage</h1><p className="step-desc">Appliance sizes and integration types directly affect cabinetry layout. The more specific you can be, the more accurate your initial design.</p></div>
             <div className="section-label">Cooktop</div>
             <div className="field-group">
-              <div className="field"><label>Cooktop Type</label>
-                <select value={getInputValue('cooktopType')} onChange={(e) => updateSelections('cooktopType', e.target.value)}>
-                  <option value="">Select...</option>
-                  <option>Induction 600mm</option><option>Induction 900mm</option>
-                  <option>Gas 600mm</option><option>Gas 900mm</option>
-                  <option>Integrated Gas / Induction Hybrid</option>
-                  <option>Not decided yet</option>
-                </select>
-              </div>
-              <div className="field"><label>Integrated or Freestanding?</label>
-                <select value={getInputValue('cooktopMount')} onChange={(e) => updateSelections('cooktopMount', e.target.value)}>
-                  <option value="">Select...</option>
-                  <option>Integrated / Built-in (flush to benchtop)</option>
-                  <option>Freestanding Range (oven + cooktop combined)</option>
-                </select>
-              </div>
+              <div className="field"><label>Cooktop Type</label><select value={getInputValue('cooktopType')} onChange={(e) => updateSelections('cooktopType', e.target.value)}><option value="">Select...</option><option>Induction 600mm</option><option>Induction 900mm</option><option>Gas 600mm</option><option>Gas 900mm</option><option>Integrated Gas / Induction Hybrid</option><option>Not decided yet</option></select></div>
+              <div className="field"><label>Integrated or Freestanding?</label><select value={getInputValue('cooktopMount')} onChange={(e) => updateSelections('cooktopMount', e.target.value)}><option value="">Select...</option><option>Integrated / Built-in (flush to benchtop)</option><option>Freestanding Range (oven + cooktop combined)</option></select></div>
             </div>
             <div className="field-group">
-              <div className="field"><label>Cooktop Brand</label>
-                <select value={getInputValue('cooktopBrand')} onChange={(e) => updateSelections('cooktopBrand', e.target.value)}>
-                  <option value="">Select brand...</option>
-                  <option>Smeg</option><option>Bosch</option><option>Fisher & Paykel</option><option>Miele</option>
-                  <option>AEG</option><option>Electrolux</option><option>Ilve</option><option>Belling</option>
-                  <option>Westinghouse</option><option>Falcon</option><option>Omega</option><option>Kleenmaid</option>
-                  <option>Neff</option><option>Gaggenau</option><option>V-Zug</option>
-                  <option>Other (specify below)</option><option>Open to any — no preference</option>
-                </select>
-              </div>
-              <div className="field"><label>Other / Specific Model</label>
-                <input type="text" value={getInputValue('cooktopBrandOther')} onChange={(e) => updateSelections('cooktopBrandOther', e.target.value)} placeholder="If 'Other', specify here" />
-              </div>
+              <div className="field"><label>Cooktop Brand</label><select value={getInputValue('cooktopBrand')} onChange={(e) => updateSelections('cooktopBrand', e.target.value)}><option value="">Select brand...</option><option>Smeg</option><option>Bosch</option><option>Fisher & Paykel</option><option>Miele</option><option>AEG</option><option>Electrolux</option><option>Ilve</option><option>Belling</option><option>Westinghouse</option><option>Falcon</option><option>Omega</option><option>Kleenmaid</option><option>Neff</option><option>Gaggenau</option><option>V-Zug</option><option>Other (specify below)</option><option>Open to any — no preference</option></select></div>
+              <div className="field"><label>Other / Specific Model</label><input type="text" value={getInputValue('cooktopBrandOther')} onChange={(e) => updateSelections('cooktopBrandOther', e.target.value)} placeholder="If 'Other', specify here" /></div>
             </div>
             <div className="section-label">Oven</div>
             <div className="field-group">
-              <div className="field"><label>Oven Type</label>
-                <select value={getInputValue('ovenType')} onChange={(e) => updateSelections('ovenType', e.target.value)}>
-                  <option value="">Select...</option>
-                  <option>Single Oven — 600mm Built-in Integrated</option>
-                  <option>Single Oven — 600mm Freestanding</option>
-                  <option>Double Oven — 600mm Built-in Integrated</option>
-                  <option>Steam / Combination Oven</option>
-                  <option>Pyrolytic Oven</option>
-                  <option>Part of Freestanding Range</option>
-                  <option>Not decided yet</option>
-                </select>
-              </div>
-              <div className="field"><label>Microwave / Combi</label>
-                <select value={getInputValue('microwave')} onChange={(e) => updateSelections('microwave', e.target.value)}>
-                  <option value="">Select...</option>
-                  <option>Yes — integrated in cabinetry (built-in trim kit)</option>
-                  <option>Yes — benchtop unit only</option>
-                  <option>Yes — microwave combi (replaces one oven)</option>
-                  <option>No microwave</option>
-                  <option>Not sure yet</option>
-                </select>
-              </div>
+              <div className="field"><label>Oven Type</label><select value={getInputValue('ovenType')} onChange={(e) => updateSelections('ovenType', e.target.value)}><option value="">Select...</option><option>Single Oven — 600mm Built-in Integrated</option><option>Single Oven — 600mm Freestanding</option><option>Double Oven — 600mm Built-in Integrated</option><option>Steam / Combination Oven</option><option>Pyrolytic Oven</option><option>Part of Freestanding Range</option><option>Not decided yet</option></select></div>
+              <div className="field"><label>Microwave / Combi</label><select value={getInputValue('microwave')} onChange={(e) => updateSelections('microwave', e.target.value)}><option value="">Select...</option><option>Yes — integrated in cabinetry (built-in trim kit)</option><option>Yes — benchtop unit only</option><option>Yes — microwave combi (replaces one oven)</option><option>No microwave</option><option>Not sure yet</option></select></div>
             </div>
             <div className="field-group">
-              <div className="field"><label>Oven Brand</label>
-                <select value={getInputValue('ovenBrand')} onChange={(e) => updateSelections('ovenBrand', e.target.value)}>
-                  <option value="">Select brand...</option>
-                  <option>Smeg</option><option>Bosch</option><option>Fisher & Paykel</option><option>Miele</option>
-                  <option>AEG</option><option>Electrolux</option><option>Ilve</option><option>Westinghouse</option>
-                  <option>Falcon</option><option>Omega</option><option>Kleenmaid</option><option>Neff</option>
-                  <option>Gaggenau</option><option>V-Zug</option>
-                  <option>Other (specify below)</option><option>Open to any — no preference</option>
-                </select>
-              </div>
-              <div className="field"><label>Other / Specific Model</label>
-                <input type="text" value={getInputValue('ovenBrandOther')} onChange={(e) => updateSelections('ovenBrandOther', e.target.value)} placeholder="If 'Other', specify here" />
-              </div>
+              <div className="field"><label>Oven Brand</label><select value={getInputValue('ovenBrand')} onChange={(e) => updateSelections('ovenBrand', e.target.value)}><option value="">Select brand...</option><option>Smeg</option><option>Bosch</option><option>Fisher & Paykel</option><option>Miele</option><option>AEG</option><option>Electrolux</option><option>Ilve</option><option>Westinghouse</option><option>Falcon</option><option>Omega</option><option>Kleenmaid</option><option>Neff</option><option>Gaggenau</option><option>V-Zug</option><option>Other (specify below)</option><option>Open to any — no preference</option></select></div>
+              <div className="field"><label>Other / Specific Model</label><input type="text" value={getInputValue('ovenBrandOther')} onChange={(e) => updateSelections('ovenBrandOther', e.target.value)} placeholder="If 'Other', specify here" /></div>
             </div>
             <div className="section-label">Rangehood</div>
-            <div className="notes-box">
-              <p><strong>Externally mounted exhaust fans:</strong> For a quieter kitchen, we recommend a rangehood with the motor mounted externally (roof cavity or external wall). The fan noise stays completely outside the living space. Schweigen and Qasair specialise in this system and are our preferred brands for this approach.</p>
+            <div className="notes-box"><p><strong>Externally mounted exhaust fans:</strong> For a quieter kitchen, we recommend a rangehood with the motor mounted externally (roof cavity or external wall). The fan noise stays completely outside the living space. Schweigen and Qasair specialise in this system and are our preferred brands for this approach.</p></div>
+            <div className="field-group">
+              <div className="field"><label>Rangehood Type</label><select value={getInputValue('rangehoodType')} onChange={(e) => updateSelections('rangehoodType', e.target.value)}><option value="">Select...</option><option>Undermount / Integrated — 900mm</option><option>Undermount / Integrated — 600mm</option><option>Canopy / Feature Hood — 900mm</option><option>Canopy / Feature Hood — 1200mm+</option><option>Island / Ceiling Mounted</option><option>Downdraft / Pop-up</option><option>Not decided yet</option></select></div>
+              <div className="field"><label>Motor Configuration</label><select value={getInputValue('rangehoodMotor')} onChange={(e) => updateSelections('rangehoodMotor', e.target.value)}><option value="">Select...</option><option>Externally mounted motor — quiet (recommended)</option><option>Internal motor — standard</option><option>Recirculating — no ducting possible</option><option>Not sure — advise me</option></select></div>
             </div>
             <div className="field-group">
-              <div className="field"><label>Rangehood Type</label>
-                <select value={getInputValue('rangehoodType')} onChange={(e) => updateSelections('rangehoodType', e.target.value)}>
-                  <option value="">Select...</option>
-                  <option>Undermount / Integrated — 900mm</option>
-                  <option>Undermount / Integrated — 600mm</option>
-                  <option>Canopy / Feature Hood — 900mm</option>
-                  <option>Canopy / Feature Hood — 1200mm+</option>
-                  <option>Island / Ceiling Mounted</option>
-                  <option>Downdraft / Pop-up</option>
-                  <option>Not decided yet</option>
-                </select>
-              </div>
-              <div className="field"><label>Motor Configuration</label>
-                <select value={getInputValue('rangehoodMotor')} onChange={(e) => updateSelections('rangehoodMotor', e.target.value)}>
-                  <option value="">Select...</option>
-                  <option>Externally mounted motor — quiet (recommended)</option>
-                  <option>Internal motor — standard</option>
-                  <option>Recirculating — no ducting possible</option>
-                  <option>Not sure — advise me</option>
-                </select>
-              </div>
-            </div>
-            <div className="field-group">
-              <div className="field"><label>Rangehood Brand</label>
-                <select value={getInputValue('rangehoodBrand')} onChange={(e) => updateSelections('rangehoodBrand', e.target.value)}>
-                  <option value="">Select brand...</option>
-                  <option>Schweigen (external motor specialist)</option>
-                  <option>Qasair (external motor specialist)</option>
-                  <option>Smeg</option><option>Bosch</option><option>Fisher & Paykel</option><option>Miele</option>
-                  <option>AEG</option><option>Electrolux</option><option>Westinghouse</option><option>Omega</option>
-                  <option>Kleenmaid</option><option>Neff</option><option>Gaggenau</option><option>Siemens</option>
-                  <option>Other (specify below)</option><option>Open to any — no preference</option>
-                </select>
-              </div>
-              <div className="field"><label>Other / Notes</label>
-                <input type="text" value={getInputValue('rangehoodBrandOther')} onChange={(e) => updateSelections('rangehoodBrandOther', e.target.value)} placeholder="If 'Other' or specific model, note here" />
-              </div>
+              <div className="field"><label>Rangehood Brand</label><select value={getInputValue('rangehoodBrand')} onChange={(e) => updateSelections('rangehoodBrand', e.target.value)}><option value="">Select brand...</option><option>Schweigen (external motor specialist)</option><option>Qasair (external motor specialist)</option><option>Smeg</option><option>Bosch</option><option>Fisher & Paykel</option><option>Miele</option><option>AEG</option><option>Electrolux</option><option>Westinghouse</option><option>Omega</option><option>Kleenmaid</option><option>Neff</option><option>Gaggenau</option><option>Siemens</option><option>Other (specify below)</option><option>Open to any — no preference</option></select></div>
+              <div className="field"><label>Other / Notes</label><input type="text" value={getInputValue('rangehoodBrandOther')} onChange={(e) => updateSelections('rangehoodBrandOther', e.target.value)} placeholder="If 'Other' or specific model, note here" /></div>
             </div>
             <div className="section-label">Dishwasher & Fridge / Freezer</div>
             <div className="field-group">
-              <div className="field"><label>Dishwasher</label>
-                <select value={getInputValue('dishwasher')} onChange={(e) => updateSelections('dishwasher', e.target.value)}>
-                  <option value="">Select...</option>
-                  <option>Standard 600mm — Fully Integrated (panel front)</option>
-                  <option>Standard 600mm — Freestanding (visible front)</option>
-                  <option>XL / Tall-tub 600mm — Fully Integrated</option>
-                  <option>Drawer — Single Drawer Integrated</option>
-                  <option>Drawer — Double Drawer Integrated</option>
-                  <option>Not including a dishwasher</option>
-                </select>
-              </div>
-              <div className="field"><label>Dishwasher Brand</label>
-                <select value={getInputValue('dishwasherBrand')} onChange={(e) => updateSelections('dishwasherBrand', e.target.value)}>
-                  <option value="">Select brand...</option>
-                  <option>Fisher & Paykel</option><option>Bosch</option><option>Miele</option><option>AEG</option>
-                  <option>Smeg</option><option>Electrolux</option><option>Westinghouse</option><option>Omega</option>
-                  <option>Kleenmaid</option><option>Neff</option><option>Gaggenau</option>
-                  <option>Other (specify below)</option><option>Open to any — no preference</option>
-                </select>
-              </div>
+              <div className="field"><label>Dishwasher</label><select value={getInputValue('dishwasher')} onChange={(e) => updateSelections('dishwasher', e.target.value)}><option value="">Select...</option><option>Standard 600mm — Fully Integrated (panel front)</option><option>Standard 600mm — Freestanding (visible front)</option><option>XL / Tall-tub 600mm — Fully Integrated</option><option>Drawer — Single Drawer Integrated</option><option>Drawer — Double Drawer Integrated</option><option>Not including a dishwasher</option></select></div>
+              <div className="field"><label>Dishwasher Brand</label><select value={getInputValue('dishwasherBrand')} onChange={(e) => updateSelections('dishwasherBrand', e.target.value)}><option value="">Select brand...</option><option>Fisher & Paykel</option><option>Bosch</option><option>Miele</option><option>AEG</option><option>Smeg</option><option>Electrolux</option><option>Westinghouse</option><option>Omega</option><option>Kleenmaid</option><option>Neff</option><option>Gaggenau</option><option>Other (specify below)</option><option>Open to any — no preference</option></select></div>
             </div>
             <div className="field-group">
-              <div className="field"><label>Fridge / Freezer Configuration</label>
-                <select value={getInputValue('fridge')} onChange={(e) => updateSelections('fridge', e.target.value)}>
-                  <option value="">Select...</option>
-                  <option>Integrated fridge + integrated freezer (separate columns)</option>
-                  <option>Integrated French Door</option>
-                  <option>Integrated bottom mount</option>
-                  <option>Freestanding — built into cabinetry cavity</option>
-                  <option>Full column fridge only (separate freezer elsewhere)</option>
-                  <option>Not sure — open to recommendations</option>
-                </select>
-              </div>
-              <div className="field"><label>Fridge Brand</label>
-                <select value={getInputValue('fridgeBrand')} onChange={(e) => updateSelections('fridgeBrand', e.target.value)}>
-                  <option value="">Select brand...</option>
-                  <option>Fisher & Paykel</option><option>Miele</option><option>Bosch</option><option>AEG</option>
-                  <option>Smeg</option><option>Electrolux</option><option>Westinghouse</option><option>LG</option>
-                  <option>Samsung</option><option>Haier</option><option>Liebherr</option><option>Gaggenau</option>
-                  <option>Other (specify below)</option><option>Open to any — no preference</option>
-                </select>
-              </div>
+              <div className="field"><label>Fridge / Freezer Configuration</label><select value={getInputValue('fridge')} onChange={(e) => updateSelections('fridge', e.target.value)}><option value="">Select...</option><option>Integrated fridge + integrated freezer (separate columns)</option><option>Integrated French Door</option><option>Integrated bottom mount</option><option>Freestanding — built into cabinetry cavity</option><option>Full column fridge only (separate freezer elsewhere)</option><option>Not sure — open to recommendations</option></select></div>
+              <div className="field"><label>Fridge Brand</label><select value={getInputValue('fridgeBrand')} onChange={(e) => updateSelections('fridgeBrand', e.target.value)}><option value="">Select brand...</option><option>Fisher & Paykel</option><option>Miele</option><option>Bosch</option><option>AEG</option><option>Smeg</option><option>Electrolux</option><option>Westinghouse</option><option>LG</option><option>Samsung</option><option>Haier</option><option>Liebherr</option><option>Gaggenau</option><option>Other (specify below)</option><option>Open to any — no preference</option></select></div>
             </div>
-            <div className="field-group full">
-              <div className="field"><label>Appliance notes / specific models already chosen</label>
-                <input type="text" value={getInputValue('applianceNotes')} onChange={(e) => updateSelections('applianceNotes', e.target.value)} placeholder="e.g. 'Already purchased Miele H7264B oven' or 'Must match existing Smeg'" />
-              </div>
-            </div>
+            <div className="field-group full"><div className="field"><label>Appliance notes / specific models already chosen</label><input type="text" value={getInputValue('applianceNotes')} onChange={(e) => updateSelections('applianceNotes', e.target.value)} placeholder="e.g. 'Already purchased Miele H7264B oven' or 'Must match existing Smeg'" /></div></div>
             <div className="section-label">Additional Storage Features</div>
             <p className="multi-hint">Select all that apply</p>
             <div className="pill-group">
@@ -1665,34 +1358,39 @@ function Kitchen() {
                 <div key={pill} className={`pill ${(selections.storageFeatures || []).includes(pill) ? 'selected' : ''}`} onClick={() => togglePill(pill, 'storageFeatures')}>{pill}</div>
               ))}
             </div>
-            <div className="nav-row">
-              <button className="btn btn-secondary" onClick={() => goToStep(7)}>← Back</button>
-              <button className="btn btn-primary" onClick={() => goToStep(9)}>Next: Review & Submit →</button>
-            </div>
+            <div className="nav-row"><button className="btn btn-secondary" onClick={() => goToStep(7)}>← Back</button><button className="btn btn-primary" onClick={() => goToStep(9)}>Next: Review & Submit →</button></div>
           </div>
         );
 
       case 9:
         return (
           <div className="step-screen active">
-            <div className="step-header">
-              <div className="step-eyebrow">Step 9 of 9</div>
-              <h1 className="step-title">Review & Submit</h1>
-              <p className="step-desc">Here's a summary of your selections. Review everything below — once submitted, the Perrem Design & Construction team will use this to begin your initial design concept.</p>
-            </div>
+            <div className="step-header"><div className="step-eyebrow">Step 9 of 9</div><h1 className="step-title">Review & Submit</h1><p className="step-desc">Here's a summary of your selections. Review everything below — once submitted, the Perrem Design & Construction team will use this to begin your initial design concept.</p></div>
             {buildSummary()}
             <div className="section-label">Anything else to add?</div>
-            <div className="field-group full">
-              <div className="field"><label>Additional comments for the design team</label>
-                <textarea value={getInputValue('finalNotes')} onChange={(e) => updateSelections('finalNotes', e.target.value)} placeholder="Inspirations, specific products already sourced, concerns, anything not covered above..."></textarea>
+            <div className="field-group full"><div className="field"><label>Additional comments for the design team</label><textarea value={getInputValue('finalNotes')} onChange={(e) => updateSelections('finalNotes', e.target.value)} placeholder="Inspirations, specific products already sourced, concerns, anything not covered above..."></textarea></div></div>
+            <div className="notes-box"><p>By submitting this form you're providing <strong>Perrem Design & Construction</strong> with your initial kitchen brief. This is not a quote or contract — we'll be in touch to discuss next steps and arrange a site visit.</p></div>
+            {submitError && (
+              <div className="notes-box" style={{ borderColor: '#e74c3c', background: '#fdf2f2' }}>
+                <p style={{ color: '#c0392b', margin: 0 }}><strong>Error:</strong> {submitError}</p>
               </div>
-            </div>
-            <div className="notes-box">
-              <p>By submitting this form you're providing <strong>Perrem Design & Construction</strong> with your initial kitchen brief. This is not a quote or contract — we'll be in touch to discuss next steps and arrange a site visit.</p>
-            </div>
+            )}
+
+            {!summaryData?.email && (
+  <div style={{ color: '#cc0000', fontSize: '13px', marginBottom: '8px' }}>
+    ⚠ No email detected — please ensure you filled in Step 1 before submitting.
+  </div>
+)}
             <div className="nav-row">
               <button className="btn btn-secondary" onClick={() => goToStep(8)}>← Back</button>
-              <button className="btn btn-submit" onClick={submitForm}>Submit My Kitchen Brief →</button>
+              <button
+                className="btn btn-submit"
+                onClick={submitForm}
+                disabled={isSubmitting}
+                style={isSubmitting ? { opacity: 0.6, cursor: 'not-allowed' } : {}}
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit My Kitchen Brief →'}
+              </button>
             </div>
           </div>
         );

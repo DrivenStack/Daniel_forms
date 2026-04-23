@@ -140,12 +140,61 @@ import styleImgCoralHouse from '../assets/bathroom images/Coral house/Coral hous
 import styleImgFiftyShades from '../assets/bathroom images/Fifty shades/Fifty Shades v2.png';
 import styleImgResort from '../assets/bathroom images/Resort/Resort v2.png';
 
+// ─── GHL Configuration ────────────────────────────────────────────────────────
+const GHL_LOCATION_ID = 'Ir7r7duXyPwmyoxfC7Uz';
+const GHL_API_KEY = 'pit-877b392e-a6b0-47a5-aacf-08a2fc78525a';
+const GHL_API_URL = 'https://services.leadconnectorhq.com/contacts/';
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 function Bathroom() {
   const [currentStep, setCurrentStep] = useState(1);
   const [style, setStyle] = useState(null);
   const [variant, setVariant] = useState(null);
+
+  // ── React-controlled form fields (replaces DOM reads) ─────────────────────
+  const [formFields, setFormFields] = useState({
+    fname: '',
+    lname: '',
+    email: '',
+    phone: '',
+    address: '',
+    projectType: '',
+    budget: '',
+    ctEnsuite: '0',
+    ctBathroom: '0',
+    ctPowder: '0',
+    bathW: '',
+    bathL: '',
+    bathH: '',
+    notes: '',
+  });
+
+  // ── React-controlled pill/yn selections ──────────────────────────────────
+  const [pillSelections, setPillSelections] = useState({
+    bathMixer: '',
+    glassGrp: '',
+    vanityMount: '',
+  });
+
+  const [ynSelections, setYnSelections] = useState({
+    plans: '',
+    bath: '',
+    toilet: '',
+    sky: '',
+    htr: '',
+    ufh: '',
+    pp: '',
+    niche: '',
+    nib: '',
+    seat: '',
+    customVan: '',
+    wl: '',
+    bm: '',
+    ledNiche: '',
+    ledVan: '',
+  });
+
   const [selections, setSelections] = useState({
     s4sel: {},
     s5sel: {},
@@ -155,8 +204,15 @@ function Bathroom() {
     tapFinish: null,
     hwFinish: null,
   });
+
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
   const [summaryData, setSummaryData] = useState(null);
+
+  const updateField = (key, value) => setFormFields(prev => ({ ...prev, [key]: value }));
+  const updatePill = (key, value) => setPillSelections(prev => ({ ...prev, [key]: value }));
+  const updateYN = (key, value) => setYnSelections(prev => ({ ...prev, [key]: value }));
 
   const GROUT_COLOURS = [
     { name: 'White', hex: '#F5F3EE' },
@@ -814,57 +870,14 @@ function Bathroom() {
     },
   };
 
-  // ── Style card definitions (Step 3) — now uses local hero images ──────────
   const styleOptions = [
-    {
-      key: 'scandi',
-      name: 'Scandi',
-      desc: 'Calm and minimal. Warm oak, matte black and soft stone.',
-      colors: ['#9EA89E', '#C8C5BC', '#2A2A2A', '#E8E6E0'],
-      img: styleImgScandi,
-    },
-    {
-      key: 'hamptons',
-      name: 'Hamptons',
-      desc: 'Timeless and refined. Carrara tile, brushed brass, shaker profile.',
-      colors: ['#F4F0E8', '#E0D5C0', '#B8936A', '#FFF'],
-      img: styleImgHamptons,
-    },
-    {
-      key: 'classic-coastal',
-      name: 'Classic Coastal',
-      desc: 'Relaxed and organic. Oak Ravine, brushed brass, greige tile.',
-      colors: ['#C8D4C0', '#E8EDE6', '#B8936A', '#D6CFBF'],
-      img: styleImgClassicCoastal,
-    },
-    {
-      key: 'contemporary-coastal',
-      name: 'Contemporary Coastal',
-      desc: 'Modern and fresh. Chevron tile, brushed nickel, white profile.',
-      colors: ['#7AAAB8', '#B8CFD8', '#E6EDF0', '#FFF'],
-      img: styleImgContemCoastal,
-    },
-    {
-      key: 'coral-house',
-      name: 'Coral House',
-      desc: 'Warm and earthy. Matte white, timber V-groove, terracotta accent.',
-      colors: ['#C09080', '#D8C0B0', '#F0EAE4', '#FFF'],
-      img: styleImgCoralHouse,
-    },
-    {
-      key: 'fifty-shades',
-      name: 'Fifty Shades',
-      desc: 'Sophisticated and moody. Ivory tile, gun metal, warm oak.',
-      colors: ['#2A2520', '#6A6058', '#C8B89A', '#F0EDE6'],
-      img: styleImgFiftyShades,
-    },
-    {
-      key: 'resort',
-      name: 'Resort',
-      desc: 'Refined and luxurious. Limestone, champagne tapware, grey stone.',
-      colors: ['#A89890', '#C8C0B4', '#E4E0DC', '#B8936A'],
-      img: styleImgResort,
-    },
+    { key: 'scandi', name: 'Scandi', desc: 'Calm and minimal. Warm oak, matte black and soft stone.', colors: ['#9EA89E', '#C8C5BC', '#2A2A2A', '#E8E6E0'], img: styleImgScandi },
+    { key: 'hamptons', name: 'Hamptons', desc: 'Timeless and refined. Carrara tile, brushed brass, shaker profile.', colors: ['#F4F0E8', '#E0D5C0', '#B8936A', '#FFF'], img: styleImgHamptons },
+    { key: 'classic-coastal', name: 'Classic Coastal', desc: 'Relaxed and organic. Oak Ravine, brushed brass, greige tile.', colors: ['#C8D4C0', '#E8EDE6', '#B8936A', '#D6CFBF'], img: styleImgClassicCoastal },
+    { key: 'contemporary-coastal', name: 'Contemporary Coastal', desc: 'Modern and fresh. Chevron tile, brushed nickel, white profile.', colors: ['#7AAAB8', '#B8CFD8', '#E6EDF0', '#FFF'], img: styleImgContemCoastal },
+    { key: 'coral-house', name: 'Coral House', desc: 'Warm and earthy. Matte white, timber V-groove, terracotta accent.', colors: ['#C09080', '#D8C0B0', '#F0EAE4', '#FFF'], img: styleImgCoralHouse },
+    { key: 'fifty-shades', name: 'Fifty Shades', desc: 'Sophisticated and moody. Ivory tile, gun metal, warm oak.', colors: ['#2A2520', '#6A6058', '#C8B89A', '#F0EDE6'], img: styleImgFiftyShades },
+    { key: 'resort', name: 'Resort', desc: 'Refined and luxurious. Limestone, champagne tapware, grey stone.', colors: ['#A89890', '#C8C0B4', '#E4E0DC', '#B8936A'], img: styleImgResort },
   ];
 
   const steps = [
@@ -879,87 +892,22 @@ function Bathroom() {
     { label: 'Summary', num: 9 },
   ];
 
-  const updateSelections = (key, value) => {
-    setSelections(prev => ({ ...prev, [key]: value }));
-  };
-
   const updateSectionSelection = (section, key, value) => {
-    setSelections(prev => ({
-      ...prev,
-      [section]: { ...prev[section], [key]: value },
-    }));
-  };
-
-  const getInputValue = (id) => {
-    const el = document.getElementById(id);
-    return el ? el.value : '';
-  };
-
-  const getPillValue = (groupId) => {
-    const container = document.getElementById(groupId);
-    if (!container) return '—';
-    const selected = container.querySelector('.pill.selected');
-    return selected ? selected.textContent : '—';
-  };
-
-  const getYNValue = (className) => {
-    const selected = document.querySelector(`.${className} .yn.selected`);
-    return selected ? selected.textContent : '—';
+    setSelections(prev => ({ ...prev, [section]: { ...prev[section], [key]: value } }));
   };
 
   const selectStyle = (styleKey) => {
     setStyle(styleKey);
     setVariant(null);
-    setSelections({
-      s4sel: {},
-      s5sel: {},
-      s6sel: {},
-      s7sel: {},
-      groutColour: null,
-      tapFinish: null,
-      hwFinish: null,
-    });
+    setSelections({ s4sel: {}, s5sel: {}, s6sel: {}, s7sel: {}, groutColour: null, tapFinish: null, hwFinish: null });
   };
 
-  const selectVariant = (variantId) => {
-    setVariant(variantId);
-  };
+  const selectVariant = (variantId) => setVariant(variantId);
 
-  const selectPill = (value, groupId) => {
-    const container = document.getElementById(groupId);
-    if (!container) return;
-    const pills = container.querySelectorAll('.pill');
-    pills.forEach(pill => {
-      if (pill.textContent === value) {
-        pill.classList.add('selected');
-      } else {
-        pill.classList.remove('selected');
-      }
-    });
-  };
+  const selectSwatch = (value, key) => setSelections(prev => ({ ...prev, [key]: value }));
 
-  const selectYN = (value, className) => {
-    const container = document.querySelector(`.${className}`);
-    if (!container) return;
-    const buttons = container.querySelectorAll('.yn');
-    buttons.forEach(btn => {
-      if (btn.textContent === value) {
-        btn.classList.add('selected');
-      } else {
-        btn.classList.remove('selected');
-      }
-    });
-  };
+  const selectMat = (section, title, value) => updateSectionSelection(section, title, value);
 
-  const selectSwatch = (value, key) => {
-    updateSelections(key, value);
-  };
-
-  const selectMat = (section, title, value) => {
-    updateSectionSelection(section, title, value);
-  };
-
-  // ── Fixed renderOptionGrid — uses contain for full image display ───────────
   const renderOptionGrid = (section, storeKey) => {
     if (!style || !STYLES[style] || !STYLES[style][section]) return null;
     const data = STYLES[style][section];
@@ -972,25 +920,12 @@ function Bathroom() {
               {sec.opts.map((opt, optIdx) => {
                 const isSelected = selections[storeKey]?.[sec.title] === opt.name;
                 return (
-                  <div
-                    key={optIdx}
-                    className={`mat-card ${isSelected ? 'selected' : ''}`}
-                    onClick={() => selectMat(storeKey, sec.title, opt.name)}
-                  >
-                    {/* Image area — fixed height, object-fit: contain so all images show fully */}
+                  <div key={optIdx} className={`mat-card ${isSelected ? 'selected' : ''}`} onClick={() => selectMat(storeKey, sec.title, opt.name)}>
                     <div className="mat-img-wrap">
                       {opt.img ? (
-                        <img
-                          src={opt.img}
-                          alt={opt.name}
-                          className="mat-img"
-                          loading="lazy"
-                        />
+                        <img src={opt.img} alt={opt.name} className="mat-img" loading="lazy" />
                       ) : (
-                        <div
-                          className="mat-swatch-fallback"
-                          style={{ background: opt.swatch }}
-                        />
+                        <div className="mat-swatch-fallback" style={{ background: opt.swatch }} />
                       )}
                     </div>
                     <div className="mat-card-body">
@@ -1014,11 +949,7 @@ function Bathroom() {
     return (
       <div className="swatch-grid">
         {GROUT_COLOURS.map((c, idx) => (
-          <div
-            key={idx}
-            className={`swatch-card ${selections.groutColour === c.name ? 'selected' : ''}`}
-            onClick={() => selectSwatch(c.name, 'groutColour')}
-          >
+          <div key={idx} className={`swatch-card ${selections.groutColour === c.name ? 'selected' : ''}`} onClick={() => selectSwatch(c.name, 'groutColour')}>
             <div className="swatch-circle" style={{ background: c.hex }}></div>
             <div className="swatch-name">{c.name}</div>
             {c.name === rec && <div className="swatch-rec">★ Recommended</div>}
@@ -1033,11 +964,7 @@ function Bathroom() {
     return (
       <div className="swatch-grid">
         {TAP_FINISHES.map((c, idx) => (
-          <div
-            key={idx}
-            className={`swatch-card ${selections.tapFinish === c.name ? 'selected' : ''}`}
-            onClick={() => selectSwatch(c.name, 'tapFinish')}
-          >
+          <div key={idx} className={`swatch-card ${selections.tapFinish === c.name ? 'selected' : ''}`} onClick={() => selectSwatch(c.name, 'tapFinish')}>
             <div className="swatch-circle" style={{ background: c.hex }}></div>
             <div className="swatch-name">{c.name}</div>
             {c.name === rec && <div className="swatch-rec">★ Recommended</div>}
@@ -1052,11 +979,7 @@ function Bathroom() {
     return (
       <div className="swatch-grid">
         {TAP_FINISHES.map((c, idx) => (
-          <div
-            key={idx}
-            className={`swatch-card ${selections.hwFinish === c.name ? 'selected' : ''}`}
-            onClick={() => selectSwatch(c.name, 'hwFinish')}
-          >
+          <div key={idx} className={`swatch-card ${selections.hwFinish === c.name ? 'selected' : ''}`} onClick={() => selectSwatch(c.name, 'hwFinish')}>
             <div className="swatch-circle" style={{ background: c.hex }}></div>
             <div className="swatch-name">{c.name}</div>
             {c.name === rec && <div className="swatch-rec">★ Match Tapware</div>}
@@ -1066,41 +989,69 @@ function Bathroom() {
     );
   };
 
+  // ── YN button component ────────────────────────────────────────────────────
+  const YNGroup = ({ stateKey, options = ['Yes', 'No'] }) => (
+    <div className="yn-group" style={{ maxWidth: options.length > 2 ? '400px' : '200px', marginTop: '4px' }}>
+      {options.map(opt => (
+        <div
+          key={opt}
+          className={`yn ${ynSelections[stateKey] === opt ? 'selected' : ''}`}
+          onClick={() => updateYN(stateKey, opt)}
+        >
+          {opt}
+        </div>
+      ))}
+    </div>
+  );
+
+  // ── Pill button component ─────────────────────────────────────────────────
+  const PillGroup = ({ stateKey, options }) => (
+    <div className="pill-group">
+      {options.map(opt => (
+        <div
+          key={opt}
+          className={`pill ${pillSelections[stateKey] === opt ? 'selected' : ''}`}
+          onClick={() => updatePill(stateKey, opt)}
+        >
+          {opt}
+        </div>
+      ))}
+    </div>
+  );
+
+  // ── Collect all data from React state ─────────────────────────────────────
   const collectData = () => {
     const rooms = [];
-    const ensuite = getInputValue('ct-ensuite');
-    const bathroom = getInputValue('ct-bathroom');
-    const powder = getInputValue('ct-powder');
-    if (ensuite && ensuite !== '0') rooms.push(`${ensuite} × Ensuite`);
-    if (bathroom && bathroom !== '0') rooms.push(`${bathroom} × Bathroom`);
-    if (powder && powder !== '0') rooms.push(`${powder} × Powder Room`);
+    if (formFields.ctEnsuite && formFields.ctEnsuite !== '0') rooms.push(`${formFields.ctEnsuite} × Ensuite`);
+    if (formFields.ctBathroom && formFields.ctBathroom !== '0') rooms.push(`${formFields.ctBathroom} × Bathroom`);
+    if (formFields.ctPowder && formFields.ctPowder !== '0') rooms.push(`${formFields.ctPowder} × Powder Room`);
 
     return {
-      fname: getInputValue('fname'),
-      lname: getInputValue('lname'),
-      email: getInputValue('email'),
-      phone: getInputValue('phone'),
-      address: getInputValue('address'),
-      projectType: getInputValue('project-type'),
-      budget: getInputValue('budget'),
+      fname: formFields.fname,
+      lname: formFields.lname,
+      email: formFields.email,
+      phone: formFields.phone,
+      address: formFields.address,
+      projectType: formFields.projectType,
+      budget: formFields.budget,
       rooms: rooms.join(', ') || '—',
-      dims: `${getInputValue('bath-w') || '?'}W × ${getInputValue('bath-l') || '?'}L × ${getInputValue('bath-h') || '?'}H mm`,
-      plans: getYNValue('yn-plans'),
-      bath: getYNValue('yn-bath'),
-      bathMixer: getPillValue('bath-mixer-grp'),
-      toilet: getYNValue('yn-toilet'),
-      skylight: getYNValue('yn-sky'),
-      htr: getYNValue('yn-htr'),
-      ufh: getYNValue('yn-ufh'),
-      pp: getYNValue('yn-pp'),
-      niche: getYNValue('yn-niche'),
-      nib: getYNValue('yn-nib'),
-      seat: getYNValue('yn-seat'),
-      glass: getPillValue('glass-grp'),
+      dims: `${formFields.bathW || '?'}W × ${formFields.bathL || '?'}L × ${formFields.bathH || '?'}H mm`,
+      plans: ynSelections.plans || '—',
+      bath: ynSelections.bath || '—',
+      bathMixer: pillSelections.bathMixer || '—',
+      toilet: ynSelections.toilet || '—',
+      skylight: ynSelections.sky || '—',
+      htr: ynSelections.htr || '—',
+      ufh: ynSelections.ufh || '—',
+      pp: ynSelections.pp || '—',
+      niche: ynSelections.niche || '—',
+      nib: ynSelections.nib || '—',
+      seat: ynSelections.seat || '—',
+      glass: pillSelections.glassGrp || '—',
       styleName: style ? STYLES[style].name : '—',
       variantName: variant || '—',
-      vanityMount: getPillValue('vanity-mount-grp'),
-      customVan: getYNValue('yn-custom-van'),
+      vanityMount: pillSelections.vanityMount || '—',
+      customVan: ynSelections.customVan || '—',
       s4: selections.s4sel,
       s5: selections.s5sel,
       s6: selections.s6sel,
@@ -1108,17 +1059,96 @@ function Bathroom() {
       grout: selections.groutColour || '—',
       tapFinish: selections.tapFinish || '—',
       hwFinish: selections.hwFinish || '—',
-      wallLights: getYNValue('yn-wl'),
-      backlitMirror: getYNValue('yn-bm'),
-      ledNiche: getYNValue('yn-led-niche'),
-      ledVan: getYNValue('yn-led-van'),
-      notes: getInputValue('notes'),
+      wallLights: ynSelections.wl || '—',
+      backlitMirror: ynSelections.bm || '—',
+      ledNiche: ynSelections.ledNiche || '—',
+      ledVan: ynSelections.ledVan || '—',
+      notes: formFields.notes,
     };
+  };
+
+  // ── GHL Contact Creation ──────────────────────────────────────────────────
+  const submitToGHL = async (data) => {
+    // Strictly validate email
+    const emailValue = (data.email || '').trim();
+    const isValidEmail = emailValue.length > 0 && emailValue.includes('@') && emailValue.includes('.');
+
+    const payload = {
+      locationId: GHL_LOCATION_ID,
+      firstName: data.fname || '',
+      lastName: data.lname || '',
+      ...(isValidEmail ? { email: emailValue } : {}),
+      ...(data.phone ? { phone: data.phone } : {}),
+      ...(data.address ? { address1: data.address } : {}),
+      source: 'Bathroom Design Portal',
+      tags: ['bathroom-brief'],
+      customFields: [
+        { key: 'project_type',          field_value: data.projectType || '—' },
+        { key: 'budget',                field_value: data.budget || '—' },
+        { key: 'rooms',                 field_value: data.rooms },
+        { key: 'bathroom_dimensions',   field_value: data.dims },
+        { key: 'floor_plans_available', field_value: data.plans },
+        { key: 'freestanding_bath',     field_value: data.bath },
+        { key: 'bath_mixer_type',       field_value: data.bathMixer },
+        { key: 'separate_toilet',       field_value: data.toilet },
+        { key: 'skylight',              field_value: data.skylight },
+        { key: 'heated_towel_rail',     field_value: data.htr },
+        { key: 'underfloor_heating',    field_value: data.ufh },
+        { key: 'vanity_powerpoints',    field_value: data.pp },
+        { key: 'shower_niche',          field_value: data.niche },
+        { key: 'nib_wall',             field_value: data.nib },
+        { key: 'shower_seat',           field_value: data.seat },
+        { key: 'shower_screen_glass',   field_value: data.glass },
+        { key: 'bathroom_style',        field_value: data.styleName },
+        { key: 'vanity_layout_variant', field_value: data.variantName },
+        { key: 'vanity_mount_type',     field_value: data.vanityMount },
+        { key: 'custom_vanity',         field_value: data.customVan },
+        { key: 'cabinetry_selection',   field_value: data.s4['Cabinetry'] || '—' },
+        { key: 'benchtop_selection',    field_value: data.s4['Benchtop'] || '—' },
+        { key: 'mirror_selection',      field_value: data.s4['Mirror'] || '—' },
+        { key: 'floor__wall_tile',      field_value: data.s5['Floor & Wall Tile'] || '—' },
+        { key: 'feature_wall',          field_value: data.s5['Feature Wall'] || '—' },
+        { key: 'grout_colour',          field_value: data.grout },
+        { key: 'tapware_finish',        field_value: data.tapFinish },
+        { key: 'tapware_selection',     field_value: data.s6['Tapware'] || '—' },
+        { key: 'basin_selection',       field_value: data.s6['Basin'] || '—' },
+        { key: 'mirror_tapware_step',   field_value: data.s6['Mirror'] || '—' },
+        { key: 'shower_head_selection', field_value: data.s7['Shower Head'] || '—' },
+        { key: 'hardware_finish',       field_value: data.hwFinish },
+        { key: 'wall_lights',           field_value: data.wallLights },
+        { key: 'backlit_mirror',        field_value: data.backlitMirror },
+        { key: 'led_strip_niche',       field_value: data.ledNiche },
+        { key: 'led_strip_vanity',      field_value: data.ledVan },
+        { key: 'extra_notes',           field_value: data.notes || '' },
+      ].filter(f => f.field_value && f.field_value !== '—'),
+    };
+
+    const response = await fetch(GHL_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GHL_API_KEY}`,
+        'Version': '2021-07-28',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      let errorMsg = `API error ${response.status}`;
+      try {
+        const errorBody = await response.json();
+        errorMsg = Array.isArray(errorBody.message) ? errorBody.message[0] : (errorBody.message || errorMsg);
+      } catch (_) {}
+      throw new Error(errorMsg);
+    }
+
+    return response.json();
   };
 
   const buildSummary = () => {
     const data = collectData();
     setSummaryData(data);
+    return data;
   };
 
   const goToStep = (step) => {
@@ -1128,25 +1158,45 @@ function Bathroom() {
     if (step === 9) buildSummary();
   };
 
-  const submitForm = () => {
-    buildSummary();
-    setIsSubmitted(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  // ── Submit — validates email from React state before calling GHL ──────────
+  const submitForm = async () => {
+    setSubmitError(null);
+
+    // Validate email directly from React state — reliable, no DOM needed
+    const emailValue = (formFields.email || '').trim();
+    if (!emailValue || !emailValue.includes('@') || !emailValue.includes('.')) {
+      setSubmitError('Please go back to Step 1 and enter a valid email address before submitting.');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const data = buildSummary();
+
+    try {
+      await submitToGHL(data);
+      setIsSubmitted(true);
+      setCurrentStep(9);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      console.error('GHL submission failed:', err);
+      setSubmitError(err.message || 'There was a problem submitting your brief. Please try again or contact us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const startOver = () => {
     setStyle(null);
     setVariant(null);
     setSelections({ s4sel: {}, s5sel: {}, s6sel: {}, s7sel: {}, groutColour: null, tapFinish: null, hwFinish: null });
+    setFormFields({ fname: '', lname: '', email: '', phone: '', address: '', projectType: '', budget: '', ctEnsuite: '0', ctBathroom: '0', ctPowder: '0', bathW: '', bathL: '', bathH: '', notes: '' });
+    setPillSelections({ bathMixer: '', glassGrp: '', vanityMount: '' });
+    setYnSelections({ plans: '', bath: '', toilet: '', sky: '', htr: '', ufh: '', pp: '', niche: '', nib: '', seat: '', customVan: '', wl: '', bm: '', ledNiche: '', ledVan: '' });
     setIsSubmitted(false);
+    setSubmitError(null);
+    setSummaryData(null);
     setCurrentStep(1);
-    const inputs = document.querySelectorAll('input, select, textarea');
-    inputs.forEach(input => {
-      if (['text','email','tel','number'].includes(input.type)) input.value = '';
-      else if (input.tagName === 'SELECT') input.value = '0';
-      else if (input.tagName === 'TEXTAREA') input.value = '';
-    });
-    document.querySelectorAll('.pill.selected, .yn.selected').forEach(el => el.classList.remove('selected'));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -1215,11 +1265,26 @@ function Bathroom() {
             <div className="sc">
               <div className="sc-label">Your Details</div>
               <div className="fg">
-                <div className="field"><label>First Name</label><input type="text" id="fname" placeholder="e.g. Sarah" /></div>
-                <div className="field"><label>Last Name</label><input type="text" id="lname" placeholder="e.g. Thompson" /></div>
-                <div className="field"><label>Email Address</label><input type="email" id="email" placeholder="you@email.com" /></div>
-                <div className="field"><label>Phone Number</label><input type="tel" id="phone" placeholder="04XX XXX XXX" /></div>
-                <div className="field s2"><label>Project Address</label><input type="text" id="address" placeholder="Street address, Suburb NSW XXXX" /></div>
+                <div className="field">
+                  <label>First Name</label>
+                  <input type="text" value={formFields.fname} onChange={e => updateField('fname', e.target.value)} placeholder="e.g. Sarah" />
+                </div>
+                <div className="field">
+                  <label>Last Name</label>
+                  <input type="text" value={formFields.lname} onChange={e => updateField('lname', e.target.value)} placeholder="e.g. Thompson" />
+                </div>
+                <div className="field">
+                  <label>Email Address <span style={{ color: '#e74c3c' }}>*</span></label>
+                  <input type="email" value={formFields.email} onChange={e => updateField('email', e.target.value)} placeholder="you@email.com" />
+                </div>
+                <div className="field">
+                  <label>Phone Number</label>
+                  <input type="tel" value={formFields.phone} onChange={e => updateField('phone', e.target.value)} placeholder="04XX XXX XXX" />
+                </div>
+                <div className="field s2">
+                  <label>Project Address</label>
+                  <input type="text" value={formFields.address} onChange={e => updateField('address', e.target.value)} placeholder="Street address, Suburb NSW XXXX" />
+                </div>
               </div>
             </div>
             <div className="sc">
@@ -1227,24 +1292,30 @@ function Bathroom() {
               <div className="fg">
                 <div className="field">
                   <label>Project Type</label>
-                  <select id="project-type">
+                  <select value={formFields.projectType} onChange={e => updateField('projectType', e.target.value)}>
                     <option value="">Select one...</option>
-                    <option>New Build</option><option>Renovation</option>
-                    <option>Extension</option><option>Knockdown Rebuild</option>
+                    <option>New Build</option>
+                    <option>Renovation</option>
+                    <option>Extension</option>
+                    <option>Knockdown Rebuild</option>
                   </select>
                 </div>
                 <div className="field">
                   <label>Estimated Budget</label>
-                  <select id="budget">
+                  <select value={formFields.budget} onChange={e => updateField('budget', e.target.value)}>
                     <option value="">Select range...</option>
-                    <option>Under $20,000</option><option>$20,000 – $35,000</option>
-                    <option>$35,000 – $60,000</option><option>$60,000 – $100,000</option><option>$100,000+</option>
+                    <option>Under $20,000</option>
+                    <option>$20,000 – $35,000</option>
+                    <option>$35,000 – $60,000</option>
+                    <option>$60,000 – $100,000</option>
+                    <option>$100,000+</option>
                   </select>
                 </div>
               </div>
             </div>
             <div className="nav-bar">
-              <span></span><span className="step-count">Step 1 of 8</span>
+              <span></span>
+              <span className="step-count">Step 1 of 8</span>
               <button className="btn btn-primary" onClick={() => goToStep(2)}>Continue →</button>
             </div>
           </div>
@@ -1262,76 +1333,105 @@ function Bathroom() {
               <table className="room-table">
                 <thead><tr><th>Room Type</th><th>How Many?</th></tr></thead>
                 <tbody>
-                  <tr><td>Ensuite</td><td><select id="ct-ensuite"><option value="0">0</option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
-                  <tr><td>Bathroom</td><td><select id="ct-bathroom"><option value="0">0</option><option>1</option><option>2</option><option>3</option></select></td></tr>
-                  <tr><td>Powder Room</td><td><select id="ct-powder"><option value="0">0</option><option>1</option><option>2</option></select></td></tr>
+                  <tr>
+                    <td>Ensuite</td>
+                    <td>
+                      <select value={formFields.ctEnsuite} onChange={e => updateField('ctEnsuite', e.target.value)}>
+                        <option value="0">0</option><option>1</option><option>2</option><option>3</option><option>4</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Bathroom</td>
+                    <td>
+                      <select value={formFields.ctBathroom} onChange={e => updateField('ctBathroom', e.target.value)}>
+                        <option value="0">0</option><option>1</option><option>2</option><option>3</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Powder Room</td>
+                    <td>
+                      <select value={formFields.ctPowder} onChange={e => updateField('ctPowder', e.target.value)}>
+                        <option value="0">0</option><option>1</option><option>2</option>
+                      </select>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
             <div className="sc">
               <div className="sc-label">Dimensions</div>
               <div className="fg three">
-                <div className="field"><label>Width (mm)</label><input type="number" id="bath-w" placeholder="e.g. 2400" /></div>
-                <div className="field"><label>Length (mm)</label><input type="number" id="bath-l" placeholder="e.g. 3200" /></div>
-                <div className="field"><label>Height (mm)</label><input type="number" id="bath-h" placeholder="e.g. 2700" /></div>
+                <div className="field">
+                  <label>Width (mm)</label>
+                  <input type="number" value={formFields.bathW} onChange={e => updateField('bathW', e.target.value)} placeholder="e.g. 2400" />
+                </div>
+                <div className="field">
+                  <label>Length (mm)</label>
+                  <input type="number" value={formFields.bathL} onChange={e => updateField('bathL', e.target.value)} placeholder="e.g. 3200" />
+                </div>
+                <div className="field">
+                  <label>Height (mm)</label>
+                  <input type="number" value={formFields.bathH} onChange={e => updateField('bathH', e.target.value)} placeholder="e.g. 2700" />
+                </div>
               </div>
               <div className="field" style={{ marginTop: '13px' }}>
                 <label>Do we have floor plans / architecturals for this project?</label>
-                <div className="yn-group yn-plans" style={{ maxWidth: '300px', marginTop: '4px' }}>
-                  <div className="yn" onClick={() => selectYN('Yes', 'yn-plans')}>Yes</div>
-                  <div className="yn" onClick={() => selectYN('No', 'yn-plans')}>No</div>
-                  <div className="yn" onClick={() => selectYN('In Progress', 'yn-plans')}>In Progress</div>
-                </div>
+                <YNGroup stateKey="plans" options={['Yes', 'No', 'In Progress']} />
               </div>
             </div>
             <div className="sc">
               <div className="sc-label">Features</div>
               <div className="fg">
-                <div className="field"><label>Freestanding Bath?</label>
-                  <div className="yn-group yn-bath"><div className="yn" onClick={() => selectYN('Yes', 'yn-bath')}>Yes</div><div className="yn" onClick={() => selectYN('No', 'yn-bath')}>No</div><div className="yn" onClick={() => selectYN('Maybe', 'yn-bath')}>Maybe</div></div>
+                <div className="field">
+                  <label>Freestanding Bath?</label>
+                  <YNGroup stateKey="bath" options={['Yes', 'No', 'Maybe']} />
                 </div>
-                <div className="field"><label>Bath Mixer Type</label>
-                  <div className="pill-group" id="bath-mixer-grp">
-                    <div className="pill" onClick={() => selectPill('Floor Mounted', 'bath-mixer-grp')}>Floor Mounted</div>
-                    <div className="pill" onClick={() => selectPill('Wall Mounted', 'bath-mixer-grp')}>Wall Mounted</div>
-                    <div className="pill" onClick={() => selectPill('N/A — No Bath', 'bath-mixer-grp')}>N/A — No Bath</div>
-                  </div>
+                <div className="field">
+                  <label>Bath Mixer Type</label>
+                  <PillGroup stateKey="bathMixer" options={['Floor Mounted', 'Wall Mounted', 'N/A — No Bath']} />
                 </div>
-                <div className="field"><label>Separate Toilet?</label>
-                  <div className="yn-group yn-toilet"><div className="yn" onClick={() => selectYN('Yes', 'yn-toilet')}>Yes</div><div className="yn" onClick={() => selectYN('No', 'yn-toilet')}>No</div></div>
+                <div className="field">
+                  <label>Separate Toilet?</label>
+                  <YNGroup stateKey="toilet" options={['Yes', 'No']} />
                 </div>
-                <div className="field"><label>Skylight Planned?</label>
-                  <div className="yn-group yn-sky"><div className="yn" onClick={() => selectYN('Yes', 'yn-sky')}>Yes</div><div className="yn" onClick={() => selectYN('No', 'yn-sky')}>No</div><div className="yn" onClick={() => selectYN('Maybe', 'yn-sky')}>Maybe</div></div>
+                <div className="field">
+                  <label>Skylight Planned?</label>
+                  <YNGroup stateKey="sky" options={['Yes', 'No', 'Maybe']} />
                 </div>
-                <div className="field"><label>Heated Towel Rail?</label>
-                  <div className="yn-group yn-htr"><div className="yn" onClick={() => selectYN('Yes', 'yn-htr')}>Yes</div><div className="yn" onClick={() => selectYN('No', 'yn-htr')}>No</div></div>
+                <div className="field">
+                  <label>Heated Towel Rail?</label>
+                  <YNGroup stateKey="htr" options={['Yes', 'No']} />
                 </div>
-                <div className="field"><label>Underfloor Heating?</label>
-                  <div className="yn-group yn-ufh"><div className="yn" onClick={() => selectYN('Yes', 'yn-ufh')}>Yes</div><div className="yn" onClick={() => selectYN('No', 'yn-ufh')}>No</div><div className="yn" onClick={() => selectYN('Maybe', 'yn-ufh')}>Maybe</div></div>
+                <div className="field">
+                  <label>Underfloor Heating?</label>
+                  <YNGroup stateKey="ufh" options={['Yes', 'No', 'Maybe']} />
                 </div>
-                <div className="field"><label>Powerpoints in Vanity Drawers?</label>
-                  <div className="yn-group yn-pp"><div className="yn" onClick={() => selectYN('Yes', 'yn-pp')}>Yes</div><div className="yn" onClick={() => selectYN('No', 'yn-pp')}>No</div></div>
+                <div className="field">
+                  <label>Powerpoints in Vanity Drawers?</label>
+                  <YNGroup stateKey="pp" options={['Yes', 'No']} />
                 </div>
               </div>
             </div>
             <div className="sc">
               <div className="sc-label">Shower Details</div>
               <div className="fg">
-                <div className="field"><label>Shower Niche?</label>
-                  <div className="yn-group yn-niche"><div className="yn" onClick={() => selectYN('Yes', 'yn-niche')}>Yes</div><div className="yn" onClick={() => selectYN('No', 'yn-niche')}>No</div><div className="yn" onClick={() => selectYN('Maybe', 'yn-niche')}>Maybe</div></div>
+                <div className="field">
+                  <label>Shower Niche?</label>
+                  <YNGroup stateKey="niche" options={['Yes', 'No', 'Maybe']} />
                 </div>
-                <div className="field"><label>Half Height Nib Wall?</label>
-                  <div className="yn-group yn-nib"><div className="yn" onClick={() => selectYN('Yes', 'yn-nib')}>Yes</div><div className="yn" onClick={() => selectYN('No', 'yn-nib')}>No</div><div className="yn" onClick={() => selectYN('Maybe', 'yn-nib')}>Maybe</div></div>
+                <div className="field">
+                  <label>Half Height Nib Wall?</label>
+                  <YNGroup stateKey="nib" options={['Yes', 'No', 'Maybe']} />
                 </div>
-                <div className="field"><label>Built-in Shower Seat?</label>
-                  <div className="yn-group yn-seat"><div className="yn" onClick={() => selectYN('Yes', 'yn-seat')}>Yes</div><div className="yn" onClick={() => selectYN('No', 'yn-seat')}>No</div><div className="yn" onClick={() => selectYN('Maybe', 'yn-seat')}>Maybe</div></div>
+                <div className="field">
+                  <label>Built-in Shower Seat?</label>
+                  <YNGroup stateKey="seat" options={['Yes', 'No', 'Maybe']} />
                 </div>
-                <div className="field"><label>Shower Screen Glass</label>
-                  <div className="pill-group" id="glass-grp">
-                    <div className="pill" onClick={() => selectPill('Clear Glass', 'glass-grp')}>Clear Glass</div>
-                    <div className="pill" onClick={() => selectPill('Fluted Glass', 'glass-grp')}>Fluted Glass</div>
-                    <div className="pill" onClick={() => selectPill('Not Sure Yet', 'glass-grp')}>Not Sure Yet</div>
-                  </div>
+                <div className="field">
+                  <label>Shower Screen Glass</label>
+                  <PillGroup stateKey="glassGrp" options={['Clear Glass', 'Fluted Glass', 'Not Sure Yet']} />
                 </div>
               </div>
             </div>
@@ -1352,19 +1452,9 @@ function Bathroom() {
             <p className="step-sub">Select the aesthetic that best reflects how you want your bathroom to feel.</p>
             <div className="style-grid">
               {styleOptions.map(opt => (
-                <div
-                  key={opt.key}
-                  className={`style-card ${style === opt.key ? 'selected' : ''}`}
-                  onClick={() => selectStyle(opt.key)}
-                >
-                  {/* ── Style card image: fixed aspect ratio, object-fit contain ── */}
+                <div key={opt.key} className={`style-card ${style === opt.key ? 'selected' : ''}`} onClick={() => selectStyle(opt.key)}>
                   <div className="style-img-wrap">
-                    <img
-                      src={opt.img}
-                      alt={opt.name}
-                      className="style-img"
-                      loading="lazy"
-                    />
+                    <img src={opt.img} alt={opt.name} className="style-img" loading="lazy" />
                   </div>
                   <div className="style-card-body">
                     <div className="style-card-name">{opt.name}</div>
@@ -1416,18 +1506,11 @@ function Bathroom() {
               <div className="fg">
                 <div className="field">
                   <label>Wall Hung or Floor Mounted?</label>
-                  <div className="pill-group" id="vanity-mount-grp">
-                    <div className="pill" onClick={() => selectPill('Wall Hung', 'vanity-mount-grp')}>Wall Hung</div>
-                    <div className="pill" onClick={() => selectPill('Floor Mounted', 'vanity-mount-grp')}>Floor Mounted</div>
-                    <div className="pill" onClick={() => selectPill('Not Sure Yet', 'vanity-mount-grp')}>Not Sure Yet</div>
-                  </div>
+                  <PillGroup stateKey="vanityMount" options={['Wall Hung', 'Floor Mounted', 'Not Sure Yet']} />
                 </div>
                 <div className="field">
                   <label>Fully Custom Vanity?</label>
-                  <div className="yn-group yn-custom-van" style={{ maxWidth: '240px' }}>
-                    <div className="yn" onClick={() => selectYN('Yes — Discuss with Perrem', 'yn-custom-van')}>Yes — Discuss with Perrem</div>
-                    <div className="yn" onClick={() => selectYN('No', 'yn-custom-van')}>No</div>
-                  </div>
+                  <YNGroup stateKey="customVan" options={['Yes — Discuss with Perrem', 'No']} />
                 </div>
               </div>
             </div>
@@ -1531,17 +1614,21 @@ function Bathroom() {
             <div className="sc">
               <div className="sc-label">Lighting</div>
               <div className="fg three">
-                <div className="field"><label>Wall Lights</label>
-                  <div className="yn-group yn-wl"><div className="yn" onClick={() => selectYN('Yes', 'yn-wl')}>Yes</div><div className="yn" onClick={() => selectYN('No', 'yn-wl')}>No</div></div>
+                <div className="field">
+                  <label>Wall Lights</label>
+                  <YNGroup stateKey="wl" options={['Yes', 'No']} />
                 </div>
-                <div className="field"><label>Backlit Mirror</label>
-                  <div className="yn-group yn-bm"><div className="yn" onClick={() => selectYN('Yes', 'yn-bm')}>Yes</div><div className="yn" onClick={() => selectYN('No', 'yn-bm')}>No</div></div>
+                <div className="field">
+                  <label>Backlit Mirror</label>
+                  <YNGroup stateKey="bm" options={['Yes', 'No']} />
                 </div>
-                <div className="field"><label>LED Strip — Niche / Nib</label>
-                  <div className="yn-group yn-led-niche"><div className="yn" onClick={() => selectYN('Yes', 'yn-led-niche')}>Yes</div><div className="yn" onClick={() => selectYN('No', 'yn-led-niche')}>No</div></div>
+                <div className="field">
+                  <label>LED Strip — Niche / Nib</label>
+                  <YNGroup stateKey="ledNiche" options={['Yes', 'No']} />
                 </div>
-                <div className="field"><label>LED Strip — Under Vanity</label>
-                  <div className="yn-group yn-led-van"><div className="yn" onClick={() => selectYN('Yes', 'yn-led-van')}>Yes</div><div className="yn" onClick={() => selectYN('No', 'yn-led-van')}>No</div></div>
+                <div className="field">
+                  <label>LED Strip — Under Vanity</label>
+                  <YNGroup stateKey="ledVan" options={['Yes', 'No']} />
                 </div>
               </div>
             </div>
@@ -1549,13 +1636,39 @@ function Bathroom() {
               <div className="sc-label">Additional Notes</div>
               <div className="field">
                 <label>Anything else we should know?</label>
-                <textarea id="notes" placeholder="Special requirements, constraints, inspiration references, questions..."></textarea>
+                <textarea
+                  value={formFields.notes}
+                  onChange={e => updateField('notes', e.target.value)}
+                  placeholder="Special requirements, constraints, inspiration references, questions..."
+                />
               </div>
             </div>
+
+            {/* Email warning if empty */}
+            {!(formFields.email || '').includes('@') && (
+              <div style={{ margin: '16px 0', padding: '12px 16px', background: '#fff8e1', border: '1px solid #ffe082', borderRadius: '8px', color: '#7a5800', fontSize: '13px' }}>
+                ⚠ No valid email detected — please go back to Step 1 and enter your email before submitting.
+              </div>
+            )}
+
+            {/* Error message */}
+            {submitError && (
+              <div style={{ margin: '16px 0', padding: '14px 18px', background: '#fff0f0', border: '1px solid #ffcccc', borderRadius: '8px', color: '#cc0000', fontSize: '14px' }}>
+                ⚠ {submitError}
+              </div>
+            )}
+
             <div className="nav-bar">
-              <button className="btn btn-secondary" onClick={() => goToStep(7)}>← Back</button>
+              <button className="btn btn-secondary" onClick={() => goToStep(7)} disabled={isSubmitting}>← Back</button>
               <span className="step-count">Step 8 of 8</span>
-              <button className="btn btn-cyan" onClick={submitForm}>Complete My Brief →</button>
+              <button
+                className="btn btn-cyan"
+                onClick={submitForm}
+                disabled={isSubmitting}
+                style={{ opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
+              >
+                {isSubmitting ? 'Submitting…' : 'Complete My Brief →'}
+              </button>
             </div>
           </div>
         );
