@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import './Kitchen.css';
+import { applyKitchenOverrides } from './ProductOverrides';
 
 
 // Warm Japandi — Step 4
@@ -668,9 +669,11 @@ function Kitchen() {
     }
   };
 
-  useEffect(() => {
-    if (currentStep >= 4 && currentStep <= 7 && selections.style && STYLE_CONTENT[selections.style]) {
-      setStyleContent(STYLE_CONTENT[selections.style]);
+  const STYLE_CONTENT_WITH_OVERRIDES = applyKitchenOverrides(STYLE_CONTENT);
+
+useEffect(() => {
+    if (currentStep >= 4 && currentStep <= 7 && selections.style && STYLE_CONTENT_WITH_OVERRIDES[selections.style]) {
+      setStyleContent(STYLE_CONTENT_WITH_OVERRIDES[selections.style]);
     }
   }, [currentStep, selections.style]);
 
@@ -747,34 +750,45 @@ function Kitchen() {
     });
   };
 
-  const renderOptionGrid = (items, selectionKey) => {
-    if (!items) return null;
-    return (
-      <div className="option-grid">
-        {items.map((item, idx) => (
-          <div
-            key={idx}
-            className={`option-card ${selections[selectionKey] === item.val ? 'selected' : ''}`}
-            onClick={() => updateSelections(selectionKey, item.val)}
-          >
-            {item.img ? (
-              <div className="option-card-img">
-                <img src={item.img} alt={item.val} loading="lazy" />
-              </div>
-            ) : (
-              <div className="option-card-img option-card-img--placeholder">
-                <span>No image</span>
-              </div>
-            )}
-            <div className="option-card-body">
-              <div className="option-card-title">{item.val}</div>
-              <div className="option-card-sub">{item.sub}</div>
+ const renderOptionGrid = (items, selectionKey) => {
+  if (!items) return null;
+  return (
+    <div className="option-grid">
+      {items.map((item, idx) => (
+        <div
+          key={idx}
+          className={`option-card ${selections[selectionKey] === item.val ? 'selected' : ''}`}
+          onClick={() => updateSelections(selectionKey, item.val)}
+        >
+          {item.img ? (
+            <div className="option-card-img">
+              <img src={item.img} alt={item.val} loading="lazy" />
             </div>
+          ) : (
+            <div className="option-card-img option-card-img--placeholder">
+              <span>No image</span>
+            </div>
+          )}
+          <div className="option-card-body">
+            <div className="option-card-title">{item.val}</div>
+            <div className="option-card-sub">{item.sub}</div>
+            {item.supplierLink && (
+              <a 
+                href={item.supplierLink} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="supplier-link"
+                onClick={(e) => e.stopPropagation()}
+              >
+                View supplier ↗
+              </a>
+            )}
           </div>
-        ))}
-      </div>
-    );
-  };
+        </div>
+      ))}
+    </div>
+  );
+};
 
   const buildSummary = () => {
     return (
@@ -916,7 +930,7 @@ function Kitchen() {
   phone: data.phone || undefined,
   locationId: GHL_LOCATION_ID,
   customFields,
-  tags: ['bathroom-brief'],
+  tags: ['Kitchen-brief'],
   source: 'Bathroom Design Portal',
 };
 

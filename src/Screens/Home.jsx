@@ -21,6 +21,12 @@ function Home() {
             <h2>Bathroom</h2>
             <p>View bathroom details and options</p>
           </div>
+
+          <div className="card card--admin" onClick={() => navigate('/admin')}>
+            <div className="icon">⚙️</div>
+            <h2>Admin</h2>
+            <p>Edit product names, images &amp; supplier links</p>
+          </div>
         </div>
       </div>
     </div>

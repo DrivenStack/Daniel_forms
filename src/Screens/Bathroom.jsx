@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './Bathroom.css';
+import { applyBathroomOverrides } from './ProductOverrides';
 
 // ── Image imports ─────────────────────────────────────────────────────────────
 // Scandi
@@ -870,6 +871,9 @@ function Bathroom() {
     },
   };
 
+  // Apply admin overrides to the static content
+const STYLES_WITH_OVERRIDES = applyBathroomOverrides(STYLES);
+
   const styleOptions = [
     { key: 'scandi', name: 'Scandi', desc: 'Calm and minimal. Warm oak, matte black and soft stone.', colors: ['#9EA89E', '#C8C5BC', '#2A2A2A', '#E8E6E0'], img: styleImgScandi },
     { key: 'hamptons', name: 'Hamptons', desc: 'Timeless and refined. Carrara tile, brushed brass, shaker profile.', colors: ['#F4F0E8', '#E0D5C0', '#B8936A', '#FFF'], img: styleImgHamptons },
@@ -910,7 +914,7 @@ function Bathroom() {
 
   const renderOptionGrid = (section, storeKey) => {
     if (!style || !STYLES[style] || !STYLES[style][section]) return null;
-    const data = STYLES[style][section];
+    const data = STYLES_WITH_OVERRIDES[style][section];
     return (
       <div>
         {data.sections.map((sec, idx) => (
@@ -929,10 +933,21 @@ function Bathroom() {
                       )}
                     </div>
                     <div className="mat-card-body">
-                      <div className="mat-brand">{opt.brand}</div>
-                      <div className="mat-name">{opt.name}</div>
-                      <div className="mat-detail">{opt.detail}</div>
-                    </div>
+  <div className="mat-brand">{opt.brand}</div>
+  <div className="mat-name">{opt.name}</div>
+  <div className="mat-detail">{opt.detail}</div>
+  {opt.supplierLink && (
+    <a 
+      href={opt.supplierLink} 
+      target="_blank" 
+      rel="noreferrer" 
+      className="supplier-link"
+      onClick={(e) => e.stopPropagation()}
+    >
+      View supplier ↗
+    </a>
+  )}
+</div>
                     {isSelected && <div className="mat-check">✓</div>}
                   </div>
                 );
@@ -1048,7 +1063,7 @@ function Bathroom() {
       nib: ynSelections.nib || '—',
       seat: ynSelections.seat || '—',
       glass: pillSelections.glassGrp || '—',
-      styleName: style ? STYLES[style].name : '—',
+     styleName: style ? STYLES_WITH_OVERRIDES[style].name : '—',
       variantName: variant || '—',
       vanityMount: pillSelections.vanityMount || '—',
       customVan: ynSelections.customVan || '—',
@@ -1500,7 +1515,7 @@ function Bathroom() {
             <div className="step-eyebrow">Step 04 — Vanity</div>
             <div className="step-title">Vanity, benchtop &amp; mirror</div>
             <div className="cyan-bar"></div>
-            <p className="step-sub">{STYLES[style].name} — exact products and suppliers shown for each option.</p>
+            <p className="step-sub">{STYLES_WITH_OVERRIDES[style].name} — exact products and suppliers shown for each option.</p>
             <div className="sc" style={{ marginBottom: '14px' }}>
               <div className="sc-label">Vanity Configuration</div>
               <div className="fg">
@@ -1535,7 +1550,7 @@ function Bathroom() {
             <div className="step-eyebrow">Step 05 — Tiling</div>
             <div className="step-title">Tiles &amp; surfaces</div>
             <div className="cyan-bar"></div>
-            <p className="step-sub">{STYLES[style].name} — select your tile and grout direction.</p>
+            <p className="step-sub">{STYLES_WITH_OVERRIDES[style].name} — select your tile and grout direction.</p>
             {renderOptionGrid('s5', 's5sel')}
             <div className="sc">
               <div className="sc-label">Grout Colour — Ardex Range</div>
@@ -1562,7 +1577,7 @@ function Bathroom() {
             <div className="step-eyebrow">Step 06 — Tapware &amp; Basin</div>
             <div className="step-title">Tapware &amp; basin</div>
             <div className="cyan-bar"></div>
-            <p className="step-sub">{STYLES[style].name} — select your tapware and basin.</p>
+            <p className="step-sub">{STYLES_WITH_OVERRIDES[style].name} — select your tapware and basin.</p>
             <div className="sc" style={{ marginBottom: '14px' }}>
               <div className="sc-label">Tapware Finish</div>
               <p className="field-note" style={{ marginBottom: '12px' }}>Our recommendation for your style is highlighted.</p>
@@ -1589,7 +1604,7 @@ function Bathroom() {
             <div className="step-eyebrow">Step 07 — Shower</div>
             <div className="step-title">Shower setup</div>
             <div className="cyan-bar"></div>
-            <p className="step-sub">{STYLES[style].name} — select your shower head configuration.</p>
+            <p className="step-sub">{STYLES_WITH_OVERRIDES[style].name} — select your shower head configuration.</p>
             {renderOptionGrid('s7', 's7sel')}
             <div className="nav-bar">
               <button className="btn btn-secondary" onClick={() => goToStep(6)}>← Back</button>
